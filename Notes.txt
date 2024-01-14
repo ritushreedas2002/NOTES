@@ -105,3 +105,47 @@ $git add .
 1.git remote -v
 2.(as we are cloning the repo we do not need to set the remote repo)
 3. git push  (NOTE :: not git push origin master as we are already in that  main branch)
+
+
+
+
+----------------------------------------------------------BRANCHING----------------------------------------------------------------------------
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo
+$git branch
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (main)  (What branch we are currently at)
+$git branch
+-main
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (main)  (as we donot have other branch than main so we use -b and to specify correctly for what purpose we are creating a new branch,for bugs,issues changes)
+$git checkout -b feature_update_files
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (feature_update_files)   (name of the branch is nch)
+$git branch nch
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (feature_update_files)   (all the branches that are present)
+$git branch
+-main
+-nch
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (feature_update_files)   (Switch to the main branch)
+$git checkout main
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (feature_update_files)  
+$ls
+Readme.md index.html
+
+##make changes to the files and add  and then commit
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (main)  (to see what are changes difference between the main branch and the feature branch)
+$git diff feature_update_files 
+
+## let push the changes in the feature_update_file branch made
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (main)
+$git checkout feature_update_files
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo (feature_update_files)   (push the changes to the feature_update_files)
+$git push -u origin feature_update_files
+NOTE:: then compare and accept the pull request by the owner of the master branch
+
+
