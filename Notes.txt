@@ -1,4 +1,4 @@
-
+-----------------------------------------GIT BASH----------------------------------------------------------------
 User@HP-Laptop MINGW64 ~           (locally move to the folder)
 $ cd desktop
 
@@ -58,3 +58,39 @@ on master branch, nothing to commit
 
 User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (to push all our changes to the remote of the master branch)           
 $git push origin master
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### ------------NOTE:::CLONING A REPOSITORY MEANS NOT ONLY TAKING THE CODE BUT ALSO ITS HISTORY, COMMITS MADES THE CHANGES EVERYTHING---
+-------------------------------------------------------------------CLONING A REPO------------------------------------------------------------------------------------------
+User@HP-Laptop MINGW64 ~/desktop/repository
+$ls
+/Demo
+
+User@HP-Laptop MINGW64 ~/desktop/repository
+$cd Demo
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo
+$ls
+Readme.md
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo         (create a file index.html)
+touch index.html
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo           (Adding or making changes to the readme.md)
+$vi Readme.md
+
+
+- Add another line1
+-Add another line 2
+-
+-
+-
+
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo           (Adding or making changes to the index.html)
+$vi index.html
+
+-<p>HII EVERYONE</p>
+-<div>HELLo</div>
+-
+-
+
