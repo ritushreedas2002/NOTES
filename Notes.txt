@@ -1,0 +1,60 @@
+
+User@HP-Laptop MINGW64 ~           (locally move to the folder)
+$ cd desktop
+
+User@HP-Laptop MINGW64 ~/desktop            (check what files and folders are present inside the folder)
+$ ls
+'Atlassian Intern Interview Guide - Engineering.pdf'  'MinGW Installer.lnk'*   PowerPoint.lnk*           'WPS PDF.lnk'*   aptitude/          expense-tracker/   launcher.html  'os prac.zip'  'simple one'/
+'BitTorrent Web.lnk'*                                  MongoDBCompass.lnk*     Telegram.lnk*              WinRAR.lnk*    'college -Id.pdf'   food-order/       'love babbar'/   portfolio/     stlc++notes/
+ Excel.lnk*                                            NAMASTE_FOOD/          'Visual Studio Code.lnk'*   Word.lnk*       cpp/               form_ease/         my_utube/       python/
+ INTERVIEW/                                            Namaste-React/         'WPS Office.lnk'*           Zoom.lnk*       desktop.ini       'java prac'/        netflix_gpt/    resume/
+
+User@HP-Laptop MINGW64 ~/desktop                   (move to the folder (which needs to be pushed in our github))
+$ cd form_ease
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)      (initialise git inside our repo)
+$ git init
+Reinitialized existing Git repository in C:/Users/User/Desktop/form_ease/.git/
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)              (to check the status of the repo before commiting or saving it that are are the files that are not tracked by the git or the unchanged files )
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:                                                
+  (use "git restore --staged <file>..." to unstage)
+        modified:   src/App.js
+        new file:   src/components/ExamDetails.js
+        modified:   src/components/RecommendedCard.js
+
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                (to add those all untrack files )
+$git add .
+
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (commit to the changes or save the changes with a message)
+$git commit -m "first commit"
+
+####### -------NOTE: the commits that are made on your local repository and not the remote repository which u are working under it.
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (to check whether our local repo that we are currently working is liked with any remote repo or not)
+$git remote -v 
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (to add our local repo to the remote repository and then adding .git)
+$git remote add origin https://github.com/ritushreedas2002/form_ease.git 
+
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (again checking we find that the remote repo is now available for fetching nad pushing)
+$git remote -v 
+
+>>origin https://github.com/ritushreedas2002/form_ease(fetch)
+>>origin https://github.com/ritushreedas2002/form_ease(pull)
+
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                 
+$git status
+
+on master branch, nothing to commit
+
+User@HP-Laptop MINGW64 ~/desktop/form_ease (master)                  (to push all our changes to the remote of the master branch)           
+$git push origin master
