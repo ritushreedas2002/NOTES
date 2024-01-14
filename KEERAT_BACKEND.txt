@@ -1,0 +1,25 @@
+WHAT IS ECMAScript?
+ECMAScript (often abbreviated as ES) is a scripting language specification developed by Ecma International. It serves as the standard for several scripting languages, 
+including JavaScript, JScript, and ActionScript
+
+WHAT IS JAVASCRIPT?
+JavaScript is a versatile and widely-used programming language primarily known for its ability to create dynamic and interactive content on the web. It is a high-level, interpreted language
+that allows developers to add functionality to web pages, create web applications, and build server-side applications.
+GOOGLE SEARCH ENGINE-V8
+FIREFOX SEARCH ENGINE-SPIDERMONKEY
+
+JAVASCRIPT-var,let,const,date,func
+ECMAScipt (Beyond)-setTimeout,Read file
+
+WHAT IS NODEJS?
+Node.js is an open-source, server-side runtime environment built on the JavaScript V8 engine. It allows developers to run JavaScript code on the server, enabling them to build scalable and efficient
+network applications. (it is slow)
+
+Google uses V8 and for web application we need js(meant for browser) so we pull out v8 engine and added extra features and take js to create a runtime(something that can run or compile js) and here where Nodejs came into picture.
+
+WHAT IS BUN?
+Bun is a new JavaScript runtime built from scratch to serve the modern JavaScript ecosystem.(It is faster) It has three major design goals:
+
+Speed-> Bun starts fast and runs fast. It extends JavaScriptCore, the performance-minded JS engine built for Safari. As computing moves to the edge, this is critical.
+Elegant-> APIs. Bun provides a minimal set of highly-optimimized APIs for performing common tasks, like starting an HTTP server and writing files.
+Cohesive ->DX. Bun is a complete toolkit for building JavaScript apps, including a package manager, test runner, and bundler.
