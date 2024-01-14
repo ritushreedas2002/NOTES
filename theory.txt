@@ -27,4 +27,19 @@ c1(commit)->c2(commit)->c3(commit)-----------------------------> Merge
 
 
 Merge Conflict:---In feature branch merge is only possible if it does not conflict with the master branch
-Suppose While working in the feature branch there is a bug that happened so we create a new branch named  hotflix branch resolved that issues and then merge that with the master branch 
+Suppose While working in the feature branch there is a bug that happened so we create a new branch named  hotfix branch resolved that issues and then merge that with the master branch 
+
+
+---Merge conflict occurs--
+1.while starting the merge process (If there are changes in the working directory area for the current project,merging won't start)
+2.during the merge process (when there is a conflict between the local branch naf the branch getting merged)
+
+merge conflict occurs : Suppose developer A and developer B are working on the same directory on the local branch .Now developer A tries to push some changes into the main directory. And then developer B tries to push the changes.So developer B will not knowing the current status of the main directory and will result in merge conflict as developer A has made changes into the main directory.
+
+Merge conflicts:
+---------------------
+1. git log --merge : produce the listy of commits that are causing the conflict
+2. git diff : identify the diff between the state of the repo files
+3.git checkout: Used to undo the changes made in the file or for changing branches
+4.git reset --mixed:Used to undo the changes to the working directory and the staging area
+5.git merge --abort:Helps in exiting the merge process and returning back the state before the merging begins.
