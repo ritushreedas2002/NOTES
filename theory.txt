@@ -1,0 +1,30 @@
+
+
+
+  Github WorkFlow                                                                       Git WorkFlow
+--------------------                                                                  -----------------
+     Write Code                                                                           Write Code
+        |                                                                                    |
+   Commit code changes                                                               Stage Code Changes
+        |                                                                                    |      (git add)
+Pull Request(If repo is not urs)                                                       Commit changes
+                                                                                             |      (git push) 
+                                                                                      Push ur code to the remote repo
+
+
+--------------------------BRANCHING------------------------------------------
+Branching in Git allows you to diverge from the main development line (usually called the master branch) and continue working on a separate line of development. This is useful for working on new features,
+bug fixes, or experimental changes without affecting the main codebase until the changes are ready to be merged.
+
+
+Eg:: Suppose in a project various developers are working assigned various functionalities in the software
+
+Master Branch         
+c1(commit)->c2(commit)->c3(commit)-----------------------------> Merge
+                            |                                   ^
+                            |                                   |
+      feature Branch      C1(Commit) ->C2(commit)-------------  |        All the changes made in the feature branch is not known by the master branch
+
+
+Merge Conflict:---In feature branch merge is only possible if it does not conflict with the master branch
+Suppose While working in the feature branch there is a bug that happened so we create a new branch named  hotflix branch resolved that issues and then merge that with the master branch 
