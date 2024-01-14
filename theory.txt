@@ -1,5 +1,41 @@
+What is Version Control?
+Version control, also known as source control or revision control, is a system that records changes to a file or set of files over time. It allows multiple contributors to work on a project 
+simultaneously without conflicts and helps track changes, maintain a history of revisions, and facilitate collaboration.
+
+TYPES OF VERSION CONTROL?
+
+-->  There are two main types of version control systems: centralized version control systems (CVCS) and distributed version control systems (DVCS).
+
+ >Centralized Version Control System (CVCS):
+
+In CVCS, there is a central server that stores the entire version history of the project.
+Developers have a working copy of the project on their local machines, but the definitive version is maintained on the central server.
+Examples of CVCS include Concurrent Versions System (CVS) and Apache Subversion (SVN).
+
+>Distributed Version Control System (DVCS):
+
+In DVCS, every developer has a complete copy of the repository, including the full history and all branches, on their local machine.
+Developers can work independently and commit changes to their local repository without the need for constant connection to a central server.
+Popular DVCS tools include Git, Mercurial, and Bazaar.
+
+BASIC WORKFLOW OF GIT::
+  Working directory
+      |(git add)
+  Staging area 
+      |(git commit)
+  Repository
 
 
+BLOBS::
+-------
+In Git, a "blob" (binary large object) is a fundamental data object that represents the content of a file. It stores the content of the file but doesn't contain any metadata about the file, such as its name
+or permissions. Blobs are one of the four fundamental object types in Git, along with trees, commits, and tags.
+
+SHA-1 Hash: The identifier of a blob is its SHA-1 hash. The hash is based on the content of the file, which ensures data integrity.
+
+TREES::
+-------
+Trre is a object which represents the directory.It holds blobs as well as the other sub-directory.
 
   Github WorkFlow                                                                       Git WorkFlow
 --------------------                                                                  -----------------
