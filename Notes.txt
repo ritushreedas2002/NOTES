@@ -94,3 +94,14 @@ $vi index.html
 -
 -
 
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo
+$git status
+
+##NOTE u will find that the changed files like index.html and readme.md are needed to be added
+User@HP-Laptop MINGW64 ~/desktop/repository/Demo
+$git add .
+
+## then perform again the
+1.git remote -v
+2.(as we are cloning the repo we do not need to set the remote repo)
+3. git push  (NOTE :: not git push origin master as we are already in that  main branch)
