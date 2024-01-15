@@ -127,5 +127,38 @@ STATUS code::
 404-PAGE/ROUTE NOT FOUND
 403-AUTHENTICATION ISSUES
 500-INTERNAL SERVER ERROR
-
+-----------------------------------------------------------------------------------------
 Express Js ->library we use to create a HTTP Server
+
+Create a folder ->index.js
+>>npm init -y
+>>npm i express (to bring express from internet to  ur machine)
+
+const express=require('express');
+const app=express();   //function we cal and return back an object
+app.get('/',function (req,res){
+    //db call
+    res.send('Hello world')
+})
+app.listen(port);
+
+>>node index.js
+
+--------------------------------------------
+console.log("Req reached")
+for(i=0;i<100000000;i++){
+    a=a+1;
+}
+res.send('Hello world')
+
+NOTE:: first js will solve the for loop and then will move to db call...but usually db call takes more time
+
+WHAT is DIFFERENCE BETWEEN FS AND EXPRESS
+    Both are separate lib
+->fS is the file system (fs does not give get call)
+->Express gives get call
+
+Difference between public and private IPs?
+Public IP Address: A public IP address is an address that is assigned to a device or a network and is accessible over the public internet. It uniquely identifies a device on the internet.
+Private IP Address: A private IP address is used within a private network and is not directly accessible from the internet. Devices within a local network use private IP addresses to communicate with each other.NAT is commonly used within private networks to allow multiple devices to share a single public IP address for internet access.
+
