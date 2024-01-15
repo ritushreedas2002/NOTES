@@ -44,3 +44,87 @@ WHAT IS HTTP SERVER?
 In the end client throwing some information  to the server, server doing something with that information and responding back the final result.
 Similar to functions->through some parameters taking the values ,performing some manipulatopns and returning a result
 server is taking the input from the client on the interne, doings some work (like authentication like whther the user is currentlu using gpt) then prviding the results
+
+HTTP(Client Side)
+1.Protocol(HTTP/HTTPS)
+2.Adress(IP Port)
+3.Route
+4.Headers Body QueryParams
+5.Method
+
+(HTTP )SERVER
+----------------
+1.Response Header
+2.Response Body
+3.Status Codes
+
+
+CLIENT
+---------
+https://chat.openai.com/backend-api/conversation/
+-------   -------------  ------------------------  
+  |            |                 |
+protocol      URL              Route
+
+Route--basically gpt can do make things like creating a new converstion, giving responses. So route specifies what to be performed
+Header-cookie-123@5679@iuw854w
+Body-What is 2+2 ?(Usually in json)
+METHOD:POST(give request to the sender(server))
+GET request:to fetch the data from the sender
+
+
+                                                request
+client-----------------------------------------------------------------------------------------------------------------------------> sender
+ client   <-----------------------------------------------------------------------------------------------------------------------------  Sender
+                                                        response
+
+SERVER
+--------
+Response Header: contains the cookiee after the login
+Response Body: 2+2 is equal to 4
+Status Code-200
+Things that happen in your browser after u fire this request
+1.Browser parses the URL    (When you enter a URL into your browser and press Enter, the browser goes through a series of steps to parse and process the URL.)
+2.Does a DNS Lookup (converts google.com to an IP)
+3.Establishes a connection to the IP (handshake)
+
+NOTE:
+DNS (Domain Name System) resolution is the process by which domain names are translated into IP addresses. In simple terms, when you type a domain name (like www.example.com) into your web browser, the DNS resolution process is what allows your computer to find the corresponding IP address associated with that domain name.
+
+﻿What is DNS resolution
+URLs are just like contacts in your phone
+In the end, they map to an IP
+If you ever buy a URL of your own, you will need to point it to the IP of your server
+
+
+﻿Things that happen on your server after the request is received
+1. You get the inputs (route, body, headers)
+2. You do some logic on the input, calculate the output 
+3. You return the output body, headers and status code
+
+
+TYPES OF REQUEST::
+
+GET:
+----
+The GET method is used to request data from a specified resource. It only retrieves data and does not modify the server state. Parameters are included in the URL.
+eg::Trying to the chatgpt history
+POST:
+-----
+The POST method is used to submit data to be processed to a specified resource. It's often used when uploading a file or submitting a form. Data is sent in the request body.
+eg:starting a new conversation
+PUT:
+-----
+The PUT method is used to update a resource on the server. It either creates a new resource or replaces an existing one at the specified URI.
+eg: going to the settings of the gpt and changing some setting
+DELETE:
+--------
+The DELETE method is used to request that a resource be removed or deleted at the specified URI.
+
+STATUS code::
+----------------
+200-EVERYTHING OK
+404-PAGE/ROUTE NOT FOUND
+403-AUTHENTICATION ISSUES
+500-INTERNAL SERVER ERROR
+
