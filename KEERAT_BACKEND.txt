@@ -23,3 +23,24 @@ Bun is a new JavaScript runtime built from scratch to serve the modern JavaScrip
 Speed-> Bun starts fast and runs fast. It extends JavaScriptCore, the performance-minded JS engine built for Safari. As computing moves to the edge, this is critical.
 Elegant-> APIs. Bun provides a minimal set of highly-optimimized APIs for performing common tasks, like starting an HTTP server and writing files.
 Cohesive ->DX. Bun is a complete toolkit for building JavaScript apps, including a package manager, test runner, and bundler.
+
+WHAT NODEJs WILL DO?
+->CREATE CLIS(command line interface)
+->CREATE VIDEO PLAYER
+->CREATE GAME
+->CREATE HTTP Server (imp we will work on it)
+
+
+What is HTTP PROTOCOL?
+->A protocol that defines the machine to communicate 
+->Specially with websites,it the most common way for your website frontend to talk to your website backend.
+
+For example:-when in google.com we do any sort of search, it sends the request to the data centre and then the data send the required data to your browser
+Frontend talk to Backend through routers/wires
+
+WHAT IS HTTP SERVER?
+->some code that follows http protocol and helps to communicate with the clients(browser/mobile apps)
+
+In the end client throwing some information  to the server, server doing something with that information and responding back the final result.
+Similar to functions->through some parameters taking the values ,performing some manipulatopns and returning a result
+server is taking the input from the client on the interne, doings some work (like authentication like whther the user is currentlu using gpt) then prviding the results
