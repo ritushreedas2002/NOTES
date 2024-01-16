@@ -162,3 +162,32 @@ Difference between public and private IPs?
 Public IP Address: A public IP address is an address that is assigned to a device or a network and is accessible over the public internet. It uniquely identifies a device on the internet.
 Private IP Address: A private IP address is used within a private network and is not directly accessible from the internet. Devices within a local network use private IP addresses to communicate with each other.NAT is commonly used within private networks to allow multiple devices to share a single public IP address for internet access.
 
+Eg: our router has a Public IP.Suppose in our house there are many computers connected to the router so our computer will have private IP.
+
+REST API:
+Statelessness: Each request from a client to a server contains all the information needed to understand and process the request. The server doesn't store any information about the client's state between requests. This enhances scalability and simplifies server design.
+
+
+NOTE:: Suppose in ur private IP of ur laptop, ur ph and laptop are connected to the same wifi then u write ur laptop private ip on ur ph it will show "Hello Worls"
+----------------------------------------------
+Suppose website it www.apdex-100.com
+in terminal the IP of the website 123.6553.878  , Now in chrome when u type this IP the website we cannot see why??
+
+Benefit of domain name--
+the server has an IP now when we search through the domain name it refers to the IP and the server checks the header who is the referrer.
+Suppose the vercel/terminal is a single server (Load Balancer) and two people having same IP tries to access so the server will check from whom the request came and then according to that it sends the result.But if we try to access directly through IP then the server gets confused.
+(as a server can host multiple applications but multiple domains can point to the same server).
+
+1.Virtual Hosting:
+Many web servers host multiple websites on the same IP address using a feature called virtual hosting
+
+2.SSL/TLS Certificates:
+If the website uses HTTPS (SSL/TLS), the SSL certificate is associated with a domain name. Browsers expect the domain to match the certificate. When accessing the site by IP, this check may fail, leading to security warnings or the browser refusing to load the page.
+
+NOTE:: express does not handle body ..SO lib that handles the body of the request is parser.
+app.use(bodyParser.json()); //converts into json and passes it
+app.get('/',function (req,res){
+  console.log(req.body);
+})
+
+>>npx nodemon index.js...so whenever u change the file and save it automatically restarts the server
