@@ -224,3 +224,31 @@ QS>>>You need to create  4 routes ($ thing that the hospital can do)
 2.POST-User can add a new kidney
 3.PUT-User can replace a kidney,make it healthy
 4.DELETE-User can remove a kidney
+
+
+
+FOR 2 Explanation:
+
+
+IN POSTMAN:
+------------
+POST |URL:https;//localhost:3000/|
+BODY: (raw)
+{
+    "isHealthy":true
+}
+
+CODE:
+-------
+app.use(express.json());//as req.body cannot be accesed
+app.post('/',function(req,res){
+        const isHealthy=req.body.isHealthy;
+        users[0].kidneys.push({
+            healthy:isHealthy,
+  })
+res.json({
+    msg:"Done!"
+ }) 
+})
+
+When u restart the process the post data gets lost thats why we need database.
