@@ -254,9 +254,53 @@ res.json({
 When u restart the process the post data gets lost thats why we need database.
 
 
+
 --------------------------------------------MIDDLEWARES---------------------------------------------------------------------------------------------------------
 MiddleWares are used to do pre-checks
 They are of two types:
 1.Authentication
 2.Input Validation
 
+app.get('/',function1(req,res,next){},function2(req,res,next){},and so on)
+
+now if in function1 anything goes wrong it will not go to the next function....so we use next parameter that if everything goes right it can move to the
+next() that is the next function
+
+middleware: using the body parameter in post we need to write 
+app.use(express.json()) itself returns a function
+in body only we do--as we donot know what will be the body it can be HTML,Json,Text... so we give responsibility that middleware u handle it.
+
+---ERROR HANDLING MIDDLEWARES---
+Global Catch middleware exception and takes 4 arguments 
+(Note write this at last to be executed)
+app.use(function(err,req,res,next){
+  res.json({
+      msg;"Srry something is up with your server"
+  })
+})
+
+Authentication and Input Validation eg:: through middlewares
+------------------------------------------------------------
+function userMiddleware(req,res,next){
+    if(username!="harkirat" &&password!="pass"){
+          res.status(403).json({
+              msg:""
+          })
+    }else{
+          next();
+    }
+}
+
+function inputMiddleware(req,res,next){
+    if(kidneyId!=1 &&kidneyId!=2){
+          res.status(403).json({
+              msg:""
+          })
+    }else{
+          next();
+    }
+}
+app.get('/',userMiddleware,inputMiddleware,function(req,res){
+  //do something
+  res.send("Your heart is fine");
+})
