@@ -219,3 +219,8 @@ res.send(ans);
 
 app.listen(3000);
 
+QS>>>You need to create  4 routes ($ thing that the hospital can do)
+1.GET-User can check how many kidneys they have and their health
+2.POST-User can add a new kidney
+3.PUT-User can replace a kidney,make it healthy
+4.DELETE-User can remove a kidney
