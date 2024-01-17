@@ -191,3 +191,31 @@ app.get('/',function (req,res){
 })
 
 >>npx nodemon index.js...so whenever u change the file and save it automatically restarts the server
+
+
+
+-----------------------------------------------------------------------EXPRESS ------------------------------------------------------------------------------
+Explanation:: Doctors have a skill
+They have acquired that skill over years
+They provide service to other people who want to use their skill
+
+To expose this skill, they open a clinic.People who want to use their skill line up in a waiting room. One by one the doctor meets them.The doc is single threaded.
+
+const express = require("express")
+function calculateSum(n) {
+ let ans = 0;
+ for (let i = 1; i&lt;=n; i++) { 
+    ans = ans + i;
+ }
+ return ans;
+}
+const app = express();
+app.get('/', function(req, res) { 
+    const n = req.query.n;    //localhost:3000/?n=100
+    const ans = calculateSum(n)
+
+res.send(ans);
+})
+
+app.listen(3000);
+
