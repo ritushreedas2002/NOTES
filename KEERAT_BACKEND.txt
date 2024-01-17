@@ -252,3 +252,11 @@ res.json({
 })
 
 When u restart the process the post data gets lost thats why we need database.
+
+
+--------------------------------------------MIDDLEWARES---------------------------------------------------------------------------------------------------------
+MiddleWares are used to do pre-checks
+They are of two types:
+1.Authentication
+2.Input Validation
+
