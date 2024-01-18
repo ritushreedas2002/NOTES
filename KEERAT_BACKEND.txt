@@ -376,3 +376,4 @@ A place in browser where u can store some data USually things that are storedinc
     1.Authentication tokens
     2.User Language Preference
     3.User theme preferences
+When the jwt is got it is stored in the local storage until user logs out.
