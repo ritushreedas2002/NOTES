@@ -368,4 +368,11 @@ JSON Web Tokens (JWT) are a compact, URL-safe means of representing claims to be
 Eg ::inspect ur gpt and go to the authorisation token , paste it in jwt.io can u will get back the json
 
 jwt.verify is only possible through the hashed password+ the jwt token from this orginal object is got and then we can identify the user and other details.
-It is similar to encryption and decreption.
+It is similar to encryption and decreption.It is sort of digital signature.
+
+4.LOCAL STORAGE
+-----------------
+A place in browser where u can store some data USually things that are storedincludes--
+    1.Authentication tokens
+    2.User Language Preference
+    3.User theme preferences
