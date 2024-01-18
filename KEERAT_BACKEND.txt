@@ -341,9 +341,31 @@ app.post('/',function(req,res){
   }
   return;
 })
+FETCH API
+------------
+aync function abc{
+    const res=await fetch("https://jhsjbsjsx")
+    const data=await res.json();
+    cosnole.log(data);
+}
 
 AUTHENTICATION
 ----------------------
 1.Give the user back a token on signup/sigin
 2.Ask the server to send back the token in all future request
 3.When  the user logs out ask the user to forget the token 
+
+1.HASHING
+When u enter a password it converts it into some gibberish like apple->123ui then then store the username and the hashed password in the database.When the user tries to sign in it converts user's password again to the gibberish and match in the database whether present or not.It is 1 way communication
+
+2.ENCRYPTION
+---------------
+encryption refers to the process of converting plaintext or data into a secure format, making it unreadable without the appropriate decryption key. Encryption is commonly used to secure sensitive information such as passwords, personal data, and other confidential data during transmission or storage.It is  a 2 way communication.
+
+3.JSON WEB TOKEN
+------------------
+JSON Web Tokens (JWT) are a compact, URL-safe means of representing claims to be transferred between two parties. They are commonly used for authentication and authorization purposes. In a Node.js application, you can use the jsonwebtoken library to generate and verify JWTs. IT is basically a long piece of gibberish string.
+Eg ::inspect ur gpt and go to the authorisation token , paste it in jwt.io can u will get back the json
+
+jwt.verify is only possible through the hashed password+ the jwt token from this orginal object is got and then we can identify the user and other details.
+It is similar to encryption and decreption.
