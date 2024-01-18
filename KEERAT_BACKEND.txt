@@ -304,3 +304,46 @@ app.get('/',userMiddleware,inputMiddleware,function(req,res){
   //do something
   res.send("Your heart is fine");
 })
+
+FOR INPUT VALIDATION---WE USE ZOD
+
+----first we need to assign the schema
+//{
+  email:"jnsj@gmail.com"
+  password:alteat 8 letters
+  country:"US "or "IN"
+  kidneys:[1,2,3]
+}
+
+const schema=zod.object({
+  email:zod.string(),
+  password:zod.string(),
+  country:zod.literal("IN")or(zod.literal("US")),
+  kidneys:zod.array(zod.number())
+})
+
+
+--------validate input function-------
+const zod=require("zod");
+function validateInput(obj){
+  cosnt schema=zod.object({
+      email:zod.string().email(),
+      password:zod.string().min(8)
+  })
+const response=schema.safeParse(obj);
+console.log(response);
+}
+app.post('/',function(req,res){
+  const body=req.body;
+  const response=validateInput(body);
+  if(!response.success){
+    res.json({msg:"ur inputs are invalid"})
+  }
+  return;
+})
+
+AUTHENTICATION
+----------------------
+1.Give the user back a token on signup/sigin
+2.Ask the server to send back the token in all future request
+3.When  the user logs out ask the user to forget the token 
