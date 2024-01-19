@@ -377,3 +377,106 @@ A place in browser where u can store some data USually things that are storedinc
     2.User Language Preference
     3.User theme preferences
 When the jwt is got it is stored in the local storage until user logs out.
+
+Assignment:
+--------------
+POST/sigin
+Body:-{
+  username:string
+  password:string
+}
+Returns a json web token with username encrypted
+
+GET/users
+Headers-
+Authorization
+Returns an aray of all the user is signed in,and Returns 403 status code if not
+
+
+CODE:
+-------
+// Authentication
+const express = require("express");
+const app = express();
+const jwt = require("jsonwebtoken");
+
+const jwtPassword = "123456"; // Corrected the variable name
+app.use(express.json());
+const ALL_USERS = [
+    {
+        username: "harkirat@gmail.com",
+        password: "123",
+        name: "Harkirat Singh"
+    },
+    {
+        username: "raman@gmail.com",
+        password: "123321",
+        name: "Raman Singh"
+    },
+    {
+        username: "priya@gmail.com",
+        password: "123321",
+        name: "Priya Kumari"
+    }
+];
+
+function userExists(username, password) {
+    return ALL_USERS.some(user => user.username === username && user.password === password);
+}
+
+app.use(express.json());
+
+app.post('/signin', function (req, res) {
+    const username= req.body.username;
+    const password=req.body.password;
+
+    if (!userExists(username, password)) {
+        return res.status(403).json({
+            msg: "User doesn't exist or invalid credentials"
+        });
+    }
+
+    
+    try {
+        const token = jwt.sign({ username: username }, jwtPassword);
+        return res.json({
+            token
+        });
+    } catch (error) {
+        console.error("Error signing JWT:", error);
+        return res.status(500).json({
+            msg: "Internal server error"
+        });
+    }
+});
+
+
+app.get("/users", function (req, res) {
+    const token = req.headers.authorization; // Corrected the header name
+    try {
+        const decoded = jwt.verify(token, jwtPassword); // Corrected the variable name
+        const username = decoded.username;
+
+        return res.json({
+            //ALL_USERS
+            users:ALL_USERS.filter((user)=>user.username!=username)
+        });
+    } catch (err) {
+        return res.status(403).json({
+            msg: "Invalid token"
+        });
+    }
+});
+
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
+
+EXPLANATION:
+The .some() method is used to test whether at least one element in the array passes the test implemented by the provided function.
+
+jwtPassword:: is required for encryption and decreption without that it is not possible.
+Working:
+---------
+In postman in Body "/sigin"-POST req, provide the correct mail and password a token is generated.
+now copy the token and in GET req of "/users" in header paste the key Authorization and in value the token ..the result will show all the users.
