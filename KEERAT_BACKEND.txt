@@ -476,6 +476,11 @@ EXPLANATION:
 The .some() method is used to test whether at least one element in the array passes the test implemented by the provided function.
 
 jwtPassword:: is required for encryption and decreption without that it is not possible.
+Working of JWTPassword::
+{name:harkirat}
+can be decoded by me through my secret in my machine and can also decode by the Facebook by their secret key.When i provide my secret key to the facebook tehy verify that it is not their password so they reject.But when i sign it through their password then only i can allow facebook to decode for me.
+
+
 Working:
 ---------
 In postman in Body "/sigin"-POST req, provide the correct mail and password a token is generated.
@@ -508,5 +513,12 @@ step 2.Now in compass paste the url with the password and connect.
 
 Mongoose Library is used for 
 --------------------------------
-
 Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a higher-level, schema-based abstraction over the MongoDB JavaScript driver, making it easier to interact with MongoDB databases in a Node.js environment. 
+
+IN LOCAL STORAGE:
+------------------
+getItem()
+const storedValue = localStorage.getItem('yourKey');
+setItem()
+localStorage.setItem('yourKey', 'yourValue');
+console.log('Item has been set in local storage');
