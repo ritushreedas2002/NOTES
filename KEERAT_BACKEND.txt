@@ -489,7 +489,7 @@ IN MEMORY DATA handling-Data can;t be dynamic,if u update in memory objects the 
 In real world how databases are connected.
 User hits the backend .Backend hits the database.User cannot directly access the database
                              |=========================|
-BROWSER--------------------->|  Backend----->Datbase   |
+BROWSER--------------------->|  Backend----->Database   |
                              | ========================|
 
 Databases Types::
@@ -501,7 +501,7 @@ Databases Types::
 NOSQL DB--MongoDB
 In each DB,lets u create tables(Collections).In each table it lets u dump JSON data.It is schemaless.It scales well and is a decent choice for most use cases.
 
-Conection og mongodb
+Conection of mongodb
 ------------------------
 Step 1.First downoad the mongodb compass. Then login Mongodb atlas .Create a cluster.Now go to connect->compass and copy the url.For password to the database access and and edit the password.
 step 2.Now in compass paste the url with the password and connect.
