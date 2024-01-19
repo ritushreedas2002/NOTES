@@ -522,3 +522,17 @@ const storedValue = localStorage.getItem('yourKey');
 setItem()
 localStorage.setItem('yourKey', 'yourValue');
 console.log('Item has been set in local storage');
+
+MIDDLEWARES:::
+
+function isOldEnough(req,res,next){
+  if(){
+      next();
+  }
+  res.json({---})
+}
+app.use(isOldEnough);
+app.get('/ride1',function(){})
+app.get('/ride1',function(){})
+Explanation::When ever i am writing app.use() before /ride1 and /ride2 both will automatically call the function.
+But suppose if i write the app.use() above the /ride2 then /ride1 will not be able to get call the function. 
