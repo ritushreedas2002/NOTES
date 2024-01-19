@@ -484,12 +484,12 @@ now copy the token and in GET req of "/users" in header paste the key Authorizat
 
 DATABASES
 -----------
-IN MEMORY DATA handling-Data can;t be dynamic,if u update in memory objects the updates are lost if the process restarts.
+IN MEMORY DATA handling-Data cant be dynamic,if u update in memory objects the updates are lost if the process restarts.
 
 In real world how databases are connected.
 User hits the backend .Backend hits the database.User cannot directly access the database
                              |=========================|
-BROWSER--------------------->|  Backend----->Database   |
+BROWSER--------------------->|  Backend----->Database  |
                              | ========================|
 
 Databases Types::
@@ -505,3 +505,8 @@ Conection of mongodb
 ------------------------
 Step 1.First downoad the mongodb compass. Then login Mongodb atlas .Create a cluster.Now go to connect->compass and copy the url.For password to the database access and and edit the password.
 step 2.Now in compass paste the url with the password and connect.
+
+Mongoose Library is used for 
+--------------------------------
+
+Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a higher-level, schema-based abstraction over the MongoDB JavaScript driver, making it easier to interact with MongoDB databases in a Node.js environment. 
