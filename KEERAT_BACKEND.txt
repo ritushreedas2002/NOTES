@@ -554,3 +554,24 @@ app.get('/',function(req,res){
 });
 
 Assignment::If someone wants to bombard ur server,Ur server can crash so put a rate limit that each user can have 5 requests per sec.
+
+let noofreq={};
+setInterval(()=>{
+  noofreq={};
+},1000)
+
+app.use(function(req,res,next){
+    const userId=req.headers["user-id"];
+    if(noofreq[userId]){
+        noofreq+=1;
+        if(noofreq>5){
+            res.json({msg:"No entry"});
+        }else{
+            next();
+        }
+    }else{
+       noofreq[iuserId]=1 ;
+        next();
+    }
+})
+>>npx jest filename  to test the application at production level
