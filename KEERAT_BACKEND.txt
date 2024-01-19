@@ -480,3 +480,28 @@ Working:
 ---------
 In postman in Body "/sigin"-POST req, provide the correct mail and password a token is generated.
 now copy the token and in GET req of "/users" in header paste the key Authorization and in value the token ..the result will show all the users.
+
+
+DATABASES
+-----------
+IN MEMORY DATA handling-Data can;t be dynamic,if u update in memory objects the updates are lost if the process restarts.
+
+In real world how databases are connected.
+User hits the backend .Backend hits the database.User cannot directly access the database
+                             |=========================|
+BROWSER--------------------->|  Backend----->Datbase   |
+                             | ========================|
+
+Databases Types::
+1.Graph DBs
+2.Vector DBs
+3.SQL DBs
+4.NoSql DBs
+
+NOSQL DB--MongoDB
+In each DB,lets u create tables(Collections).In each table it lets u dump JSON data.It is schemaless.It scales well and is a decent choice for most use cases.
+
+Conection og mongodb
+------------------------
+Step 1.First downoad the mongodb compass. Then login Mongodb atlas .Create a cluster.Now go to connect->compass and copy the url.For password to the database access and and edit the password.
+step 2.Now in compass paste the url with the password and connect.
