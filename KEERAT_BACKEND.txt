@@ -533,6 +533,24 @@ function isOldEnough(req,res,next){
 }
 app.use(isOldEnough);
 app.get('/ride1',function(){})
-app.get('/ride1',function(){})
+app.get('/ride2',function(){})
 Explanation::When ever i am writing app.use() before /ride1 and /ride2 both will automatically call the function.
 But suppose if i write the app.use() above the /ride2 then /ride1 will not be able to get call the function. 
+
+Assignment:You need to create a middleware for logging the number of requests on a server.
+CODE:::
+
+const express=require('express');
+const app=express();
+let requestCount=0;
+
+app.use(function(req,res,next){
+  requestCount=requestCount+1;
+  next();
+})
+
+app.get('/',function(req,res){
+  res.status(200).json({name:'john'});
+});
+
+Assignment::If someone wants to bombard ur server,Ur server can crash so put a rate limit that each user can have 5 requests per sec.
