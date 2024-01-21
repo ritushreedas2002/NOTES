@@ -622,3 +622,13 @@ function signjwt(username,password){
     const signature=jwt.sign({username},jwtPassword);
     return signature;
 }
+DECODING
+const decode=jwt.decode(token);
+if(decode)return true;
+else return false;
+
+VERIFY
+------
+const verified=jwt.verify(token,jwtpassword);
+if(verified)return true;
+else return false;
