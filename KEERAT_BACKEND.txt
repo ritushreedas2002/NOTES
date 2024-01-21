@@ -632,3 +632,17 @@ VERIFY
 const verified=jwt.verify(token,jwtpassword);
 if(verified)return true;
 else return false;
+
+
+DEBOUNCING
+---------------
+Debouncing requests is a technique used to control the rate at which a function (such as an API request) is invoked. It prevents the function from being called too frequently, ensuring that it is only executed after a certain delay once the user has stopped triggering the event.
+eg:after each 1s sec the fetch should be called and withing that if the function is again called it clears the timer and set the new timer
+function handleChange{
+  const timeout=setTimeout(function(){
+      fetchdata()
+  },1000);
+  clearTimeOut(timeout)
+
+}
+<input onChange={handleChange}/>
