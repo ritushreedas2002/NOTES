@@ -575,3 +575,50 @@ app.use(function(req,res,next){
     }
 })
 >>npx jest filename  to test the application at production level
+
+MORE EXPLANATION ON AUTHENTICATION
+-----------------------------------------
+                            EMAIL,PASSWORD
+gpt login page------------------------------------------------------------->|
+ USER             <---------------------------------------------------------|  GPT BAKEND
+                                    JWT 
+
+                                Body-what is 2+2 and Header-jwt
+gpt ------------------------------------------------------------------------> 1.verify jwt
+                                                                              2.Runs model
+                                 2+2=4                                        3.returns value
+     <------------------------------------------------------------------------
+
+
+DIFFERENCE BETWEEN DECODING AND VERIFYING
+----------------------------------------------
+-------->|      |---->json   (decode)
+string(jwt)
+
+-------->|  BE SERVER (jwt +their machine cheque)   |---->verify
+string(jwt)
+
+const jwtpassword="1123";
+const value={
+    -----
+};
+const token=jwt.sign(value,jwtpassword);
+console.log(token);
+
+//Now this token can be decoded in jwt.io and we can get the value but for verification we need the jwtPassword which other people does not know.
+
+Assignment::
+Write a function that takes in a username and returns a JWT token with the username encoded.Should return null if the username or password not valid
+
+const emailSchema=zod.string().email();
+const passwordSchema=zod.string().min(6);
+function signjwt(username,password){
+    const userRes=emailSchema.safeParse(username);
+    const passRes=passwordSchema.safeParse(password);
+
+    if(!userRes.success ||!passRes.success){
+        return null;
+    }
+    const signature=jwt.sign({username},jwtPassword);
+    return signature;
+}
