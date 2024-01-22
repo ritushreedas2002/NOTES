@@ -646,3 +646,40 @@ function handleChange{
 
 }
 <input onChange={handleChange}/>
+
+
+WHat is a DATABSE
+-------------------
+why don't we let the user hit the database directly?
+What extra does the http server provide exactly?
+1.Databases were are  created using protocols that browsers don't understand.
+2.Databases don't have granual access as a first class citizen.Very hard to do user specific access in them.
+3.There are some databases (firebase) that let you get rid of the http server and try their best to provide granola access.
+
+So we keep http server between the database and the user so that user will not be able to access ithers infornation
+           (auth check)
+User------->Express------------->Database
+
+Prisma is the ORM (lib to talk to the database (industry standard))
+In mongoose,first u have to define the schema.
+Mongoose makes u define schema for things like autocompletions/validating data before it goes in the DB to make sure u are doing things right.Schemaless Dbs can be dangerous,using Schemas in mongo makes it slighly less Dangerous.
+
+DEFINE SCHEMA
+----------------
+A table or collection has user details and in that puchasesCourses is an array containing couses id from another course table.
+
+const UserSchema=new mongose.Schema({
+    email:String,
+    password:String,
+    purchaseCourses:({
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Course'
+    })
+});
+const CourseSchema=new mongoose.Schema({
+    title:String,
+    price:5999
+})
+
+const User=mongoose.model('User',UserSchema);
+const Course=mongoose.model('Course',CourseSchema);
