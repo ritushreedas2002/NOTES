@@ -775,7 +775,8 @@ POST /admin/courses
 Description: Creates a new course.
 Input: Headers: { 'username':'username', 'password':'password' }, Body: { title:'course title', description:'course description', price: 100,
 imageLink:'https://linktoimage.com' }
-Output: { message: 'Course created successfully', courseId: &quot;new course id&quot; } GET /admin/courses
+Output: { message: 'Course created successfully', courseId: 'new courseid' } 
+GET /admin/courses
 Description: Returns all the courses.
 Input: Headers: {'username': 'username', 'password': 'password' }
 Output: { courses: [ { id: 1, title: 'course title', description:'course description', price: 100, imageLink:'https://linktoimage.com', published: true }, ... ] }
