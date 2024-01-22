@@ -718,3 +718,33 @@ Database:
 A database is a structured collection of data that is organized and stored for easy retrieval, management, and manipulation. 
 Table:
 In the context of a relational database, a table is a data structure that organizes data into rows and columns. Each row in a table represents a record, and each column represents an attribute or field. 
+
+
+CRUD OPERATION
+-----------------
+Create:
+User.create({
+    username:req.body.username,
+    password:req.body.password
+})
+
+Find:
+User.findById("1");
+User.findOne({
+  username:"harkirat@gmail.com"
+})
+
+Update:
+User.updateOne({
+  {"id":"1"},
+  {$push:{purchaseCourses:courseId}}
+})
+
+User.update({},{ 
+  premium:true
+})
+Delete:
+User.deleteMany({})
+User.deleteOne({},{
+  username:"harkirat@gmail.com"
+})
