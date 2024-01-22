@@ -779,3 +779,9 @@ Output: { message: 'Course created successfully', courseId: &quot;new course id&
 Description: Returns all the courses.
 Input: Headers: {'username': 'username', 'password': 'password' }
 Output: { courses: [ { id: 1, title: 'course title', description:'course description', price: 100, imageLink:'https://linktoimage.com', published: true }, ... ] }
+
+﻿## Routes
+### User Routes:
+-POST/users/signup
+-GET/users/courses
+-POST/users/courses/:courseId:purchase a couse
