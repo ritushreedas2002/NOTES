@@ -671,10 +671,10 @@ A table or collection has user details and in that puchasesCourses is an array c
 const UserSchema=new mongose.Schema({
     email:String,
     password:String,
-    purchaseCourses:({
+    purchaseCourses:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Course'
-    })
+    }]
 });
 const CourseSchema=new mongoose.Schema({
     title:String,
@@ -683,3 +683,38 @@ const CourseSchema=new mongoose.Schema({
 
 const User=mongoose.model('User',UserSchema);
 const Course=mongoose.model('Course',CourseSchema);
+
+Create
+-----------
+User.create ({
+    username:
+})
+
++----------------------------------+
+|             Cluster              |
+|  +---------------------------+   |
+|  |       Node 1              |   |
+|  |  +---------------------+  |   |
+|  |  |       Database      |  |   |
+|  |  |  +--------------+   |  |   |
+|  |  |  |    Table     |   |  |   |
+|  |  |  +--------------+   |  |   |
+|  |  +---------------------+  |   |
+|  +---------------------------+   |
+|                                  |
+|  +---------------------------+   |
+|  |       Node 2              |   |
+|  |  +---------------------+  |   |
+|  |  |       Database      |  |   |
+|  |  |  +--------------+   |  |   |
+|  |  |  |    Table     |   |  |   |
+|  |  |  +--------------+   |  |   |
+|  |  +---------------------+  |   |
+|  +---------------------------+   |
++----------------------------------+
+Cluster:
+In the context of computing, a cluster refers to a group of interconnected computers or servers that work together to perform a specific task or provide a service.
+Database:
+A database is a structured collection of data that is organized and stored for easy retrieval, management, and manipulation. 
+Table:
+In the context of a relational database, a table is a data structure that organizes data into rows and columns. Each row in a table represents a record, and each column represents an attribute or field. 
