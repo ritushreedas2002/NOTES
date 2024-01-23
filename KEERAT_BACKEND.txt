@@ -270,6 +270,11 @@ middleware: using the body parameter in post we need to write
 app.use(express.json()) itself returns a function
 in body only we do--as we donot know what will be the body it can be HTML,Json,Text... so we give responsibility that middleware u handle it.
 
+MIDDLEWARES:: 3 things we can do
+1.end the request
+2.Forward the request
+3.pass data to the next function
+
 ---ERROR HANDLING MIDDLEWARES---
 Global Catch middleware exception and takes 4 arguments 
 (Note write this at last to be executed)
@@ -786,3 +791,8 @@ Output: { courses: [ { id: 1, title: 'course title', description:'course descrip
 -POST/users/signup
 -GET/users/courses
 -POST/users/courses/:courseId:purchase a couse
+
+
+ASSIGNMENT2:
+Same as assignment 1 but extra signin/return a jwt token.. and then we we purchase course through verification of the token from the authorization header
+or we can add courses(if admin)
