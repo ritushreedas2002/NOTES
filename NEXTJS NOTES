@@ -1,1 +1,24 @@
+NExtJs with Shandcn
+----------------------
 
+npx create-next-app@latest . which indicates the folder name to be the current project name
+Eslint-->suggestive errors we get
+suggestion add src directory-(yes) also APP router(yes)
+Uses @ instead of ../../ (@ indicates root directory)
+
+src-->app->page.tsx acts like app.js
+
+/chai
+app->chai->page.tsx
+
+REMEMBER-->api folder name to not give as it for backend
+
+npx shadcn-ui@0.7.0
+use typescript-->base color(slate)-->src/app/global.css--->tailwind.config.ts
+
+now go to documantation and to add button paste npx ...... add button (it adds the button.tsx to the componenets->ui)
+
+how to use
+------------
+import Button from /components/ui/button
+<Button>Shadcn button</Button>
