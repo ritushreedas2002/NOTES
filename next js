@@ -5,3 +5,75 @@ src--->App directory--------------->backend(named API directory)
 
 (outside) of app directory we can have our models and helpers
 app directory--->Layout.tsx..it is mostly like a wrapper where is used to render common components like navbar etc
+
+Routing
+-----------
+
+(/Login)
+---app
+    ---Login
+        ----Page.tsx
+
+
+in backend
+-------------
+
+-----api
+    ----Users
+        ------Login(/api/users/Login)
+            ----route.ts
+        -------Signup(/api/users/signup)
+            ----route.ts
+
+Connection(create a folder inside src(no naming convention))
+----Dbconfig
+      ----dbconfig.ts
+
+
+---------server component and client Component--------------
+Disadvantage of react js application
+(Waterfalling issue---on first render a white page comes then on second render the static data present in ur components renders and then the dynamic data comes)
+To overcome this issue if we directly render the component from the server side then only in one render the screen appears. The point to be noted that: in server componet only server side rendering is done like fetch call and so on.
+
+In client side component, the frontend part or the client side rendering i sperformed like using useState, useEffect and so on.
+how to make a component client side
+"use client"
+
+
+-------------App Router and axios-------------
+for sigup page
+-----------------
+import {useRouter} from "next/navigation";
+import {axios} from "axios";
+
+
+const Signup=()=>{
+  const [user,setuser]=React.useState({
+      email:"",
+      username:""
+  })
+return(
+  <div>
+    <input 
+      id="username" type="text" value={user.username} onChange={(e)=>setuser({...user,username:e.target.value})}/>\
+    <Link href="/login">Pls login</Link>
+  </div>
+)
+}
+
+-------------dynamic routing--------------
+/profile/:id
+>profile
+  >[id]
+     >page.tsx
+
+
+        const profile=({params}:any)=>{  //any type of data type
+            return (
+              <div>{params.id}</div>
+            )
+        }
+
+
+----------------
+
