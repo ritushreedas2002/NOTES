@@ -75,5 +75,15 @@ return(
         }
 
 
+--------------------------------
+backend logic of signin and sigup
+-------------------------------------
+
+user(frontend) [calls]-->api with its info-->a token is generated with the expiry date ---->send the token to ----> database
+                                                                                              |
+                                                                                              ------------>user
+
+Verification
 ----------------
+Again the user sends the token to the api(as a url or the body)-->it finds the token from the db and takes all the related user information and show it to the user.
 
