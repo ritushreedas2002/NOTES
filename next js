@@ -159,3 +159,18 @@ In signUP--page.ts (for navigation)
   router.push("/login");
   
 
+In --api--users--Login--route.ts
+-------------------------
+
+First it takes the login details and checks whether the user is present or not.If present then a token data is created with user details
+      const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, {expiresIn: "1d"})
+
+        const response = NextResponse.json({
+            message: "Login successful",
+            success: true,
+        })
+        response.cookies.set("token", token, {
+            httpOnly: true, 
+            
+        })
+        return response;
