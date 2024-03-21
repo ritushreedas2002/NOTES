@@ -1,0 +1,7 @@
+
+src--->App directory--------------->backend(named API directory)
+             |
+             --------------->frontend
+
+(outside) of app directory we can have our models and helpers
+app directory--->Layout.tsx..it is mostly like a wrapper where is used to render common components like navbar etc
