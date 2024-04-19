@@ -196,3 +196,12 @@ side the token is send via "link" through mail.
 Now when the user verifies or opens the token for verification then our application again gets the token back and then now our application will send a query to the database
 that whether a similar token is present in our database or not and is the token verified before the tokenExpiry time.If "YES" then user is verified, then password feild is updated
 with the password entered by the user.
+
+initially in react what we did--
+const user=mongoose.model("User",UserSchema);
+module.exports={user};
+
+BUT NEXTJS is a edge time application so it will not know that whether it is  first time so model needs to be created or not.So what we do is if model is already present
+the provide their reference or create a new model
+const User=mongoose.models.user||mongoose.model("User",UserSchema);
+export default User;
