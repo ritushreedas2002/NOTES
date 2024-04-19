@@ -175,3 +175,24 @@ First it takes the login details and checks whether the user is present or not.I
         })
         return response;
 =============================================
+
+
+
+
+----------------FORGOT PASSWORD LOGIC------------------------------
+
+In backend inside the user schema these are the properties set:
+forgotPasswordToken:String,
+forgotPasswordTokenExpiry:Date,
+verifyToken:String,
+verifyTokenExpiry:Date,
+
+LOGIC::
+                        (sends the copy)
+Database<------------------Our app----------------->User
+
+SO basically when a user clicks on Forget Password our application generates a verifyToken and verifyTokenExpiry and sends the copy to the database and the user.In the user
+side the token is send via "link" through mail.
+Now when the user verifies or opens the token for verification then our application again gets the token back and then now our application will send a query to the database
+that whether a similar token is present in our database or not and is the token verified before the tokenExpiry time.If "YES" then user is verified, then password feild is updated
+with the password entered by the user.
