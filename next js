@@ -205,3 +205,9 @@ BUT NEXTJS is a edge time application so it will not know that whether it is  fi
 the provide their reference or create a new model
 const User=mongoose.models.user||mongoose.model("User",UserSchema);
 export default User;
+
+****NOTE****
+ Bcrypt is a hashing algorithm to create hashes for passwords to store them in case of a data breach. This advanced hashing algorithm uses salts, making 
+it hard to crack by attacks such as brute-forcing.
+
+
