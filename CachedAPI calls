@@ -91,3 +91,38 @@ setTimeout(() => {
   "completed": false
 }
 */
+
+
+
+
+IN REACT USING REACT QUERY
+----------------------------
+import {QueryClient,queryclientProvider} from "react-query";
+const app=()=>{
+ let queryClient=new QueryClient();
+return (
+<QueryClientProvider client={queryClient}>
+---
+----
+</QueryClientProvider>
+)
+}
+
+
+in cache.js
+=============
+const{useQuery} from "react-query"
+
+const cache=()=>{
+ const {data,isloading}=useQuery("data",()=>{
+    return fetch("---").then(
+      (response)=>response.json()
+
+ )})
+return (
+{data?.map=(d,key)=>{
+   return (
+
+
+)}}
+)}
