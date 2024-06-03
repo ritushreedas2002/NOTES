@@ -211,3 +211,7 @@ export default User;
 it hard to crack by attacks such as brute-forcing.
 
 
+Difference between e.preventDefault() and e.stoppropagation()
+-------------------------------------------------------------------
+stopropagation ()-actuals stops from propagating or moving to teh next element.
+preventDefault()-stops the default behaviour of an event in whatever element it has been used(eg-stops from ticking on the checkbox);
