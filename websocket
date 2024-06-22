@@ -10,4 +10,25 @@ WEBSOCKET
 client-----------------(handshake request)-------------->Server
 <----------------------------(Sucess)------------Server   as the connection is established the connection is ON forever untill you close the connection. So the client can post the data, delete data and server can get the data.
 
-HTTP Long Polling- The connection wil fallback to HTTP long-polling in case the socket connection cannot be established
+HTTP Long Polling- The connection wil fallback to HTTP long-polling in case the socket connection cannot be established.
+
+socket.io is a library that enables real-time, bidirectional, and event-based communication between web clients and servers.
+
+IN SERVER SIDE
+--------------------
+npm install socket.io
+server>server.js
+
+const { createServer } = require("http");
+const {Server} =require('socket.io'); //Server is a class provided by the socket.io module, which is used to create a new Socket.IO server instance
+
+const httpServer = createServer(); 
+const socket = new Server(httpServer, {  //new Server(httpServer, {}) creates a new instance of a Socket.IO server.The first argument httpServer attaches the Socket.IO server to the HTTP server, enabling the Socket.IO server to use the same server to handle WebSocket connections.
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+httpServer.listen(3000, () => {
+  console.log("Server is running!");
+});
