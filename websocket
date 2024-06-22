@@ -1,0 +1,1 @@
+Websocket provide the web browser to communicate with the web server and the client continously without the need to close the connection after each exchange. This makes a real-time communication.
