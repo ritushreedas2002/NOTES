@@ -4,3 +4,10 @@ HTTP -a web development communication protocol.It is a stateless protocol that d
 HTTP---->REST APIS(Representational State Transfer)---->POST,GET,PUT,DELETE
 CLIENT-------------------(POST)--------->SERVER
 <----------------------(SUCESS with code 200)----SERVER   and then the connection is closed.
+
+
+WEBSOCKET
+client-----------------(handshake request)-------------->Server
+<----------------------------(Sucess)------------Server   as the connection is established the connection is ON forever untill you close the connection. So the client can post the data, delete data and server can get the data.
+
+HTTP Long Polling- The connection wil fallback to HTTP long-polling in case the socket connection cannot be established
