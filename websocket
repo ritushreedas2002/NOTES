@@ -31,7 +31,31 @@ const socket = new Server(httpServer, {  //new Server(httpServer, {}) creates a 
 
 socket.on("connection",(socket)=>{ //evernt name with a callback function
      socket.emit("message","HELLO"); //send a hello message of event name "Message" to the client
+
+    socket.on("client",(data)=>{  //to accept the client event message
+        console.log(data);//"From client" message comes from the client
+    })
 }) 
+
+
 httpServer.listen(3000, () => {
   console.log("Server is running!");
 });
+
+
+IN CLIENT SIDE
+---------------------
+npm install socket.io-client
+client>index.js
+
+const socket=io("http://localhost:3000"); //to establish connection with the server
+
+socket.on('connect',(resonse)=>{
+console.log(response);
+});
+
+socket.on("message",(data)=>{ //accept the message event from the server
+  console.log(data); //"HELLO" FROM THE SERVER
+
+  socket.emit("client","From client");//send the message to the server in client event message
+})
