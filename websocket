@@ -1,1 +1,6 @@
 Websocket provide the web browser to communicate with the web server and the client continously without the need to close the connection after each exchange. This makes a real-time communication.
+
+HTTP -a web development communication protocol.It is a stateless protocol that does not save the state of the client.
+HTTP---->REST APIS(Representational State Transfer)---->POST,GET,PUT,DELETE
+CLIENT-------------------(POST)--------->SERVER
+<----------------------(SUCESS with code 200)----SERVER   and then the connection is closed.
