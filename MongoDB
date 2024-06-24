@@ -17,3 +17,80 @@ Optional Validation Schema
 In MongoDB, you can enforce optional validation schemas using the built-in schema validation feature. This allows you to define rules for the structure of documents in a collection. Validation can be applied to new documents and updates, ensuring data consistency and integrity.
 Setting Up a Validation Schema
 To set up a validation schema, you use the '$jsonSchema' operator within the validator option when creating a collection or modifying an existing one.
+
+CRUD OPERATION
+------------------
+
+In MongoDB, documents can be inserted into a collection using the insertOne() and insertMany() methods. If the specified collection does not already exist, MongoDB will automatically create it before inserting the documents.
+
+insertOne()
+The insertOne() method is used to insert a single document into a collection. Here’s the syntax:
+db.<Collection>.insertOne(<document>)
+eg:: 
+db.users.insertOne({
+  name: "John Doe",
+  email: "john.doe@example.com",
+  age: 30,
+  address: {
+    street: "123 Main St",
+    city: "Anytown",
+    state: "CA",
+    postalCode: "12345"
+  }
+})
+
+insertMany()
+The insertMany() method is used to insert multiple documents into a collection in a single operation. Here’s the syntax:
+db.<Collection>.insertMany(<document>,<document>)
+
+FIND Query Operator
+db.<collection>.find({field:value})
+
+eg:
+db.users.find({state:barbar})
+
+$in: operator allows us to select all the documents that have a field value to any of the values specified in the array.
+db.collection.find({field:{$in:[<value>,<value>,....]}})
+
+Comparison Operator
+---------------------
+$gt,$gte,$lt,$lte
+{field:{$operator:<value>}}
+
+Query Elements in array
+---------------------------
+The $elemMatch operator in MongoDB is used to match documents that contain an array field with at least one element that matches all the specified query criteria.
+
+{ <arrayField>: { $elemMatch: { <criteria1>, <criteria2>, ... } } }
+db.students.find({
+  grades: {
+    $elemMatch: {
+      subject: "Math",
+      score: { $gt: 80 }
+    }
+  }
+})
+
+
+`$and` Operator
+The $and operator is used to join query clauses with a logical AND. It returns documents that match all the specified conditions.
+{ $and: [ { <condition1> }, { <condition2> }, ... ] }
+db.products.find({
+  $and: [
+    { inStock: true },
+    { price: { $lt: 20 } }
+  ]
+})
+
+
+`$or` Operator
+The $or operator is used to join query clauses with a logical OR. It returns documents that match at least one of the specified conditions.
+{ $or: [ { <condition1> }, { <condition2> }, ... ] }
+db.products.find({
+  $or: [
+    { inStock: true },
+    { price: { $lt: 20 } }
+  ]
+})
+
+
