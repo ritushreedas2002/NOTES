@@ -93,4 +93,71 @@ db.products.find({
   ]
 })
 
+REPLACE AND DELETE DOCUMENTS
+--------------------------------
+The replaceOne() method in MongoDB is used to replace a single document within a collection that matches a specified filter. Unlike updateOne(), which can update specific fields of a document, replaceOne() replaces the entire document with a new one.
+db.collection.replaceOne(
+   <filter>,
+   <replacement>,
+   <options>
+)
+<filter>: A query that matches the document to replace.
+<replacement>: The new document that will replace the existing matched document.
+<options>: Optional parameters (e.g., upsert).
 
+eg::
+db.users.replaceOne(
+  { username: "johndoe" },  // Filter
+  {                        // Replacement Document
+    "username": "johndoe",
+    "email": "john.doe@example.com",
+    "age": 31,
+    "address": {
+      "street": "456 Elm St",
+      "city": "Othertown",
+      "state": "NY",
+      "postalCode": "54321"
+    }
+  }
+)
+
+The UpdateOne() is used to update the field of a particular document with new value or set the old value with the modified value.
+db.<collection>.updateOne(<filter>,<update>,<optional>)
+
+$set-is used to modify an existing field or insert a new field in the document
+$push -insert an element in the array
+upsert-if the filter does not match with the existing document it just insert a new document and if the filter condition matches it updates the existing document.
+
+db.collection.update(
+  { _id: 1 },
+  {
+    $set: { name: "John Doe" },
+    $push: { scores: 89 }
+  },
+  { upsert: true }
+)
+Searches for a document with _id 1.
+If the document exists, it updates the name field to "John Doe" and appends 89 to the scores array.
+If the document does not exist, it creates a new document with _id 1, sets the name field to "John Doe", and initializes the scores array with 89
+
+
+findandModify() method to update and return the document that matches the query field and we set the new option to true to ensure that the updated document returns.
+
+db.users.findAndModify({
+   query: { _id: 1 },
+   update: { $set: { age: 30 } },
+   new: false
+})
+
+updateMany() method updates multiple documents
+db.collection.updateMany(
+   <filter>,
+   <update>,
+  <options>
+)
+db.users.updateMany(
+   { status: "inactive" },
+   { $set: { status: "active" } }
+)
+
+NOTE ::updateMany() does not rollback in any failure if all the documents are not updated
