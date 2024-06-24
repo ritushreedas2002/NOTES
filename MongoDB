@@ -161,3 +161,19 @@ db.users.updateMany(
 )
 
 NOTE ::updateMany() does not rollback in any failure if all the documents are not updated
+
+deleteOne() and deleteMany()
+deleteOne()
+The deleteOne() method is used to delete a single document that matches a specified filter. If multiple documents match the filter, only the first one encountered will be deleted.
+
+db.collection.deleteOne(
+   <filter>,
+   <options>
+)
+
+deleteMany()
+The deleteMany() method is used to delete multiple documents that match a specified filter.
+db.collection.deleteMany(
+   <filter>,
+   <options>
+)
