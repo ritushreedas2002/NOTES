@@ -1,0 +1,7 @@
+MongoDB is a NoSQL database developed by MongoDB Inc. It is designed for scalability, high performance, and ease of development. Unlike traditional relational databases (SQL), MongoDB stores data in flexible, JSON-like documents, which can vary in structure.
+
+MongoDB over SQL:
+1.Schema Flexibility: Built with horizontal scalability in mind. It supports sharding, which allows the database to be distributed across multiple servers, making it easier to scale out as the application grows.
+2.Data Model: Stores data in BSON (binary JSON) format, allowing for the embedding of related data within a single document. This can lead to more natural and efficient data retrieval.
+3.Performance: Optimized for read and write operations, particularly for large volumes of unstructured data. It can efficiently handle a high volume of concurrent read and write requests.
+
