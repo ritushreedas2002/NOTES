@@ -146,7 +146,7 @@ findandModify() method to update and return the document that matches the query 
 db.users.findAndModify({
    query: { _id: 1 },
    update: { $set: { age: 30 } },
-   new: false
+   new: true
 })
 
 updateMany() method updates multiple documents
