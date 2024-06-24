@@ -128,7 +128,7 @@ $set-is used to modify an existing field or insert a new field in the document
 $push -insert an element in the array
 upsert-if the filter does not match with the existing document it just insert a new document and if the filter condition matches it updates the existing document.
 
-db.collection.update(
+db.collection.updateOne(
   { _id: 1 },
   {
     $set: { name: "John Doe" },
