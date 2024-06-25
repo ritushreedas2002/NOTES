@@ -228,7 +228,7 @@ db.collection.aggregate([
 
 
 db.collection.aggregate([
-  { $group: { _id: "$status", total: { $sum: "$amount" } } }
+  { $group: { _id: "$status", total: { $sum: "$amount" } } }   //_id field (alias) and gruping the values of status field i.e "$status"
 ])
 
 db.collection.aggregate([
