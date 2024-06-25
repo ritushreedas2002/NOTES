@@ -205,3 +205,60 @@ Count Documents
 db.<collection>.countDocuments() count the no of documents in the particular filter
 db.trips.countDocuments({tripDuration:{$gt:120},userType:"Subscriber"})
 >>700
+
+AGGREGATION
+------------
+Aggregation in MongoDB is a powerful feature that allows you to process data and return computed results. Aggregation operations process data records and return computed results. They are useful for tasks like filtering, grouping, and transforming data.
+Here are some key aggregation stages:
+
+$match: Filters the documents to pass only the documents that match the specified condition(s) to the next pipeline stage.
+$group: Groups input documents by the specified identifier expression and applies the accumulator expressions.
+$project: Reshapes each document in the stream, such as by adding new fields or removing existing fields.
+$count: Returns the count of documents in the aggregation pipeline.
+$sort: Sorts all input documents and returns them in the specified order.
+$limit: Limits the number of documents passed to the next stage in the pipeline.
+$skip: Skips the first n documents, and passes the rest to the next stage.
+$unwind: Deconstructs an array field from the input documents to output a document for each element.
+$set: Adds new fields to documents. It is an alias for $addFields.
+
+
+db.collection.aggregate([
+  { $match: { status: "A" } }
+])
+
+
+db.collection.aggregate([
+  { $group: { _id: "$status", total: { $sum: "$amount" } } }
+])
+
+db.collection.aggregate([
+  { $project: { item: 1, total: { $add: ["$price", "$fee"] }, _id: 0 } }
+])
+//1 means include the field and 0 means exclude the field
+
+
+db.collection.aggregate([
+  { $match: { status: "A" } },
+  { $count: "statusCount" }
+])
+
+
+db.collection.aggregate([
+  { $sort: { age: -1 } }
+])
+
+
+db.collection.aggregate([
+  { $limit: 5 }
+])
+
+
+db.collection.aggregate([
+  { $skip: 10 }
+])
+
+
+db.collection.aggregate([
+  { $set: { total: { $sum: ["$price", "$tax"] } } }
+])
+
