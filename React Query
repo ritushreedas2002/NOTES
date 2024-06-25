@@ -62,3 +62,12 @@ const App = () => {
 };
 
 export default App;
+
+
+CACHE QUERY
+-----------
+By default, React Query caches the results of all queries for 5 minutes.
+
+now to give the amount of time i want to cache my api calls
+
+ const { data, error, isLoading, isError } = useQuery('posts', fetchPosts, {cacheTime:5000});
