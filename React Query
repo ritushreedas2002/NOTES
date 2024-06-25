@@ -69,5 +69,14 @@ CACHE QUERY
 By default, React Query caches the results of all queries for 5 minutes.
 
 now to give the amount of time i want to cache my api calls
+const { data, error, isLoading, isError } = useQuery('posts', fetchPosts, {cacheTime:5000});
 
- const { data, error, isLoading, isError } = useQuery('posts', fetchPosts, {cacheTime:5000});
+
+isFetching--if there are any changes made in the api useQuery refetched the api 
+const { data, error, isLoading, isError,isFetching } = useQuery('posts', fetchPosts);
+
+Stale Time-Stale Time (staleTime): The duration (in milliseconds) for which the data is considered fresh. During this period, React Query will not refetch the data from the server even if the component is re-rendered. After the stale time has passed, the data becomes stale, and React Query will refetch the data when it is accessed again.
+This reduces the no of network calls. by default, stale time is 0 secs.
+const { data, error, isLoading, isError } = useQuery('posts', fetchPosts, {staleTime:5000});
+
+
