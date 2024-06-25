@@ -177,3 +177,31 @@ db.collection.deleteMany(
    <filter>,
    <options>
 )
+
+CURSOR
+-----------
+Pointer to the result set of the query.
+db.<collection>.find() returns a cursor and points to the document tha match that query
+
+Cursor methods are sort() and limit()
+
+db.user.find({name:"John"}).sort({name:1})//ascending     db.user.find({name:"John"}).sort({name:-1}) //sort by descending order of the name
+
+Projection
+only name will be displayed
+db.user.find({name:"John"},{name:1, no_of_employees:1}).sort({name:1})
+
+Limit
+to limit the no the documents you want to show
+db.user.find({name:"John"}).sort({name:1}).limit(3) //top 3 documents
+
+PROJECTION
+---------------
+no of fields we can to show in each document
+db.<collection>.find({name:"John"},{name:1,total_name:1,id:0})//1 means include  and 0 means exclude
+
+Count Documents
+-----------------
+db.<collection>.countDocuments() count the no of documents in the particular filter
+db.trips.countDocuments({tripDuration:{$gt:120},userType:"Subscriber"})
+>>700
