@@ -262,3 +262,26 @@ db.collection.aggregate([
   { $set: { total: { $sum: ["$price", "$tax"] } } }
 ])
 
+$out
+The $out stage in MongoDB's aggregation framework writes the resulting documents of the aggregation pipeline to a specified collection. If the specified collection already exists, $out replaces it. This stage is typically used to materialize the results of an aggregation query by writing them to a new collection.
+{ $out: <collection> }
+
+db.sales.aggregate([
+  { $match: { status: "A" } },  // Step 1: Filter documents with status "A"
+  { 
+    $group: {                    // Step 2: Group by item and calculate total sales
+      _id: "$item",
+      totalSalesAmount: { $sum: { $multiply: ["$quantity", "$price"] } }
+    }
+  },
+  { 
+    $project: {                  // Step 3: Project the fields you want
+      _id: 0,
+      item: "$_id",
+      totalSalesAmount: 1
+    }
+  },
+  { $out: "total_sales" }        // Step 4: Output the results to the "total_sales" collection
+])
+
+db.total_sales.find() return results as all the above data according to the filter condition applied are stored in a collection named total_sales
