@@ -79,4 +79,7 @@ Stale Time-Stale Time (staleTime): The duration (in milliseconds) for which the 
 This reduces the no of network calls. by default, stale time is 0 secs.
 const { data, error, isLoading, isError } = useQuery('posts', fetchPosts, {staleTime:5000});
 
-
+POLLING
+---------
+Polling refers to refetching of data at an regular interval
+const { data, error, isLoading, isError,isFetching } = useQuery('posts', fetchPosts,{refetchInterval:5000});
