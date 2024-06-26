@@ -23,9 +23,18 @@ from fastapi import FastAPI
 
 app=FastAPI()
 
+students={
+    1:{"name":"Alice","age":25},
+}
 @app.get("/")
 def index():
     return {"message":"Hello, World"}
+
+@app.get("/get-student/{student_id}")  //dynamic path according to each student details
+def get_student(student_id:int):
+    return students[student_id]
+
+
 
 in terminal
 --------------
@@ -34,4 +43,5 @@ for running uvicorn ques1:app --reload
 >>Will watch for changes in these directories: ['C:\\Users\\User\\Desktop\\python']
 >>INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 
- http://127.0.0.1:8000 url --> http://127.0.0.1:8000/docs
+ http://127.0.0.1:8000 url return "hello world" --> http://127.0.0.1:8000/docs
+ http://127.0.0.1:8000/get_student/1-->gives the first student details
