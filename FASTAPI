@@ -1,0 +1,18 @@
+FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints 
+
+Key Features:
+
+Performance:
+FastAPI is designed to be one of the fastest web frameworks available. It achieves this by leveraging asynchronous programming and standard Python type hints.
+
+Ease of Use:
+It provides automatic interactive API documentation (Swagger UI and ReDoc) generated from the API's endpoints and data models.
+
+Data Validation and Serialization:
+FastAPI uses Pydantic for data validation and serialization. This ensures that the data you receive is in the expected format and type, reducing bugs and errors.
+
+Dependency Injection:
+FastAPI provides a powerful dependency injection system that allows you to manage dependencies in a clean and efficient way.
+
+Asynchronous Capabilities:
+FastAPI supports asynchronous request handling, which can lead to significant performance improvements for I/O-bound operations.
