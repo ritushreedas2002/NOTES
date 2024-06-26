@@ -285,3 +285,11 @@ db.sales.aggregate([
 ])
 
 db.total_sales.find() return results as all the above data according to the filter condition applied are stored in a collection named total_sales
+
+INDEXES
+--------
+1.Datastructures for fast data retrieval.
+2.Supports equality-matches and range based query operations and return stored results
+3.Come with a writeperformance cost
+4.Common types are :single field and compound field indexes.
+5.Multikey indexes operate on an array field.
