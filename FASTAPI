@@ -47,9 +47,45 @@ for running uvicorn ques1:app --reload
  http://127.0.0.1:8000/get_student/1-->gives the first student details
 
 ----------------------------------------------------------------------------
+Path parameter
 from fastapi import Path
-def get_student(student_id:int=Path(None,description="The ID of the student you want to view",gt=0,lt=3)):
+def get_student(student_id:int=Path(...,description="The ID of the student you want to view",gt=0,lt=3)):
     return students[student_id]
 
 #Path is used to add constraints to the parameters. In this case, we are specifying that the student_id parameter must be an integer between 1 and 2. If the user tries to access a student with an ID outside this range, 
-they will receive an error message. This helps to ensure that the API is used correctly and securely. None is used that suppose if i give the route/get_student then the description will return.
+they will receive an error message. This helps to ensure that the API is used correctly and securely. (...) is used that suppose if i give the route/get_student then the description will return.
+
+Query Parameter
+Query parameters are another way to pass information to an API endpoint. They are similar to path parameters, but they are not part of the URL path. Instead, they are added to the end of the URL as key-value pairs, separated by a question mark (?). For example, in the URL /get-student?student_id=1, the query parameter is student_id=1.
+/student?student_id=1 passed to the backend as a query parameter
+
+@app.get("/get-by-name")
+def get_student(name :str):
+    for i in students:
+        if students[i]["name"]==name:
+            return students[i]
+    
+    return {"Data":"Not Found"}
+#In this example, the get_student endpoint takes a query parameter called name. The user can pass the name of
+
+------For making Optional---------
+from typing import Optional
+@app.get("/get-by-name")
+def get_student(name :Optional[str]=None):
+    for i in students:
+        if students[i]["name"]==name:
+            return students[i]
+    
+    return {"Data":"Not Found"}
+
+suppose there are many query parameters
+def get_student(*,name :Optional[str]=None,text:int):
+* implies now we can have default or optional query parameter
+# * is used to specify that all the parameters after it are keyword-only arguments. This means that the user must specify the name of the parameter when calling the endpoint. In this case, the name parameter is keyword-only, while the test parameter is not. This allows for more flexibility in how the parameters are passed to the endpoint.
+The * symbol indicates that all the parameters following it (name and test in this case) are keyword-only arguments.
+name: Optional[str] = None: name is an optional parameter that defaults to None if not provided.
+test: int: test is a required parameter.
+
+Why use *:
+Enforcing Keyword-Only Arguments: It ensures that when you call this endpoint, you must use keyword arguments. For example, you must call the endpoint like this: /get-by-name?name=John Doe&test=123.
+
