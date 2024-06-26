@@ -45,3 +45,11 @@ for running uvicorn ques1:app --reload
 
  http://127.0.0.1:8000 url return "hello world" --> http://127.0.0.1:8000/docs
  http://127.0.0.1:8000/get_student/1-->gives the first student details
+
+----------------------------------------------------------------------------
+from fastapi import Path
+def get_student(student_id:int=Path(None,description="The ID of the student you want to view",gt=0,lt=3)):
+    return students[student_id]
+
+#Path is used to add constraints to the parameters. In this case, we are specifying that the student_id parameter must be an integer between 1 and 2. If the user tries to access a student with an ID outside this range, 
+they will receive an error message. This helps to ensure that the API is used correctly and securely. None is used that suppose if i give the route/get_student then the description will return.
