@@ -180,7 +180,7 @@ class todo(BaseModel):
 def individual_data(todo):
     return {
         "id":str(todo["_id"]),
-        "title":todo["name"],
+        "title":todo["title"],
         "description":todo["description"],
         "status":todo["is_completed"]
     }
@@ -195,6 +195,8 @@ from fastapi import FastAPI,APIRouter,HTTPException
 from configuration import collection
 from database.schema import all_tasks
 from database.model import Todo
+from bson.objectID import ObjectId
+from datetime import datetime
 
 app=FastAPI()
 router=APIRouter()
@@ -211,4 +213,16 @@ def create_task(new_task:Todo):
         return ("status_code":200,"id":str(resp.inserted_id))
     except Exception as e:
         return HTTPException("status_code":500,details=f"Some error ocurred{e}")
+@router.put("/{task_id}")
+def update_task(task_id:str,updated_task:Todo):
+    try:
+        id=ObjectId(task_id)
+        existing_doc=collection.find({"_id":id,"is_deleted":false})
+        if not existing_doc:
+            return HTTPException(status_code=500,default="Task does not exisis")
+        updated_task.updated_at:datetime.timestamp(datetime.now())
+        resp=collection.update_one({"_id":id},{$set:dict(updated_task)})
+        return {"status_code":200,"message":"Task Updated successfully"}
+    except Exception as e:
+        return HTTPException(status_code=500,default=f"Some error occured {e}") 
 app.include_router(router)
