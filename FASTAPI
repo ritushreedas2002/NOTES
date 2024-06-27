@@ -214,7 +214,7 @@ def create_task(new_task:Todo):
     except Exception as e:
         return HTTPException("status_code":500,details=f"Some error ocurred{e}")
 @router.put("/{task_id}")
-def update_task(task_id:str,updated_task:Todo):
+async def update_task(task_id:str,updated_task:Todo):
     try:
         id=ObjectId(task_id)
         existing_doc=collection.find({"_id":id,"is_deleted":false})
@@ -225,4 +225,17 @@ def update_task(task_id:str,updated_task:Todo):
         return {"status_code":200,"message":"Task Updated successfully"}
     except Exception as e:
         return HTTPException(status_code=500,default=f"Some error occured {e}") 
+@router.delete("/{task_id}")
+async def deleted_task(task_id:str):
+     try:
+        id=ObjectId(task_id)
+        existing_doc=collection.find({"_id":id,"is_deleted":false})
+        if not existing_doc:
+            return HTTPException(status_code=500,default="Task does not exisis")
+        updated_task.updated_at:datetime.timestamp(datetime.now())
+        resp=collection.update_one({"_id":id},{$set:{"is_deleted":true}})
+        return {"status_code":200,"message":"Task Updated successfully"}
+    except Exception as e:
+        return HTTPException(status_code=500,default=f"Some error occured {e}") 
 app.include_router(router)
+
