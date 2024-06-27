@@ -89,3 +89,49 @@ test: int: test is a required parameter.
 Why use *:
 Enforcing Keyword-Only Arguments: It ensures that when you call this endpoint, you must use keyword arguments. For example, you must call the endpoint like this: /get-by-name?name=John Doe&test=123.
 
+Combining Query Parameter and path parameter
+--------------------------------------------
+@app.get("/get-by-name/{student_id}")
+def get_student(*,student_id:int,name :Optional[str]=None,test:int):
+
+POST METHOD AND REQUEST BODY
+------------------------------
+
+from pydantic import BaseModel
+class Student(BaseModel):
+    name:str
+    age:int
+
+@app.post("/create-student/{student_id}")
+def create_student(student_id:int,student:Student): #student is an object of Student class which is a pydantic model which the user has to pass in the body of the request
+    if student_id in students:
+        return {"Error":"Student Exists"}
+    students[student_id]=student
+    return students[student_id]
+
+PUT METHOD
+--------------
+class updateStudent(BaseModel):
+    name:Optional[str]=None
+    age:Optional[int]=None
+
+
+@app.put("/update-student/{student_id}")
+def update_student(student_id:int,student:updateStudent):
+    if student_id not in students:
+        return {"Error":"Student Does not Exist"}
+    if student.name!=None:
+        students[student_id]["name"]=student.name
+    if student.age!=None:
+        students[student_id]["age"]=student.age
+    return students[student_id]
+
+DELETE METHOD
+-------------
+@app.delete("/delete-student/{student_id}")
+def delete_student(student_id:int):
+    if student_id not in students:
+        return {"Error":"Student Does not Exist"}
+    del students[student_id]
+    return {"Message":"Student Deleted Successfully"}
+
