@@ -38,7 +38,7 @@ def get_student(student_id:int):
 
 in terminal
 --------------
-for running uvicorn ques1:app --reload 
+for running uvicorn ques1:app --reload  //--reload the page everytime we make changes
 
 >>Will watch for changes in these directories: ['C:\\Users\\User\\Desktop\\python']
 >>INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
@@ -135,3 +135,56 @@ def delete_student(student_id:int):
     del students[student_id]
     return {"Message":"Student Deleted Successfully"}
 
+
+
+
+
+------------------------------CONNECTION WITH MONGODB---------------------------------------------------------------
+cd fastapi
+python3 -venv venv ///set environment in our folder
+
+then in terminal --source venv/bin/activate
+install all dependencies pip install fastapi uvicorn pymongo
+
+Go to atlas and in connect select python -->python -m pip install "python[srv]"
+
+configuration.py
+=================
+
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
+uri = "mongodb+srv://admin-ritushree:<password>@cluster0.s6k4ce2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
+
+db=client.todo_db
+collection=db["todo_data]
+
+>databse>model.py
+=====================
+from pydantic import BaseModel //pydantic is used to validate our data that we will store in our database
+from datetime import datetime
+
+class todo(BaseModel):
+    title:str,
+    description:str,
+    is_completed:bool=false,//default alue is false
+    is_deleted:bool=false
+    updated_at:int=int(datetime.timestamp(datetime.now()))
+    creation:int=int(datetime.timestamp(datetime.now()))
+
+>database>schemas.py
+--------------------
+//we will give all the data from the documents and convert into the dictionary objects
+def individual_data(todo):
+    return {
+        "id":str(todo["_id"]),
+        "title":todo["name"],
+        "description":todo["description"],
+        "status":todo["is_completed"]
+    }
+
+def all_tasks(todos):
+    return [individual_data(todo) for todo in todos]
