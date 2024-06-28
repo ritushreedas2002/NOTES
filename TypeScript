@@ -25,6 +25,12 @@ let ans=addtwo(4);
 
 BOTH ARE ELIGIBLE as we have not defined the return type of the function
 
+const =(num:number):number=>{
+    return num+2;
+}
 
+const error=(error:string):void{ //function return nothing so void
+    console.log(error)
+}
 
 
