@@ -16,3 +16,9 @@ let userId:number=33
 
 /any refers to any datatype.It does not allow type checked
 NoImplicitAny -is writtern in ts.config file that does not allow us to perform 'any'
+
+function addtwo(num:number){
+    return num+2;
+}
+addtwo(4);
+
