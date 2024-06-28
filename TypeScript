@@ -18,7 +18,13 @@ let userId:number=33
 NoImplicitAny -is writtern in ts.config file that does not allow us to perform 'any'
 
 function addtwo(num:number){
-    return num+2;
+    //return num+2;
+    return "hitest"
 }
-addtwo(4);
+let ans=addtwo(4);
+
+BOTH ARE ELIGIBLE as we have not defined the return type of the function
+
+
+
 
