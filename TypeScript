@@ -1,0 +1,2 @@
+Main Functionality of trypeScript is Static checking
+Static Checking means analyzing your code and checking you might be running into potential error without running the code and getting errors at runtime.
