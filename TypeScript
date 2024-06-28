@@ -1,2 +1,18 @@
 Main Functionality of trypeScript is Static checking
 Static Checking means analyzing your code and checking you might be running into potential error without running the code and getting errors at runtime.
+
+---in terminal---
+Global install npm install -g typescript
+tsc intro.js
+
+Types available in typescript
+--------------------------------
+let variableName:type=value
+
+NOTE: there is no int or float in js
+let userID:number=33.4
+or
+let userId:number=33
+
+/any refers to any datatype.It does not allow type checked
+NoImplicitAny -is writtern in ts.config file that does not allow us to perform 'any'
