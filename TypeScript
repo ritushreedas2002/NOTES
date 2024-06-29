@@ -33,4 +33,47 @@ const error=(error:string):void{ //function return nothing so void
     console.log(error)
 }
 
+Type alias
 
+type User={
+    name:string,
+    active:boolean
+}
+
+function createUser(user:User):User{
+    return {name:"",active:true};
+}
+
+createUser({name:"hitesh","active":false})
+
+//Array
+const superheroes:string[]=[];
+superheroes.push("Spider");
+
+const arr:Array<Number>=[];
+
+type User={
+    name:string,
+    isactive:boolean
+}
+const ar:User[]=[]
+
+Union
+------
+combination of two or more types 
+let score :number|boolean|string=33
+
+
+//readonly
+type User={
+    readonly _id:string
+    name:string,
+    active:boolean.
+    creditdetails?:string  //? indicates optional 
+}
+let myuser:User={
+    _id:"12345",
+    name:"ritu",
+    active:true
+}
+myuser._id="34567" //error
