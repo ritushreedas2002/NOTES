@@ -77,3 +77,36 @@ let myuser:User={
     active:true
 }
 myuser._id="34567" //error
+
+tuple--order and type pf the data is maintained
+
+let user:[string,number,boolean];
+user=["hello",1,true];
+NOTE::::Typescript rray push metod cannot catch the tuple type array
+user.push('hello')
+
+---Enum---
+Enums in TypeScript are a useful feature that allow developers to define a set of named constants. These named constants can then be used to represent a finite set of possible values
+enum Seat{
+    AISLE="aisle",
+    WINDOW,
+    MIDDLE
+}
+const choice=Seat.AISLE;
+
+INTERFACES
+----------
+
+interface LabeledValue {
+  label: string;
+}
+ 
+function printLabel(labeledObj: LabeledValue) {
+  console.log(labeledObj.label);
+}
+ 
+let myObj = { size: 10, label: "Size 10 Object" };
+printLabel(myObj);
+The interface LabeledValue is a name we can now use to describe the requirement in the previous example. It still represents having a single property called label that is of type string. Notice we didn’t have to explicitly say that the object we pass to printLabel implements this interface like we might have to in other languages. Here, it’s only the shape that matters. If the object we pass to the function meets the requirements listed, then it’s allowed.
+
+
