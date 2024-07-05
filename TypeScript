@@ -208,7 +208,7 @@ export default Home(){
             background:"blue",
             text:"white",
             padding:"1rem 2rem"
-        }}>
+        }}/>
     )
 }
 
@@ -218,3 +218,204 @@ type ButtonProps={
 export default function Button=({style}:ButtonProps)=>{
     return <button style={style}>Click me</button>
 }
+
+RECORD TYPE
+----------------------
+export default Home(){
+    return (
+        <Button borderRadius={{
+            top:2,
+            left:3,
+            right:4
+        }}/>
+    )
+}
+
+type ButtonProps={
+    borderRadius:Record<string,number>
+}
+export default function Button=({borderRadius}:ButtonProps)=>{
+    return <button style={style}>Click me</button>
+}
+
+TYPING FUNCTION
+--------------------------
+export default Home(){
+
+    const onClick=()=>{};
+    return (
+        <Button onClick={onClick}/>
+    )
+}
+
+type ButtonProps={
+   onClick:()=>void;
+}
+export default function Button=({onClick}:ButtonProps)=>{
+    return <button onClick={onClick}>Click me</button>
+}
+
+REACTNODE
+--------------
+<><>-->element
+and the all the element inside the parent element any text all these types comes under reactNode
+
+export default Home(){
+    return (
+        <Button>Click ME</Button>
+    )
+}
+
+type ButtonProps={
+  children:React.ReactNode
+}
+export default function Button=({children}:ButtonProps)=>{
+    return <button >{children}</button>
+}
+
+JSX ELEMENT
+-------------
+export default Home(){
+    const icon=<i></i>
+    return (
+        <Button>{icon}</Button>
+    )
+}
+
+type ButtonProps={
+  children:JSX.Element //alows only jsx not text
+}
+export default function Button=({children}:ButtonProps)=>{
+    return <button >{children}</button>
+}
+INTERFACE
+-----------
+interface ButtonProps{
+    children:JSX.Element
+}
+ComponentProps
+-----------------
+export default Home(){
+    const icon=<i></i>
+    return (
+        <Button type="submit" autoFocus={true}>{icon}</Button> //these are attributes
+    )
+}
+type ButtonProps=React.ComponentPropsWithoutRef<"button">
+export default function Button=({type,autoFocus}:ButtonProps)=>{
+    return <button >{children}</button>
+}
+
+-------
+ <Button ref={ref} type="submit" autoFocus={true}>{icon}</Button> //these are attributes
+
+type ButtonProps=React.ComponentPropsWithRef<"button">
+export default function Button=({type,autoFocus}:ButtonProps)=>{
+    return <button type={type} autoFocus={autoFocus} >{children}</button>
+}
+
+rest operator
+-----------------
+<Button ref={ref} type="submit" autoFocus={true} defaultvalue="test" className="test">{icon}</Button> // for too many arguments these are attributes
+export default function Button=({type,autoFocus,...rest}:ButtonProps)=>{
+    return <button type={type} autoFocus={autoFocus} {...rest}>{children}</button>
+}
+extending
+--------------
+interface ButtonProps{
+    size:"md"|"lg"
+}
+interface SizeProps extends ButtonProps{
+    color:"blue"|"red"
+}
+
+intersecting
+---------------
+interface ButtonProps{
+    size:"md"|"lg"
+}
+interface SizeProps & ButtonProps{
+    color:"blue"|"red"
+}
+
+Typing useState hooks
+--------------------------
+type User={
+    name:String,
+    age:number,
+    
+}
+const[active,useactive]=useState(false);//default is boolean so no need of external type
+const [user,setuser]=useState<User|null>(null);//takes an object from API but initially null so during objects we need to specify the type
+
+
+const ref=<HTMLButtonElement|null>useRef(null);
+<button ref={ref} >Click me</button>
+
+as const
+----------
+const clicks=["hello","bye","tata"]as const; //indicates you cannot add anything additional to this array as it is const
+
+Omit
+------
+type User={
+    name:String,
+    sessionId:number,
+}
+type Guest=Omit<User,'name'>;//means type is User but omit the name field
+
+as
+----
+type ButtonColor="red"|"blue";
+
+useEffect=(()=>{
+    const previousButtonColor=localStorage.getItem("buttonColor") as ButtonColor;
+},[])
+
+import type
+-------------
+lib>types.ts
+suppose we need to use export type Color="red"|"blue"|"yellow";
+
+hello.jsx
+import {type Color} from "@/lib/types";
+
+type User={
+    Color:Color;
+    size:"xl"|"l";
+}
+
+for API CALLS
+---------------
+useEffect=(()=>{
+    fetch("............").
+    then((response)=>response.json()).
+    then((data:unknown)=>console.log(data));
+},[])
+
+useContext
+---------------
+Context.tsx
+
+import React,{createContext,useState} from 'react';
+type ThemeContextProviderProps={
+    children:React.ReactNode
+}
+
+type ThemeContext={
+theme:'dark'|'light',
+setTheme:React........../hover over settheme u get the theme recommended
+}
+export const ThemeContext=createContext<ThemeContext|null>(null);
+export default ThemeProvider=({children}:ThemeContextProviderProps)=>{
+    const [theme,settheme]=useState("light");
+    return (
+        <ThemeContext.Provider
+        value={{theme,settheme}}>
+            {children}
+        </ThemeContext.Provider>
+    )
+}
+LOGO.tsx
+=-----------
+const {theme,settheme}=useContext(ThemeContext)
