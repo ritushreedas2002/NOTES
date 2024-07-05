@@ -109,4 +109,81 @@ let myObj = { size: 10, label: "Size 10 Object" };
 printLabel(myObj);
 The interface LabeledValue is a name we can now use to describe the requirement in the previous example. It still represents having a single property called label that is of type string. Notice we didn’t have to explicitly say that the object we pass to printLabel implements this interface like we might have to in other languages. Here, it’s only the shape that matters. If the object we pass to the function meets the requirements listed, then it’s allowed.
 
+-----------------GENERICS-------------------------------
+import { ReactNode } from "react";
 
+const function1=(input:String)=>{
+    return [input];
+}
+function1(2);
+//now I want that take input as string and return a string array or take input as number and return a number array
+
+//for this we do generic function when input type and the return type are varying but their relation type is constant
+
+const function2=<T>(input:T):T[]=>{
+    return [input];
+}
+function2(2);
+function("2");
+//T indicates any datatype possible
+
+
+multiple parameters
+
+const function3=<T>(input:T, input2:T):T[]=>{
+    return [input, input2];
+}
+function3(2,3);
+
+const function3=<T>(input:T, input2:T[])=>{
+    input2.findIndex((element)=>element===input);
+}
+const arr=[1,2,3,4]
+function3(2,arr)
+
+//for multiple parameters we can also use different datatypes
+const function=(input:String,input2:number):[string,number]=>{
+    return [input,input2];
+}
+const function=<T,U>(input:T,input2:U):[T,U]=>{
+    return [input,input2];
+}
+function(2,"String");
+
+// suppose T only supports string and number
+const function=<T extends string | number>(input:T):T=>{
+    return input;
+}
+function(2);
+
+
+
+
+//React example
+
+const function=()=>{
+    const[selectedtheme,setselectedtheme]=useState("light");
+    const Options=["light","dark","system"];
+    return {
+        <function2 selectedtheme={selectedtheme} options={Options} onThemeClick={(option)=>setselectedTheme(option)} />
+    }
+}
+
+//selectedtheme will be the same type of that type of the options
+
+type ThemeOptionsProps<T>={
+    selectedtheme:T,
+    options:T[],
+    onThemeClick:(option:T)=>void  //taking type option and return void(nothing)
+}
+const function2=<T>({selectedtheme,options,onThemeClick}:ThemeOptionsProps<T>)=>{
+    return {
+        <div>
+        {
+            options.map((option)=>{
+                return <button onClick={()=>onThemeClick(option)} className={selectedtheme===option?"font-bold":"font-serif"}>{option as ReactNode}</button>
+            })//ass option can be string or number or anything but needs to be reactNode
+        }
+        </div>
+    }
+}
