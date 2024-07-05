@@ -44,6 +44,7 @@ function createUser(user:User):User{
     return {name:"",active:true};
 }
 
+
 createUser({name:"hitesh","active":false})
 
 //Array
@@ -186,4 +187,34 @@ const function2=<T>({selectedtheme,options,onThemeClick}:ThemeOptionsProps<T>)=>
         }
         </div>
     }
+}
+
+const function=(props:{background:String})=>{
+    const{background}=props;
+    return (
+        <div>
+            <Hello background="red"/>
+        </div>
+    )
+}
+or
+const function=({background}:{background:String})=>{}
+
+CSS Properties
+-----------------
+export default Home(){
+    return (
+        <Button style={{
+            background:"blue",
+            text:"white",
+            padding:"1rem 2rem"
+        }}>
+    )
+}
+
+type ButtonProps={
+    style:React.CssProperties
+}
+export default function Button=({style}:ButtonProps)=>{
+    return <button style={style}>Click me</button>
 }
