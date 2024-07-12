@@ -16,7 +16,46 @@ FastAPI provides a powerful dependency injection system that allows you to manag
 
 Asynchronous Capabilities:
 FastAPI supports asynchronous request handling, which can lead to significant performance improvements for I/O-bound operations.
+------------------------------------------------------------------------------------------------------------------------------------------------
+Installation process
+------------------------
+Sure, let's break down each step and explain their meaning and necessity:
 
+1. python -m venv venv
+Meaning:
+
+This command uses the venv module to create a virtual environment in a directory named venv.
+Why it's required:
+
+A virtual environment is an isolated environment for Python projects. It allows you to manage dependencies for different projects separately, avoiding conflicts between packages needed for different projects.
+2. .\venv\Scripts\activate
+Meaning:
+
+This command activates the virtual environment on Windows. For macOS/Linux, the command would be source venv/bin/activate.
+Why it's required:
+
+Activating the virtual environment ensures that any subsequent Python commands (like installing packages) are run within this isolated environment. This way, the dependencies are installed only in this environment and not globally.
+3. pip install fastapi uvicorn
+Meaning:
+
+This command installs the fastapi and uvicorn packages using pip, the Python package installer.
+Why it's required:
+
+FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.
+Uvicorn is an ASGI server implementation that is commonly used to run FastAPI applications. It is lightweight and efficient, making it ideal for serving web applications.
+4. pip freeze > requirements.txt
+Meaning:
+
+This command lists all the installed packages in the current environment along with their versions and writes them to a file named requirements.txt.
+Why it's required:
+
+The requirements.txt file is a common way to specify dependencies for a Python project. It allows others (or future you) to install the exact same dependencies using pip install -r requirements.txt. This ensures that the project environment can be replicated exactly, avoiding issues with differing package versions.
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
 in ques1.py
 -------------
 from fastapi import FastAPI
