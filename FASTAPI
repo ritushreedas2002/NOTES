@@ -16,6 +16,9 @@ FastAPI provides a powerful dependency injection system that allows you to manag
 
 Asynchronous Capabilities:
 FastAPI supports asynchronous request handling, which can lead to significant performance improvements for I/O-bound operations.
+
+Uvicorn:
+Uvicorn is a web server. It handles network communication - receiving requests from client applications such as users' browsers and sending responses to them
 ------------------------------------------------------------------------------------------------------------------------------------------------
 Installation process
 ------------------------
