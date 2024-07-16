@@ -281,3 +281,4 @@ async def deleted_task(task_id:str):
         return HTTPException(status_code=500,default=f"Some error occured {e}") 
 app.include_router(router)
 
+
