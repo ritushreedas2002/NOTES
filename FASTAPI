@@ -185,7 +185,7 @@ The whole client-server connection
 | | |   /api/users   | |   /api/products   |   |  |
 | | +----------------+ +-------------------+   |  |
 | +--------------------------------------------+  |
-|                      |                          |
+|                      |                          |----------------->here middleware can be involved
 |                      v                          |
 | +--------------------------------------------+  |
 | |              Controllers                   |  |
@@ -193,7 +193,7 @@ The whole client-server connection
 | | | UserController | | ProductController |   |  |
 | | +----------------+ +-------------------+   |  |
 | +--------------------------------------------+  |
-|                      |                          |
+|                      |                          |------------------>between controllers and next layer middleware can be involved
 |         +------------+------------+             |
 |         |                         |             |
 |         v                         v             |
