@@ -19,6 +19,136 @@ FastAPI supports asynchronous request handling, which can lead to significant pe
 
 Uvicorn:
 Uvicorn is a web server. It handles network communication - receiving requests from client applications such as users' browsers and sending responses to them
+
+
+[Client] <---> [Load Balancer]
+                    |
+                    v
+         +----------------------+
+         |    Application Server|
+         |  +----------------+  |
+         |  |    Middleware  |  |
+         |  +----------------+  |
+         |          |           |
+         |          v           |
+         |  +----------------+  |
+         |  |    Routes      |  |
+         |  +----------------+  |
+         |          |           |
+         |          v           |
+         |  +----------------+  |
+         |  |  Controllers   |  |
+         |  +----------------+  |
+         |          |           |
+         |          v           |
+         |  +----------------+  |
+         |  |   Services     |  |
+         |  +----------------+  |
+         |          |           |
+         |          v           |
+         |  +----------------+  |
+         |  |   Data Access  |  |
+         |  +----------------+  |
+         +----------------------+
+                    |
+                    v
+             [Database]
+
+
+WHAT IS A MIDDLEWARE? 
+A middleware is a thing ( that can be a function or program or multiple things(etc) ) that lies in between or middle of two nodes or layers that is used for requesting objects, responding to the objects, apply checks.
++----------------------------------+
+|           Middleware             |
+| +------------------------------+ |
+| |      Request Pipeline        | |
+| |                              | |
+| | +--------------------------+ | |
+| | |   Authentication         | | |
+| | +--------------------------+ | |
+| |            |                 | |
+| |            v                 | |
+| | +--------------------------+ | |
+| | |   Logging                | | |
+| | +--------------------------+ | |
+| |            |                 | |
+| |            v                 | |
+| | +--------------------------+ | |
+| | |   Request Parsing        | | |
+| | +--------------------------+ | |
+| |            |                 | |
+| |            v                 | |
+| | +--------------------------+ | |
+| | |   Error Handling         | | |
+| | +--------------------------+ | |
+| |            |                 | |
+| |            v                 | |
+| |     (Next Middleware or      | |
+| |        Route Handler)        | |
+| +------------------------------+ |
++----------------------------------+
+              |
+              v
+           Routes
+
+
+
++----------------------------------+
+|           Controller             |
+| +------------------------------+ |
+| | - Handle HTTP requests       | |
+| | - Validate input             | |
+| | - Call appropriate services  | |
+| | - Format and send responses  | |
+| |                              | |
+| | +-------------------------+  | |
+| | | getUserById(id)         |  | |
+| | | createUser(userData)    |  | |
+| | | updateUser(id, userData)|  | |
+| | | deleteUser(id)          |  | |
+| | +-------------------------+  | |
+| +------------------------------+ |
++----------------------------------+
+              |
+              v
+           Services
+
++----------------------------------+
+|            Service               |
+| +------------------------------+ |
+| | - Implement business logic   | |
+| | - Coordinate data access     | |
+| | - Manage transactions        | |
+| | - Handle complex operations  | |
+| |                              | |
+| | +-------------------------+  | |
+| | | findUserById(id)        |  | |
+| | | createNewUser(userData) |  | |
+| | | updateUserDetails(user) |  | |
+| | | deleteUserAccount(id)   |  | |
+| | +-------------------------+  | |
+| +------------------------------+ |
++----------------------------------+
+              |
+              v
+         Data Access Layer
+
+
++----------------------------------+
+|              DTO                 |
+| +------------------------------+ |
+| | - Define data structure      | |
+| | - Used for data transfer     | |
+| |                              | |
+| | +-------------------------+  | |
+| | | UserDTO                 |  | |
+| | | - id: number            |  | |
+| | | - username: string      |  | |
+| | | - email: string         |  | |
+| | | - createdAt: Date       |  | |
+| | +-------------------------+  | |
+| +------------------------------+ |
++----------------------------------+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------
 Installation process
 ------------------------
