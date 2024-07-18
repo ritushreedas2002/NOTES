@@ -21,6 +21,83 @@ Uvicorn:
 Uvicorn is a web server. It handles network communication - receiving requests from client applications such as users' browsers and sending responses to them
 
 
+MONOLITH ARCHITECTURE
+================================
+Characteristics of Monolithic Architecture:
+
+Single Codebase: All functionality is contained within a single application.
+Shared Database: One database is used for all data storage needs.
+Single Deployment Unit: The entire application is deployed as one unit.
+Tightly Coupled: Components are often interdependent.
+
+
+disadvantages
+1.Scalability Issues (if in authentication i want to scale i cannot scale that individually I need to scale the whole unit)
+2.Deployment Issues
+3.TechStack issues
+
++--------------------------------------------------+
+|                 Monolithic Application           |
+| +--------------------------------------------+  |
+| |               User Interface               |  |
+| +--------------------------------------------+  |
+|                      |                          |
+| +--------------------------------------------+  |
+| |               Business Logic               |  |
+| | +----------------+ +-------------------+   |  |
+| | | User Module    | | Product Module    |   |  |
+| | +----------------+ +-------------------+   |  |
+| | +----------------+ +-------------------+   |  |
+| | | Order Module   | | Payment Module    |   |  |
+| | +----------------+ +-------------------+   |  |
+| +--------------------------------------------+  |
+|                      |                          |
+| +--------------------------------------------+  |
+| |               Data Access Layer            |  |
+| +--------------------------------------------+  |
+|                      |                          |
+| +--------------------------------------------+  |
+| |               Single Database              |  |
+| +--------------------------------------------+  |
++--------------------------------------------------+
+
+
+
+MICROSERVICES ARCHITECTURE
+============================
+
++--------------------------------------------------+
+|              API Gateway / Load Balancer         |
++--------------------------------------------------+
+        |           |           |           |
+        v           v           v           v
++-------------+ +----------+ +----------+ +----------+
+| User        | | Product  | | Order    | | Payment  |
+| Microservice| | Micro-   | | Micro-   | | Micro-   |
+|             | | service  | | service  | | service  |
+| +---------+ | |+-------+ | |+-------+ | |+-------+ |
+| |Business | | ||Busi-  | | ||Busi-  | | ||Busi-  | |
+| |Logic    | | ||ness   | | ||ness   | | ||ness   | |
+| +---------+ | ||Logic  | | ||Logic  | | ||Logic  | |
+| +---------+ | |+-------+ | |+-------+ | |+-------+ |
+| |Data     | | |+-------+ | |+-------+ | |+-------+ |
+| |Access   | | ||Data   | | ||Data   | | ||Data   | |
+| +---------+ | ||Access | | ||Access | | ||Access | |
+|      |      | |+-------+ | |+-------+ | |+-------+ |
+|      v      | |    |     | |    |     | |    |     |
+| +---------+ | |+-------+ | |+-------+ | |+-------+ |
+| |User DB  | | ||Product| | ||Order  | | ||Payment| |
+| |         | | ||  DB   | | ||  DB   | | ||  DB   | |
+| +---------+ | |+-------+ | |+-------+ | |+-------+ |
++-------------+ +----------+ +----------+ +----------+
+
+
+
+CLIENT - SERVER COMMUNICATION
+-----------------------------------
+------------------------------------
+
+
 [Client] <---> [Load Balancer]
                     |
                     v
