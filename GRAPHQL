@@ -1,0 +1,23 @@
+
+Single endpoint
+/graphql with the Query like this structure
+
+query Courses{<---------query keyword with the query name
+  courses{
+    id,
+    title,
+    thumbnail_url
+}
+
+nested content
+author of each course
+query CourseReview{
+  course(id:"1"){
+    id,
+    title,
+    author{
+        name,
+        verified
+    }
+  }
+}
