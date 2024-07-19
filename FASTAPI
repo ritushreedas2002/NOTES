@@ -312,6 +312,32 @@ The whole client-server connection
 | +--------------------------------------------+  |
 +--------------------------------------------------+
 
+WHAT IS A SESSION
+---------------------
+client-----------------------------------------------authentication success----------------------> server stores the session
+now when client makes subsequent requests it stores it checks the sessions and provides multiple response
+
+Disadvantage
+---------------
+when there is multiple client it becomes hectic to store the so many sesions in teh server so we instead to reduce the load from the server we switch to JWT tokens.
+
+JWT tokens(stateless)
+-------------
+JWT token contains header , payload and the signature. Header and Payload are public but signature it private
+header->which  algorithm you are  using-->HS256
+payload->your data
+Best case of JWT tokens is authorisation
+------------------------------------------
+Authentication-->registration
+Authorization-->(resource access define)
+
+how we securely stored JWT  token on client side
+----------------------------------------------
+u can store in localStorage, cookies (flags on = http)
+
+client=============>take my info==============
+<===================================token=====
+
 ------------------------------------------------------------------------------------------------------------------------------------------------
 Installation process
 ------------------------
@@ -498,8 +524,10 @@ collection=db["todo_data]
 
 >databse>model.py
 =====================
-from pydantic import BaseModel //pydantic is used to validate our data that we will store in our database
+from pydantic import BaseModel //pydantic is used to validate our data that we will store in our database or say serialisation 
+//serialisation suppose from client i got {a:1,b:2} now in backend i will store b:2 and send th eresponse as a:1
 from datetime import datetime
+
 
 class todo(BaseModel):
     title:str,
