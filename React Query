@@ -111,6 +111,7 @@ return ({isLoading&& <h1>is Loading</h1>})
 
 AXIOS INTERCEPTORS:
 --------------------------
+Axios interceptors are middleware functions that allow you to tap into the request and response flows.They offer a gateway to modify, authenticate, or handle errors at a centralized level. 
 in utils->axios.js
 
 import axios from 'axios'
