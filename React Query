@@ -83,3 +83,27 @@ POLLING
 ---------
 Polling refers to refetching of data at an regular interval
 const { data, error, isLoading, isError,isFetching } = useQuery('posts', fetchPosts,{refetchInterval:5000});
+
+useMutation
+--------------
+import {useQuery,useMutation} from 'react-query'
+
+const addsuperhero=(hero)=>{
+  return axios.post('http://localhostk.........'.hero)
+}
+export const addsuperherrodata=()=>{
+  return useMutation(addsuperhero)
+}
+
+
+in our componene.js
+-----------------------
+import {addsuperherodata} from '../hooks/usesuperhero'
+
+const {mutate :addhero/*add multiple functions*/,isLoading,isError,error}=addsuperherodata();
+
+const handleclick=()=>{
+  addhero(hero);
+}
+
+return ({isLoading&& <h1>is Loading</h1>})
