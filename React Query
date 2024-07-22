@@ -107,3 +107,30 @@ const handleclick=()=>{
 }
 
 return ({isLoading&& <h1>is Loading</h1>})
+
+
+AXIOS INTERCEPTORS:
+--------------------------
+in utils->axios.js
+
+import axios from 'axios'
+
+const client = axios.create({baseURL:'http://localhost:3000'})
+
+export const request=({...options})=>{
+  client.defaults.headers.common.Authorization= `Bearer token`
+  const onSuccess = response =>response 
+  const onerror =error => {
+      return error
+  }
+retrurn client(options).then(onSuccess).catch(onError)
+}
+
+
+in component.js
+-------------------
+import {request} from "../utils/axios'
+
+const fetchSuperheroes=()=>{
+  return request({url:'/superheroes'});  //not required to write the baseurl as already in axios interceptors
+}
