@@ -1,0 +1,121 @@
+const http = require ("http");
+//It is a label or interface that is used to  control the file system or the network of your computer
+
+const server=http.createServer((req,res)=>{
+  res.statusCode=200;
+  res.end('Bye'); //end of an request from the client
+})
+//server is a computer always running to take the requests and serve it
+
+const port=4000
+
+server.listen(port,()=>{
+  console.log("Port running")
+})
+
+
+   +---------------------------------------------------+
+   |                   Client                           |
+   |                  (Browser/Mobile)                  |
+   +---------------------------------------------------+
+                          |
+                          | HTTP Request (Port 80)
+                          v
+   +---------------------------------------------------+
+   |                     Server                        |
+   |                    (Computer)                     |
+   +---------------------------------------------------+
+                          |
+                          | Bytes to String Conversion
+                          v
+   +---------------------------------------------------+
+   |                    Node.js                        |
+   +---------------------------------------------------+
+                          |
+                          v
+   +---------------------------------------------------+
+   |                     libuv                         |
+   |      (Event Loop & Thread Pool)                   |
+   +---------------------------------------------------+
+                          |
+                          v
+   +---------------------------------------------------+
+   |                  HTTP Module                      |
+   |      - Properties (URL, headers, method)          |
+   |      - Methods (.end(), .send(), etc.)            |
+   +---------------------------------------------------+
+                          |
+                          v
+   +---------------------------------------------------+
+   |               Application Logic                   |
+   |      - /hitesh (show profile)                     |
+   |      - /inst (talk to DB -> GET)                  |
+   |      - /youtube (DB -> POST)                      |
+   +---------------------------------------------------+
+                          |
+                          v
+   +---------------------------------------------------+
+   |                   Response                        |
+   +---------------------------------------------------+
+                          |
+                          | HTTP Response
+                          v
+   +---------------------------------------------------+
+   |                   Client                           |
+   +---------------------------------------------------+
+
+
+Client:
+
+This represents the client (e.g., a web browser or a mobile app) making an HTTP request to a server running Node.js.
+The request is made to a specific port, commonly port 80 for HTTP.
+
+Server (Computer):
+
+The server receives the incoming request. This request is in the form of bytes.
+
+Node.js Processing:
+
+Bytes to String: The incoming bytes from the client are converted into a string format, typically HTTP request data.
+Streams: Node.js handles I/O operations using streams, which allow reading or writing data sequentially.
+
+libuv:
+
+libuv is a library that Node.js uses to handle asynchronous I/O operations. It provides the event loop, handles file system operations, network operations, and more.
+The diagram shows the HTTP request being passed through libuv for asynchronous processing.
+
+HTTP Module:
+
+The HTTP module in Node.js processes the HTTP request. It parses the request and provides an object with properties and methods to handle the request and send a response.
+Properties: The HTTP request object contains properties such as URL, headers, method (GET, POST, etc.).
+Methods: The HTTP response object contains methods like .end() to send the response back to the client.
+
+Application Logic:
+
+The application logic (JavaScript code) defines routes and handlers for different endpoints. For example:
+/hitesh: Show profile
+/inst: Talk to the database to get some data
+/youtube: Post data to the database
+
+Response:
+
+After processing the request, Node.js sends the response back to the client, completing the HTTP request-response cycle.
+
+
+
+Overall Concepts
+Event-Driven Architecture:
+
+Node.js is designed around an event-driven architecture where operations are performed asynchronously to achieve high performance and scalability.
+The event loop continuously checks the call stack and callback queue to execute code, handle events, and perform I/O operations.
+Non-Blocking I/O:
+
+Node.js uses non-blocking I/O operations, allowing it to handle multiple operations concurrently without waiting for one to complete before starting another.
+This is achieved using callbacks, promises, and async/await.
+Single-Threaded Event Loop:
+
+Despite being single-threaded, Node.js can handle many concurrent connections by offloading I/O operations to the operating system, which manages these operations using threads.
+Modules:
+
+Node.js has a modular structure with built-in modules (like http, fs, path, etc.) and the ability to import third-party modules using npm (Node Package Manager).
+
