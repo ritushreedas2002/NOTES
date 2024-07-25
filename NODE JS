@@ -119,3 +119,10 @@ Modules:
 
 Node.js has a modular structure with built-in modules (like http, fs, path, etc.) and the ability to import third-party modules using npm (Node Package Manager).
 
+
+
+***Node js is single threaded that means cannot perform concurrent tasks at the same time.
+***it is non-blocking(it is a single threaded synchronous way working but suppose a function takes time so it will not block the execution of the next piece of line .This is achieved using asynchrouns functions.
+Event Loop manages the overall checking suppose a function is async function it does not enters call stack rather enter callback queue after the execution of the overall call stack then the event loop starts the execution
+of the callbackqueue where indivually each function is executed and then the eventloop pushed that function into the callstack and then shows the result.)
+*** it is event driven that means it is executed when when is a event ocuuring suppose in /hitest i want to send a request the event emitter then triggers the /hitesh route under which the js logic will run in the application
