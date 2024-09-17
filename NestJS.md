@@ -204,26 +204,4 @@ In the above example, we define a `UsersService` with a `findAll` method that re
 5. **Server**:
    - The entire NestJS application is deployed on a server.
 
-```mermaid
-graph TD;
-    Client --> Controller;
-    Controller -->|/users| RequestHandler1;
-    Controller -->|/profile| RequestHandler2;
-    Controller -->|/premium| RequestHandler3;
-    RequestHandler1 --> Service;
-    RequestHandler2 --> Service;
-    RequestHandler3 --> Service;
 
-    subgraph "NestJS Application"
-        Controller;
-        RequestHandler1[Request Handler: /wallet];
-        RequestHandler2[Request Handler: /profile];
-        RequestHandler3[Request Handler: /premium];
-        Service;
-    end
-
-    Client -->|Request| Controller;
-    subgraph "Server"
-    "NestJS Application"
-    end
-```
