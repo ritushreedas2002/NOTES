@@ -204,4 +204,4 @@ In the above example, we define a `UsersService` with a `findAll` method that re
 5. **Server**:
    - The entire NestJS application is deployed on a server.
 
-
+[![](https://mermaid.ink/img/pako:eNqFkjtPwzAUhf-KdedWiGTzgITaATEwEDbMYOLbxsIv_EBCTf87TmOoEiXCg-V7zqejY8snaK1AoHD03HXkZc8MyWunJJpIttu7_hk_E4bYk5010Vul0Bfmb75wNymgDz0p_AM3Ilu3r2UmRaBkBN-WQ5y3B6lwHlMtxBR0NQi1THoeVC8GXdASNOs_pJEG_ZdscQmo_gPqKTAiIb2PD87gKaOPDbl3TsmWR2kNgxGaXuuqzRquGdWaUV-NSW804rffsMMGNHrNpcjf4zQoDGKHGhnQfBTcfwxNz5njKdrm27RAo0-4AW_TsQN64CrkKTnBI-4lz1fWRT3_ANzt08c?type=png)](https://mermaid.live/edit#pako:eNqFkjtPwzAUhf-KdedWiGTzgITaATEwEDbMYOLbxsIv_EBCTf87TmOoEiXCg-V7zqejY8snaK1AoHD03HXkZc8MyWunJJpIttu7_hk_E4bYk5010Vul0Bfmb75wNymgDz0p_AM3Ilu3r2UmRaBkBN-WQ5y3B6lwHlMtxBR0NQi1THoeVC8GXdASNOs_pJEG_ZdscQmo_gPqKTAiIb2PD87gKaOPDbl3TsmWR2kNgxGaXuuqzRquGdWaUV-NSW804rffsMMGNHrNpcjf4zQoDGKHGhnQfBTcfwxNz5njKdrm27RAo0-4AW_TsQN64CrkKTnBI-4lz1fWRT3_ANzt08c)
