@@ -47,11 +47,27 @@ project-name
 └── tsconfig.json
 ```
 
-- `src/main.ts`: The entry point of your application.
-- `src/app.module.ts`: The root module of your application.
-- `src/app.controller.ts`: The controller responsible for handling HTTP requests.
-- `src/app.service.ts`: The service responsible for handling business logic.
-- `test/app.e2e-spec.ts`: End-to-end tests for your application.
+### Key Files and Directories
+
+- **src/main.ts**: The entry point of the application. It bootstraps the main module.
+- **src/app.module.ts**: The root module of the application. It imports other modules and provides the main configuration.
+- **src/app.controller.ts**: The controller responsible for handling HTTP requests.
+- **src/app.service.ts**: The service responsible for business logic.
+- **test/app.e2e-spec.ts**: End-to-end tests for the application.
+- **nest-cli.json**: Configuration file for the Nest CLI.
+- **package.json**: Contains project dependencies and scripts.
+- **tsconfig.json**: TypeScript configuration file.
+
+### Modular Architecture
+
+NestJS promotes a modular architecture, where each module encapsulates a specific feature or functionality. This approach enhances maintainability and scalability.
+
+### Summary
+
+- **Main Module**: Central configuration and module imports.
+- **Controllers**: Handle incoming requests and route them.
+- **Services**: Contain business logic and data handling.
+- **Tests**: Ensure application functionality through automated tests.
 
 ## Controllers and Routes
 
@@ -204,4 +220,240 @@ In the above example, we define a `UsersService` with a `findAll` method that re
 5. **Server**:
    - The entire NestJS application is deployed on a server.
 
+
 [![](https://mermaid.ink/img/pako:eNqFkjtPwzAUhf-KdedWiGTzgITaATEwEDbMYOLbxsIv_EBCTf87TmOoEiXCg-V7zqejY8snaK1AoHD03HXkZc8MyWunJJpIttu7_hk_E4bYk5010Vul0Bfmb75wNymgDz0p_AM3Ilu3r2UmRaBkBN-WQ5y3B6lwHlMtxBR0NQi1THoeVC8GXdASNOs_pJEG_ZdscQmo_gPqKTAiIb2PD87gKaOPDbl3TsmWR2kNgxGaXuuqzRquGdWaUV-NSW804rffsMMGNHrNpcjf4zQoDGKHGhnQfBTcfwxNz5njKdrm27RAo0-4AW_TsQN64CrkKTnBI-4lz1fWRT3_ANzt08c?type=png)](https://mermaid.live/edit#pako:eNqFkjtPwzAUhf-KdedWiGTzgITaATEwEDbMYOLbxsIv_EBCTf87TmOoEiXCg-V7zqejY8snaK1AoHD03HXkZc8MyWunJJpIttu7_hk_E4bYk5010Vul0Bfmb75wNymgDz0p_AM3Ilu3r2UmRaBkBN-WQ5y3B6lwHlMtxBR0NQi1THoeVC8GXdASNOs_pJEG_ZdscQmo_gPqKTAiIb2PD87gKaOPDbl3TsmWR2kNgxGaXuuqzRquGdWaUV-NSW804rffsMMGNHrNpcjf4zQoDGKHGhnQfBTcfwxNz5njKdrm27RAo0-4AW_TsQN64CrkKTnBI-4lz1fWRT3_ANzt08c)
+
+#### Requests in NestJS are handled through 4 types of scopes:-
+1. Global scope
+2. Module scope
+3. Controller scope
+4. Request Handler / Route scope
+
+
+## Superpowers of NestJS
+
+### Middlewares
+
+Middlewares are functions that are executed before the route handler. They can perform tasks such as logging, authentication, and request transformation.
+
+```typescript
+import { Injectable, NestMiddleware } from '@nestjs/common';
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: Function) {
+    console.log('Request...');
+    next();
+  }
+}
+```
+
+### Guards
+
+Guards are used to determine whether a request will be handled by the route handler. They are often used for authentication and authorization.
+
+```typescript
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    return validateRequest(request);
+  }
+}
+```
+
+### Interceptors
+
+Interceptors are used to transform the result returned by a function or to extend the behavior of a function. They can be used for logging, caching, and more.
+
+```typescript
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(map(data => ({ data })));
+  }
+}
+```
+
+### Pipes
+
+Pipes are used to transform and validate incoming data. They can be used to ensure that the data meets certain criteria before it is processed by the route handler.
+
+```typescript
+import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+
+@Injectable()
+export class ValidationPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    if (!value) {
+      throw new BadRequestException('Validation failed');
+    }
+    return value;
+  }
+}
+```
+
+## Client to Server (Request Flow):
+[![](https://mermaid.ink/img/pako:eNp1UsFOAyEQ_RXCudX7HkxMq9WDiXE97mUKY5fIwsqC1rT9d4E1ATaUw2bmzWN4M29PlGmOtKEHA2NP3redIv5Mbj8DHb0fRykYWKEV2Whl8Wg7OrPC2UiBypL1-o68CM4l_oDBVE5YpOwcGJ6qMY2FZ9_YMBytNqmcgZH0KsasdcgiHFQZLSVmVxMWKOdbN6GZzuQNvxxO9gkUL-glHru2aL4Fy95LUbadndR7kKRl2kvL1lLOXuKLJSwmLQvlyKh4Tc_DMVz1Bj0KaYP8mytuVIkLOVVOVV-VWQquUmp-VYnX3KqSC7_iouYwfOmKDmgGENz_6aeAdNT2OHjLGh9yMJ_BvIvngbO6_VWMNtY4XFGj3aGnzQfIyWdu5GBxK8D7P_yjlz8BMvwv?type=png)](https://mermaid.live/edit#pako:eNp1UsFOAyEQ_RXCudX7HkxMq9WDiXE97mUKY5fIwsqC1rT9d4E1ATaUw2bmzWN4M29PlGmOtKEHA2NP3redIv5Mbj8DHb0fRykYWKEV2Whl8Wg7OrPC2UiBypL1-o68CM4l_oDBVE5YpOwcGJ6qMY2FZ9_YMBytNqmcgZH0KsasdcgiHFQZLSVmVxMWKOdbN6GZzuQNvxxO9gkUL-glHru2aL4Fy95LUbadndR7kKRl2kvL1lLOXuKLJSwmLQvlyKh4Tc_DMVz1Bj0KaYP8mytuVIkLOVVOVV-VWQquUmp-VYnX3KqSC7_iouYwfOmKDmgGENz_6aeAdNT2OHjLGh9yMJ_BvIvngbO6_VWMNtY4XFGj3aGnzQfIyWdu5GBxK8D7P_yjlz8BMvwv)
+
+- Not only in Global scope, but in other scopes too, all 4 superpowers of NestJS can be applied.
+
+## Server to Client (Response Flow):
+[![](https://mermaid.ink/img/pako:eNqFkc9uwyAMxl8F-dzuARJp0rTuT6_rjlxc8Bo0AoyYqVPVdx8klUK3TPMBmY8f9oc5gfKaoIFDxNCJ100rncgxpP2kSLgLwRqFbLwT994xHVnCRJXYUfw0isR6fSte6CPRwM_otKXYztD1wciWUtHba24WR2abu0VFgX0NVepUyRpynIEZqew_Wb9HW1-q3f-oV3Uhp-uKD8dC5Bk8GsvF3k3ufHl7-w-2-NRF8s8BLtK_jY-mS1JWWEFPsUej8_-eiiKBO-pJQpNTjfG9jOKcOUzsd19OQcMx0QqiT4cOmje0Q96loJFpYzDPtL-o5292GrOA?type=png)](https://mermaid.live/edit#pako:eNqFkc9uwyAMxl8F-dzuARJp0rTuT6_rjlxc8Bo0AoyYqVPVdx8klUK3TPMBmY8f9oc5gfKaoIFDxNCJ100rncgxpP2kSLgLwRqFbLwT994xHVnCRJXYUfw0isR6fSte6CPRwM_otKXYztD1wciWUtHba24WR2abu0VFgX0NVepUyRpynIEZqew_Wb9HW1-q3f-oV3Uhp-uKD8dC5Bk8GsvF3k3ufHl7-w-2-NRF8s8BLtK_jY-mS1JWWEFPsUej8_-eiiKBO-pJQpNTjfG9jOKcOUzsd19OQcMx0QqiT4cOmje0Q96loJFpYzDPtL-o5292GrOA)
+
+- Not only in Global scope, but in other scopes too, Interceptors can be applied.
+
+
+## Module Structures in NestJS
+
+In NestJS, modules are used to organize the application into cohesive blocks of functionality. There are two primary types of module structures: with controllers and without controllers.
+
+### 1. Module with Controllers
+
+A module with controllers typically includes one or more controllers that handle incoming HTTP requests and delegate tasks to the appropriate services. This structure is common in applications that expose RESTful APIs or handle web requests.
+
+**Example Structure:**
+- `AppModule`
+  - `AppController`
+  - `AppService`
+
+**Key Components:**
+- **Controller:** Defines routes and handles incoming requests.
+- **Service:** Contains business logic and interacts with data sources.
+
+### 2. Module without Controllers
+
+A module without controllers is usually focused on providing services, utilities, or other functionalities that do not directly handle HTTP requests. These modules are often used for background tasks, data processing, or shared services across multiple modules.
+
+**Example Structure:**
+- `AuthModule`
+  - `AuthService`
+  - `JwtStrategy`
+
+**Key Components:**
+- **Service:** Contains business logic and interacts with data sources.
+- **Provider:** Supplies additional functionalities or dependencies required by the service.
+
+### Summary
+
+- **Modules with Controllers:** Used for handling HTTP requests and routing.
+- **Modules without Controllers:** Used for background tasks, utilities, or shared services.
+
+
+## Bootstrapping a NestJS Application
+
+The bootstrapping process in a NestJS application involves initializing the core components and starting the application. Here's a step-by-step guide:
+
+### 1. Create the Main Module
+
+The main module is the entry point of the application. It is typically named `AppModule` and is defined in `src/app.module.ts`.
+
+```typescript
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+```
+
+### 2. Create the Main Application File
+
+The main application file is responsible for bootstrapping the application. It is typically named `main.ts` and is located in the `src` directory.
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+### 3. Run the Application
+
+To start the application, run the following command in your terminal:
+
+```bash
+$ npm run start
+```
+
+This command will compile the TypeScript code and start the NestJS application on the specified port (default is 3000).
+
+### Summary
+
+- **Main Module:** Defines the root module of the application.
+- **Main Application File:** Bootstraps the application and starts the server.
+- **Run Command:** Compiles and starts the application.
+
+By following these steps, you can successfully bootstrap a NestJS application and get it up and running.
+
+
+## Common Scripts for a NestJS Application
+
+NestJS applications often include a set of predefined scripts in the `package.json` file to streamline development, testing, and deployment processes. Here are some of the most common scripts:
+
+### Development
+
+- **Start Development Server**: Runs the application in development mode with hot-reloading.
+  ```json
+  "start:dev": "nest start --watch"
+  ```
+
+### Production
+
+- **Start Production Server**: Runs the application in production mode.
+  ```json
+  "start:prod": "node dist/main"
+  ```
+
+### Build
+
+- **Build Application**: Compiles the TypeScript code into JavaScript.
+  ```json
+  "build": "nest build"
+  ```
+
+### Testing
+
+- **Run Unit Tests**: Executes unit tests using Jest.
+  ```json
+  "test": "jest"
+  ```
+
+- **Run End-to-End Tests**: Executes end-to-end tests.
+  ```json
+  "test:e2e": "jest --config ./test/jest-e2e.json"
+  ```
+
+- **Test Coverage**: Generates a test coverage report.
+  ```json
+  "test:cov": "jest --coverage"
+  ```
+
+### Linting
+
+- **Lint Codebase**: Checks the code for linting errors using ESLint.
+  ```json
+  "lint": "eslint '{src,test}/**/*.ts'"
+  ```
+
+### Format
+
+- **Format Codebase**: Formats the code using Prettier.
+  ```json
+  "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts'"
+  ```
+
