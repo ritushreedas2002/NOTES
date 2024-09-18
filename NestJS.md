@@ -1306,3 +1306,129 @@ NestJS applications often include a set of predefined scripts in the `package.js
 
   By utilizing request headers in your NestJS controllers, you can handle additional request information and customize responses based on header values.
 
+ ## Accessing Request Body in NestJS Controllers
+
+  In NestJS, you can access the body of a request sent from the client side using the `@Body()` decorator. This is particularly useful for handling data submissions in JSON and URL-encoded formats.
+
+  ### Accessing JSON Data
+
+  When a client sends data in JSON format, you can access it directly in your controller method using the `@Body()` decorator.
+
+  #### Example
+
+  ```typescript
+  import { Controller, Post, Body } from '@nestjs/common';
+
+  @Controller('data')
+  export class DataController {
+    @Post('json')
+    handleJson(@Body() body: any): string {
+      return `Received JSON data: ${JSON.stringify(body)}`;
+    }
+  }
+  ```
+
+  In this example, the `handleJson` method handles POST requests to the `/data/json` route. The `@Body()` decorator injects the entire request body, which is expected to be in JSON format.
+
+  ### Accessing URL-encoded Data
+
+  When a client sends data in URL-encoded format, you can also access it using the `@Body()` decorator.
+
+  #### Example
+
+  ```typescript
+  import { Controller, Post, Body } from '@nestjs/common';
+
+  @Controller('data')
+  export class DataController {
+    @Post('urlencoded')
+    handleUrlencoded(@Body() body: any): string {
+      return `Received URL-encoded data: ${JSON.stringify(body)}`;
+    }
+  }
+  ```
+
+  In this example, the `handleUrlencoded` method handles POST requests to the `/data/urlencoded` route. The `@Body()` decorator injects the entire request body, which is expected to be in URL-encoded format.
+
+  ### Summary
+
+  - **Accessing JSON Data**: Use the `@Body()` decorator to access JSON data sent in the request body.
+  - **Accessing URL-encoded Data**: Use the `@Body()` decorator to access URL-encoded data sent in the request body.
+
+  By using the `@Body()` decorator, you can easily handle data submissions in both JSON and URL-encoded formats in your NestJS controllers.
+
+## Simple CRUD Operations on User Entity
+
+  In this section, we will create a simple CRUD (Create, Read, Update, Delete) operation on a `User` entity using NestJS. We will use `UserDto` for type definitions and utilize `@Body()` and `@Param()` decorators in our controllers.
+
+  #### UserDto
+
+  First, let's define the `UserDto` class which will be used for type definitions.
+
+  ```typescript
+  export class UserDto {
+    id: number;
+    name: string;
+    email: string;
+  }
+  ```
+
+  #### UserController
+
+  Next, we will create the `UserController` with CRUD operations.
+
+  ```typescript
+  import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+  import { UserDto } from './user.dto';
+
+  @Controller('users')
+  export class UserController {
+    private users: UserDto[] = [];
+
+    @Post()
+    createUser(@Body() userDto: UserDto): string {
+      this.users.push(userDto);
+      return `User ${userDto.name} created successfully`;
+    }
+
+    @Get(':id')
+    getUser(@Param('id') id: number): UserDto {
+      return this.users.find(user => user.id === id);
+    }
+
+    @Get()
+    getAllUsers(): UserDto[] {
+      return this.users;
+    }
+
+    @Put(':id')
+    updateUser(@Param('id') id: number, @Body() userDto: UserDto): string {
+      const userIndex = this.users.findIndex(user => user.id === id);
+      if (userIndex >= 0) {
+        this.users[userIndex] = userDto;
+        return `User ${userDto.name} updated successfully`;
+      }
+      return `User with id ${id} not found`;
+    }
+
+    @Delete(':id')
+    deleteUser(@Param('id') id: number): string {
+      const userIndex = this.users.findIndex(user => user.id === id);
+      if (userIndex >= 0) {
+        this.users.splice(userIndex, 1);
+        return `User with id ${id} deleted successfully`;
+      }
+      return `User with id ${id} not found`;
+    }
+  }
+  ```
+
+  ### Summary
+
+  - **Create User**: Uses `@Post()` and `@Body()` to create a new user.
+  - **Get User by ID**: Uses `@Get(':id')` and `@Param('id')` to retrieve a user by ID.
+  - **Get All Users**: Uses `@Get()` to retrieve all users.
+  - **Update User**: Uses `@Put(':id')`, `@Param('id')`, and `@Body()` to update a user by ID.
+  - **Delete User**: Uses `@Delete(':id')` and `@Param('id')` to delete a user by ID.
+
+  This example demonstrates how to perform basic CRUD operations on a `User` entity in a NestJS application.
