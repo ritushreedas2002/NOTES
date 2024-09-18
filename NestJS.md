@@ -621,16 +621,16 @@ NestJS applications often include a set of predefined scripts in the `package.js
 
   1. **Return a Value Directly**:
     - Simply return a value from the handler method. NestJS will automatically serialize the response to JSON.
-    ```typescript
+  ```typescript
     @Get()
     getHello(): string {
       return 'Hello World!';
     }
-    ```
+  ```
 
   2. **Return in JSON format**:
     - Simply return values in JSON format directly from the handler method.
-    ```typescript
+  ```typescript
     @Get()
     getHello(): { name: string; age: string } {
       return {
@@ -638,7 +638,7 @@ NestJS applications often include a set of predefined scripts in the `package.js
         age: "15",
       };
     }
-    ```
+  ```
 
   3. **Return a Promise**:
     - If the handler method is asynchronous, you can return a Promise. NestJS will wait for the Promise to resolve and then serialize the response.
