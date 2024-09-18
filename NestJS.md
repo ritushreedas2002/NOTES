@@ -732,3 +732,577 @@ NestJS applications often include a set of predefined scripts in the `package.js
   ```
 
   These methods provide flexibility in handling different types of responses in a NestJS application.
+
+### How to access the request object in a NestJS controller
+---
+
+   In NestJS, you can access the request object by using the `@Req()` decorator provided by the `@nestjs/common` package.
+   * The `@Req()` decorator injects the request object into the handler method, allowing you to access various properties and methods of the request.
+ 
+   * Example usage:
+  ```typescript
+      import { Controller, Get, Req } from '@nestjs/common';
+      import { Request } from 'express';
+   
+      @Controller('example')
+      export class ExampleController {
+        @Get()
+        getExample(@Req() request: Request): string {
+          // Access request properties and methods here
+          return `Request method: ${request.method}`;
+        }
+      }
+   ```
+   * In this example, the `getExample` method is a route handler that responds to GET requests.
+   * The `@Req()` decorator injects the request object, which is then used to access the HTTP method of the request.
+   * The request object is an instance of the `Request` interface from the `express` package, which provides various properties and methods to interact with the HTTP request.
+
+
+  ## Setting HTTP Status Codes & Headers in NestJS
+
+  In NestJS, you can easily set HTTP status codes and headers for your responses using decorators and the `@Res()` object. This allows you to customize the response behavior to meet your application's requirements.
+
+  ### Setting HTTP Status Codes
+
+  You can set HTTP status codes using the `@HttpCode()` decorator or by directly manipulating the response object with `@Res()`.
+
+  #### Using `@HttpCode()` Decorator
+
+  The `@HttpCode()` decorator sets the HTTP status code for the response.
+
+  ```typescript
+  import { Controller, Post, HttpCode } from '@nestjs/common';
+
+  @Controller('example')
+  export class ExampleController {
+    @Post()
+    @HttpCode(204)
+    create(): string {
+      return 'This action returns a 204 status code';
+    }
+  }
+  ```
+
+  #### Using `@Res()` Object
+
+  You can also set the status code directly using the response object.
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get()
+    getExample(@Res() res: Response): void {
+      res.status(201).send('This action returns a 201 status code');
+    }
+  }
+  ```
+
+  ### Setting HTTP Headers
+
+  You can set HTTP headers using the `@Header()` decorator or by directly manipulating the response object with `@Res()`.
+
+  #### Using `@Header()` Decorator
+
+  The `@Header()` decorator sets a specific header for the response.
+
+  ```typescript
+  import { Controller, Get, Header } from '@nestjs/common';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get()
+    @Header('Cache-Control', 'none')
+    getExample(): string {
+      return 'This action sets a Cache-Control header';
+    }
+  }
+  ```
+
+  #### Using `@Res()` Object
+
+  You can also set headers directly using the response object.
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get()
+    getExample(@Res() res: Response): void {
+      res.set('Cache-Control', 'none').send('This action sets a Cache-Control header');
+    }
+  }
+  ```
+
+  ### Combining Status Codes and Headers
+
+  You can combine both status codes and headers in a single response using the `@Res()` object.
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get()
+    getExample(@Res() res: Response): void {
+      res.status(200)
+         .set('Cache-Control', 'none')
+         .send('This action sets both status code and header');
+    }
+  }
+  ```
+
+  ### Summary
+
+  - **@HttpCode()**: Sets the HTTP status code for the response.
+  - **@Header()**: Sets a specific header for the response.
+  - **@Res()**: Provides full control over the response, allowing you to set status codes, headers, and send responses.
+
+  ### Difference Between Using and Not Using `passthrough: true` in Response Object in NestJS
+  ---
+
+  In NestJS, the `@Res()` decorator can be used to inject the response object into a route handler. The `passthrough` option determines whether the response object should be passed through to the next middleware or handler.
+
+  #### Using `passthrough: true`
+
+  When `passthrough: true` is set, the response object is passed through to the next middleware or handler. This allows you to modify the response object without ending the response.
+
+  **Example:**
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get('passthrough')
+    getExample(@Res({ passthrough: true }) res: Response): string {
+      res.set('X-Custom-Header', 'CustomValue');
+      return 'Response with passthrough';
+    }
+  }
+  ```
+
+  In this example, the custom header is set, and the response is passed through to the next handler.
+
+  #### Not Using `passthrough: true`
+
+  When `passthrough: true` is not set, the response object is not passed through, and you have full control over the response. You must manually send the response using methods like `res.send()`.
+
+  **Example:**
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get('no-passthrough')
+    getExample(@Res() res: Response): void {
+      res.set('X-Custom-Header', 'CustomValue');
+      res.send('Response without passthrough');
+    }
+  }
+  ```
+
+  In this example, the custom header is set, and the response is sent immediately.
+
+  ### Summary
+
+  - **With `passthrough: true`**: The response object is passed through to the next middleware or handler, allowing further modifications.
+  - **Without `passthrough: true`**: You have full control over the response and must manually send it.
+
+### The order of Response and Request object does not matter while injecting in a NestJS controller, unlike ExpressJS where order is important.
+
+
+## Default HTTP Status Codes in NestJS
+
+  NestJS provides a comprehensive set of HTTP status codes through the `HttpStatus` module. These status codes are based on the standard HTTP status codes defined by the IETF. Below is a list of the default HTTP status codes available in NestJS:
+
+  ### Informational Responses (100-199)
+
+  - **100 CONTINUE**: The server has received the request headers and the client should proceed to send the request body.
+  - **101 SWITCHING_PROTOCOLS**: The requester has asked the server to switch protocols and the server has agreed to do so.
+  - **102 PROCESSING**: The server has received and is processing the request, but no response is available yet.
+
+  ### Successful Responses (200-299)
+
+  - **200 OK**: The request has succeeded.
+  - **201 CREATED**: The request has been fulfilled and has resulted in one or more new resources being created.
+  - **202 ACCEPTED**: The request has been accepted for processing, but the processing has not been completed.
+  - **203 NON_AUTHORITATIVE_INFORMATION**: The server is a transforming proxy that received a 200 OK from its origin, but is returning a modified version of the origin's response.
+  - **204 NO_CONTENT**: The server successfully processed the request, and is not returning any content.
+  - **205 RESET_CONTENT**: The server successfully processed the request, asks that the requester reset its document view, and is not returning any content.
+  - **206 PARTIAL_CONTENT**: The server is delivering only part of the resource due to a range header sent by the client.
+  - **207 MULTI_STATUS**: The message body that follows is an XML message and can contain a number of separate response codes.
+  - **208 ALREADY_REPORTED**: The members of a DAV binding have already been enumerated in a previous reply to this request, and are not being included again.
+
+  ### Redirection Messages (300-399)
+
+  - **300 MULTIPLE_CHOICES**: Indicates multiple options for the resource from which the client may choose.
+  - **301 MOVED_PERMANENTLY**: This and all future requests should be directed to the given URI.
+  - **302 FOUND**: Tells the client to look at (browse to) another URL.
+  - **303 SEE_OTHER**: The response to the request can be found under another URI using a GET method.
+  - **304 NOT_MODIFIED**: Indicates that the resource has not been modified since the version specified by the request headers.
+  - **305 USE_PROXY**: The requested resource is available only through a proxy, the address for which is provided in the response.
+  - **307 TEMPORARY_REDIRECT**: In this case, the request should be repeated with another URI; however, future requests should still use the original URI.
+  - **308 PERMANENT_REDIRECT**: The request and all future requests should be repeated using another URI.
+
+  ### Client Error Responses (400-499)
+
+  - **400 BAD_REQUEST**: The server cannot or will not process the request due to an apparent client error.
+  - **401 UNAUTHORIZED**: Authentication is required and has failed or has not yet been provided.
+  - **402 PAYMENT_REQUIRED**: Reserved for future use.
+  - **403 FORBIDDEN**: The request was valid, but the server is refusing action.
+  - **404 NOT_FOUND**: The requested resource could not be found but may be available in the future.
+  - **405 METHOD_NOT_ALLOWED**: A request method is not supported for the requested resource.
+  - **406 NOT_ACCEPTABLE**: The requested resource is capable of generating only content not acceptable according to the Accept headers sent in the request.
+  - **407 PROXY_AUTHENTICATION_REQUIRED**: The client must first authenticate itself with the proxy.
+  - **408 REQUEST_TIMEOUT**: The server timed out waiting for the request.
+  - **409 CONFLICT**: Indicates that the request could not be processed because of conflict in the request, such as an edit conflict between multiple simultaneous updates.
+  - **410 GONE**: Indicates that the resource requested is no longer available and will not be available again.
+  - **411 LENGTH_REQUIRED**: The request did not specify the length of its content, which is required by the requested resource.
+  - **412 PRECONDITION_FAILED**: The server does not meet one of the preconditions that the requester put on the request.
+  - **413 PAYLOAD_TOO_LARGE**: The request is larger than the server is willing or able to process.
+  - **414 URI_TOO_LONG**: The URI provided was too long for the server to process.
+  - **415 UNSUPPORTED_MEDIA_TYPE**: The request entity has a media type which the server or resource does not support.
+  - **416 RANGE_NOT_SATISFIABLE**: The client has asked for a portion of the file (byte serving), but the server cannot supply that portion.
+  - **417 EXPECTATION_FAILED**: The server cannot meet the requirements of the Expect request-header field.
+  - **418 I_AM_A_TEAPOT**: This code was defined in 1998 as one of the traditional IETF April Fools' jokes.
+  - **421 MISDIRECTED_REQUEST**: The request was directed at a server that is not able to produce a response.
+  - **422 UNPROCESSABLE_ENTITY**: The request was well-formed but was unable to be followed due to semantic errors.
+  - **423 LOCKED**: The resource that is being accessed is locked.
+  - **424 FAILED_DEPENDENCY**: The request failed due to failure of a previous request.
+  - **425 TOO_EARLY**: Indicates that the server is unwilling to risk processing a request that might be replayed.
+  - **426 UPGRADE_REQUIRED**: The client should switch to a different protocol.
+  - **428 PRECONDITION_REQUIRED**: The origin server requires the request to be conditional.
+  - **429 TOO_MANY_REQUESTS**: The user has sent too many requests in a given amount of time ("rate limiting").
+  - **431 REQUEST_HEADER_FIELDS_TOO_LARGE**: The server is unwilling to process the request because its header fields are too large.
+  - **451 UNAVAILABLE_FOR_LEGAL_REASONS**: The user-agent requested a resource that cannot legally be provided, such as a web page censored by a government.
+
+  ### Server Error Responses (500-599)
+
+  - **500 INTERNAL_SERVER_ERROR**: A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
+  - **501 NOT_IMPLEMENTED**: The server either does not recognize the request method, or it lacks the ability to fulfill the request.
+  - **502 BAD_GATEWAY**: The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+  - **503 SERVICE_UNAVAILABLE**: The server cannot handle the request (because it is overloaded or down for maintenance).
+  - **504 GATEWAY_TIMEOUT**: The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+  - **505 HTTP_VERSION_NOT_SUPPORTED**: The server does not support the HTTP protocol version used in the request.
+  - **506 VARIANT_ALSO_NEGOTIATES**: Transparent content negotiation for the request results in a circular reference.
+  - **507 INSUFFICIENT_STORAGE**: The server is unable to store the representation needed to complete the request.
+  - **508 LOOP_DETECTED**: The server detected an infinite loop while processing a request.
+  - **510 NOT_EXTENDED**: Further extensions to the request are required for the server to fulfill it.
+  - **511 NETWORK_AUTHENTICATION_REQUIRED**: The client needs to authenticate to gain network access.
+
+  ### Usage Example
+
+  To use these status codes in your NestJS application, you can import the `HttpStatus` module and use the constants provided:
+
+  ```typescript
+  import { HttpStatus, Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('example')
+  export class ExampleController {
+    @Get()
+    getExample(@Res() res: Response): void {
+      res.status(HttpStatus.OK).send('This action returns a 200 status code');
+    }
+  }
+  ```
+
+  This example demonstrates how to set the HTTP status code to `200 OK` using the `HttpStatus` module.
+
+  ## Redirection of Paths in a NestJS Controller
+
+  In NestJS, you can perform redirection of paths using the `@Res()` decorator to access the response object and then use the `redirect()` method. This allows you to redirect incoming requests to different URLs.
+
+  ### Example of Redirection
+
+  Here's an example of how to perform a redirection in a NestJS controller:
+
+  ```typescript
+  import { Controller, Get, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('redirect')
+  export class RedirectController {
+    @Get()
+    redirectTo(@Res() res: Response): void {
+      res.redirect('https://example.com');
+    }
+  }
+  ```
+
+  In this example, when a GET request is made to the `/redirect` route, the server will respond with a redirection to `https://example.com`.
+
+  ### Conditional Redirection
+
+  You can also perform conditional redirection based on certain conditions:
+
+  ```typescript
+  import { Controller, Get, Query, Res } from '@nestjs/common';
+  import { Response } from 'express';
+
+  @Controller('conditional-redirect')
+  export class ConditionalRedirectController {
+    @Get()
+    conditionalRedirect(@Query('to') to: string, @Res() res: Response): void {
+      if (to === 'google') {
+        res.redirect('https://google.com');
+      } else {
+        res.redirect('https://example.com');
+      }
+    }
+  }
+  ```
+
+  In this example, the redirection URL is determined based on the query parameter `to`. If `to` is `google`, the request is redirected to `https://google.com`; otherwise, it is redirected to `https://example.com`.
+
+  ### Using the Redirect Module
+
+  NestJS also provides a `Redirect` module that can be used for redirection. This module simplifies the redirection process by using the `@Redirect()` decorator.
+
+  #### Example of Using the Redirect Module
+
+  Here's an example of how to use the `Redirect` module in a NestJS controller:
+
+  ```typescript
+  import { Controller, Get, Redirect } from '@nestjs/common';
+
+  @Controller('redirect')
+  export class RedirectController {
+    @Get()
+    @Redirect('https://example.com')
+    redirectTo(): void {
+      // This method can be empty as the redirection is handled by the @Redirect decorator
+    }
+  }
+  ```
+
+  In this example, the `@Redirect()` decorator is used to specify the redirection URL. When a GET request is made to the `/redirect` route, the server will respond with a redirection to `https://example.com`.
+
+  ### Conditional Redirection with the Redirect Module
+
+  You can also perform conditional redirection using the `@Redirect()` decorator:
+
+  ```typescript
+  import { Controller, Get, Query, Redirect } from '@nestjs/common';
+
+  @Controller('conditional-redirect')
+  export class ConditionalRedirectController {
+    @Get()
+    @Redirect()
+    conditionalRedirect(@Query('to') to: string): { url: string } {
+      if (to === 'google') {
+        return { 
+          url: 'https://google.com',
+          statusCode: 302, 
+        };
+      } else {
+        return { 
+          url: 'https://example.com',
+          statusCode: 302,
+        };
+      }
+    }
+  }
+  ```
+
+  In this example, the redirection URL is determined based on the query parameter `to`. The `@Redirect()` decorator is used without a URL, and the method returns an object with the `url` property to specify the redirection URL.
+
+  ### Summary
+
+  - **Basic Redirection**: Use `res.redirect()` to redirect to a specific URL.
+  - **Conditional Redirection**: Use logic to determine the redirection URL based on request parameters or other conditions.
+  - **Using the Redirect Module**: Use the `@Redirect()` decorator for simpler redirection.
+
+  By using these techniques, you can effectively manage redirections in your NestJS application.
+
+## Route Parameters in NestJS
+
+  Route parameters are dynamic segments of a URL that can be used to capture values at specific positions in the URL path. In NestJS, route parameters are defined using the colon (`:`) syntax in the route path and can be accessed within the controller methods using the `@Param()` decorator.
+
+  ### Defining Route Parameters
+
+  To define a route parameter, include a colon followed by the parameter name in the route path. For example, to define a route parameter named `id`:
+
+  ```typescript
+  import { Controller, Get, Param } from '@nestjs/common';
+
+  @Controller('users')
+  export class UsersController {
+    @Get(':id')
+    findOne(@Param('id') id: string): string {
+      return `This action returns a user with ID ${id}`;
+    }
+  }
+  ```
+
+  In this example, the `findOne` method handles GET requests to the `/users/:id` route. The `@Param('id')` decorator extracts the `id` parameter from the URL and makes it available as a method argument.
+
+  ### Multiple Route Parameters
+
+  You can define multiple route parameters in a single route. For example, to define `userId` and `postId` parameters:
+
+  ```typescript
+  import { Controller, Get, Param } from '@nestjs/common';
+
+  @Controller('users')
+  export class UsersController {
+    @Get(':userId/posts/:postId')
+    findPost(@Param('userId') userId: string, @Param('postId') postId: string): string {
+      return `This action returns post ${postId} for user ${userId}`;
+    }
+  }
+  ```
+
+  In this example, the `findPost` method handles GET requests to the `/users/:userId/posts/:postId` route. The `@Param()` decorator is used to extract both `userId` and `postId` parameters from the URL.
+
+  ### Accessing All Route Parameters
+
+  If you need to access all route parameters as an object, you can use the `@Param()` decorator without specifying a parameter name:
+
+  ```typescript
+  import { Controller, Get, Param } from '@nestjs/common';
+
+  @Controller('users')
+  export class UsersController {
+    @Get(':userId/posts/:postId')
+    findPost(@Param() params: { userId: string; postId: string }): string {
+      return `This action returns post ${params.postId} for user ${params.userId}`;
+    }
+  }
+  ```
+
+  In this example, the `params` object contains all route parameters, allowing you to access `userId` and `postId` as properties of the object.
+
+  ### Summary
+
+  - **Defining Route Parameters**: Use the colon (`:`) syntax in the route path to define route parameters.
+  - **Accessing Route Parameters**: Use the `@Param()` decorator to access route parameters within controller methods.
+  - **Multiple Route Parameters**: Define and access multiple route parameters in a single route.
+  - **Accessing All Parameters**: Use the `@Param()` decorator without a parameter name to access all route parameters as an object.
+
+
+  ## Query Parameters in NestJS
+
+  Query parameters are key-value pairs that appear after the question mark (`?`) in a URL. They are used to pass additional information to the server. In NestJS, you can easily access query parameters in your controller methods using the `@Query()` decorator.
+
+  ### Defining Query Parameters
+
+  To define query parameters, you simply append them to the URL after a question mark. For example, to define a query parameter named `page`:
+
+  ```typescript
+  import { Controller, Get, Query } from '@nestjs/common';
+
+  @Controller('items')
+  export class ItemsController {
+    @Get()
+    findAll(@Query('page') page: number): string {
+      return `This action returns items on page ${page}`;
+    }
+  }
+  ```
+
+  In this example, the `findAll` method handles GET requests to the `/items` route. The `@Query('page')` decorator extracts the `page` query parameter from the URL and makes it available as a method argument.
+
+  ### Multiple Query Parameters
+
+  You can define multiple query parameters in a single route. For example, to define `page` and `limit` parameters:
+
+  ```typescript
+  import { Controller, Get, Query } from '@nestjs/common';
+
+  @Controller('items')
+  export class ItemsController {
+    @Get()
+    findAll(@Query('page') page: number, @Query('limit') limit: number): string {
+      return `This action returns ${limit} items on page ${page}`;
+    }
+  }
+  ```
+
+  In this example, the `findAll` method handles GET requests to the `/items` route. The `@Query()` decorator is used to extract both `page` and `limit` query parameters from the URL.
+
+  ### Accessing All Query Parameters
+
+  If you need to access all query parameters as an object, you can use the `@Query()` decorator without specifying a parameter name:
+
+  ```typescript
+  import { Controller, Get, Query } from '@nestjs/common';
+
+  @Controller('items')
+  export class ItemsController {
+    @Get()
+    findAll(@Query() query: { page: number; limit: number }): string {
+      return `This action returns ${query.limit} items on page ${query.page}`;
+    }
+  }
+  ```
+
+  In this example, the `query` object contains all query parameters, allowing you to access `page` and `limit` as properties of the object.
+
+  ### Summary
+
+  - **Defining Query Parameters**: Append key-value pairs to the URL after a question mark (`?`).
+  - **Accessing Query Parameters**: Use the `@Query()` decorator to access query parameters within controller methods.
+  - **Multiple Query Parameters**: Define and access multiple query parameters in a single route.
+  - **Accessing All Parameters**: Use the `@Query()` decorator without a parameter name to access all query parameters as an object.
+
+  ## Request Headers in NestJS
+
+  Request headers are key-value pairs sent by the client to the server as part of an HTTP request. They provide additional information about the request, such as the content type, authorization tokens, user agent, and more. In NestJS, you can access and utilize request headers in your controllers using the `@Headers()` decorator.
+
+  ### Accessing Request Headers
+
+  To access request headers in a NestJS controller, use the `@Headers()` decorator. This decorator can be used to inject all headers as an object or to extract a specific header by name.
+
+  #### Accessing All Headers
+
+  You can access all request headers as an object using the `@Headers()` decorator without specifying a header name:
+
+  ```typescript
+  import { Controller, Get, Headers } from '@nestjs/common';
+
+  @Controller('headers')
+  export class HeadersController {
+    @Get()
+    getAllHeaders(@Headers() headers: Record<string, string>): string {
+      return `Request headers: ${JSON.stringify(headers)}`;
+    }
+  }
+  ```
+
+  In this example, the `getAllHeaders` method handles GET requests to the `/headers` route. The `@Headers()` decorator injects all request headers as an object, which can then be used within the method.
+
+  #### Accessing a Specific Header
+
+  You can also access a specific header by name using the `@Headers()` decorator with the header name as an argument:
+
+  ```typescript
+  import { Controller, Get, Headers } from '@nestjs/common';
+
+  @Controller('headers')
+  export class HeadersController {
+    @Get()
+    getUserAgent(@Headers('user-agent') userAgent: string): string {
+      return `User-Agent: ${userAgent}`;
+    }
+  }
+  ```
+
+  In this example, the `getUserAgent` method handles GET requests to the `/headers` route. The `@Headers('user-agent')` decorator extracts the `user-agent` header from the request and makes it available as a method argument.
+
+  ### Summary
+
+  - **Accessing All Headers**: Use the `@Headers()` decorator without arguments to access all request headers as an object.
+  - **Accessing a Specific Header**: Use the `@Headers()` decorator with the header name as an argument to access a specific header.
+
+  By utilizing request headers in your NestJS controllers, you can handle additional request information and customize responses based on header values.
+
