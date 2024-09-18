@@ -702,7 +702,7 @@ NestJS applications often include a set of predefined scripts in the `package.js
 
   4. **Return an Observable**:
     - For reactive programming, you can return an Observable. NestJS also supports RxJS Observables. NestJS will subscribe to the Observable and send the emitted value as the response.
-    ```typescript
+  ```typescript
     import { Observable, of } from 'rxjs';
     import { delay } from 'rxjs/operators';
 
@@ -710,25 +710,25 @@ NestJS applications often include a set of predefined scripts in the `package.js
     getHelloAsync4(): Observable {
       return of('Hello World!').pipe(delay(1000));
     }
-    ```
+  ```
 
   5. **Use Streams**:
     - For large data or file downloads, you can return a stream. NestJS will pipe the stream to the response.
-    ```typescript
+  ```typescript
     @Get('file')
     getFile(@Res() res: Response): void {
       const file = createReadStream(join(__dirname, 'file.txt'));
       file.pipe(res);
     }
-    ```
+  ```
 
   6. **Use `@Res()` to Access the Response Object**:
     - By injecting the response object using `@Res()`, you can have full control over the response, including setting headers, status codes, and sending non-JSON responses.
-    ```typescript
+  ```typescript
     @Get()
     getHello(@Res() res: Response): void {
       res.status(HttpStatus.OK).send('Hello World!');
     }
-    ```
+  ```
 
   These methods provide flexibility in handling different types of responses in a NestJS application.
