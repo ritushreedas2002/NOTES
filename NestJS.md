@@ -2219,3 +2219,415 @@ export class AppModule {}
 This setup does two things:
 - Provides `UsersStore` as is
 - Provides `Store` and specifies that same `UsersStore` should be used, which is previously declared.
+
+# Factory Providers in NestJS Dependency Injection
+
+Factory providers in NestJS offer flexible ways to create and manage dependencies. This document covers various scenarios and use cases for factory providers.
+
+## Table of Contents
+
+1. [Basic Factory Provider](#basic-factory-provider)
+2. [Multi-level Factory Provider](#multi-level-factory-provider)
+3. [Inject in Factory Provider](#inject-in-factory-provider)
+4. [Optionality Modes](#optionality-modes)
+5. [Default Cases](#default-cases)
+6. [Injecting Another Class in Factory Provider](#injecting-another-class-in-factory-provider)
+7. [Async Factory Providers](#async-factory-providers)
+8. [Passing Inject Values](#passing-inject-values)
+
+## Basic Factory Provider
+
+A basic factory provider uses a function to create the dependency.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'CONFIG',
+      useFactory: () => ({
+        apiUrl: 'https://api.example.com',
+        timeout: 3000,
+      }),
+    },
+  ],
+})
+export class AppModule {}
+```
+
+Usage:
+
+```typescript
+@Injectable()
+export class AppService {
+  constructor(@Inject('CONFIG') private config: any) {}
+}
+```
+
+## Multi-level Factory Provider
+
+Factory providers can depend on other providers, creating a multi-level dependency chain.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'DATABASE_CONNECTION',
+      useFactory: () => ({ /* connection details */ }),
+    },
+    {
+      provide: 'REPOSITORY',
+      useFactory: (connection) => new Repository(connection),
+      inject: ['DATABASE_CONNECTION'],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Inject in Factory Provider
+
+The `inject` property specifies dependencies for the factory function.
+
+```typescript
+@Module({
+  providers: [
+    ConfigService,
+    {
+      provide: 'API_CLIENT',
+      useFactory: (config: ConfigService) => new ApiClient(config.getApiUrl()),
+      inject: [ConfigService],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Optionality Modes
+
+You can make injected dependencies optional using the `@Optional()` decorator.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'LOGGER',
+      useFactory: (config?: ConfigService) => {
+        return config ? new AdvancedLogger(config) : new BasicLogger();
+      },
+      inject: [{ token: ConfigService, optional: true }],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Default Case with Optional Inject
+
+This example demonstrates how to use a factory provider with a default value and an optional inject.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'EVENT_STORE',
+      useFactory: (config: EnvConfig, limit: number = 4) => {
+        const eventBus$ = 
+          config.envType === 'DEV'
+            ? new ReplaySubject(limit)
+            : new BehaviorSubject(null);
+        
+        console.log(limit);
+        
+        return eventBus$;
+      },
+      inject: [EnvConfig, { token: 'LIMIT', optional: true }],
+    },
+    EnvConfig,
+    {
+      provide: 'LIMIT',
+      useValue: 2,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+### Explanation:
+
+1. The factory provider is creating an `EVENT_STORE`.
+
+2. It takes two parameters:
+   - `config`: An instance of `EnvConfig`
+   - `limit`: A number with a default value of 4
+
+3. The `useFactory` function:
+   - Checks if the environment is 'DEV'
+   - Creates either a `ReplaySubject` or a `BehaviorSubject` based on the environment
+   - Logs the `limit` value
+   - Returns the created subject as `eventBus$`
+
+4. The `inject` array specifies the dependencies:
+   - `EnvConfig`: Required dependency
+   - `'LIMIT'`: Optional dependency with a token
+
+5. A separate provider for `'LIMIT'` is defined with a value of 2.
+
+### Key Points:
+
+- **Default Parameter**: The `limit` parameter in the factory function has a default value of 4. This ensures that even if the 'LIMIT' token is not provided, the factory will still work.
+
+- **Optional Inject**: The 'LIMIT' token is marked as optional in the `inject` array. This means the factory will not throw an error if 'LIMIT' is not provided.
+
+- **Override Default**: Although `limit` has a default of 4 in the function signature, the module provides a value of 2 for the 'LIMIT' token. This will override the default when the token is injected.
+
+- **Environment-based Logic**: The factory uses the `EnvConfig` to determine which type of Subject to create, showcasing how factory providers can use injected dependencies to make runtime decisions.
+
+
+## Injecting Another Class in Factory Provider
+
+Factory providers can inject and use other classes.
+
+```typescript
+@Injectable()
+class DatabaseConnection {
+  // implementation
+}
+
+@Module({
+  providers: [
+    DatabaseConnection,
+    {
+      provide: 'USER_REPOSITORY',
+      useFactory: (dbConnection: DatabaseConnection) => {
+        return new UserRepository(dbConnection);
+      },
+      inject: [DatabaseConnection],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Async Factory Providers
+
+Async factory providers are useful for dependencies that require asynchronous initialization.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'ASYNC_CONNECTION',
+      useFactory: async () => {
+        const connection = await createConnection();
+        await connection.query('SET TIMEZONE = "UTC"');
+        return connection;
+      },
+    },
+  ],
+})
+export class AppModule {}
+```
+
+### Database Connection Example
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'DATABASE_CONNECTION',
+      useFactory: async (configService: ConfigService) => {
+        const connection = await createConnection({
+          type: 'postgres',
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_NAME'),
+        });
+        return connection;
+      },
+      inject: [ConfigService],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Passing Inject Values
+
+You can pass values to the `inject` array, which will be provided to the factory function.
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'CACHE_MANAGER',
+      useFactory: (ttl: number, max: number) => {
+        return new CacheManager(ttl, max);
+      },
+      inject: [
+        { token: 'CACHE_TTL', optional: false },
+        { token: 'CACHE_MAX', optional: true },
+      ],
+    },
+    { provide: 'CACHE_TTL', useValue: 60000 },
+    { provide: 'CACHE_MAX', useValue: 100 },
+  ],
+})
+export class AppModule {}
+```
+
+In this example, `CACHE_TTL` and `CACHE_MAX` are injected into the factory function for `CACHE_MANAGER`. `CACHE_TTL` is required, while `CACHE_MAX` is optional.
+
+
+# Injection Scopes in NestJS
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Types of Injection Scopes](#types-of-injection-scopes)
+   - [DEFAULT Scope](#default-scope)
+   - [REQUEST Scope](#request-scope)
+   - [TRANSIENT Scope](#transient-scope)
+3. [Configuring Injection Scopes](#configuring-injection-scopes)
+4. [Use Cases](#use-cases)
+5. [Performance Considerations](#performance-considerations)
+6. [Best Practices](#best-practices)
+7. [Advanced Topics](#advanced-topics)
+
+## Introduction
+
+Injection scopes in NestJS determine the lifetime and sharing behavior of provider instances across the application. Understanding and properly utilizing these scopes is crucial for managing state, optimizing performance, and ensuring proper isolation between requests in your NestJS applications.
+
+## Types of Injection Scopes
+
+NestJS provides three types of injection scopes:
+
+### DEFAULT Scope
+
+- **Behavior**: Singleton
+- **Lifetime**: Entire application lifecycle
+- **Sharing**: Shared across the entire application
+
+```typescript
+@Injectable()
+export class DefaultScopedService {}
+```
+
+### REQUEST Scope
+
+- **Behavior**: New instance per incoming request
+- **Lifetime**: Duration of a single request
+- **Sharing**: Unique to each request
+
+```typescript
+@Injectable({ scope: Scope.REQUEST })
+export class RequestScopedService {}
+```
+
+### TRANSIENT Scope
+
+- **Behavior**: New instance each time it's injected
+- **Lifetime**: Instantiated each time it's requested
+- **Sharing**: Not shared; new instance for every use
+
+```typescript
+@Injectable({ scope: Scope.TRANSIENT })
+export class TransientScopedService {}
+```
+
+## Configuring Injection Scopes
+
+Scopes can be configured in several ways:
+
+1. **Class Decorator**:
+   ```typescript
+   @Injectable({ scope: Scope.REQUEST })
+   export class RequestScopedService {}
+   ```
+
+2. **Custom Providers**:
+   ```typescript
+   {
+     provide: 'CACHE_MANAGER',
+     useClass: CacheManager,
+     scope: Scope.TRANSIENT,
+   }
+   ```
+
+3. **For Controllers**:
+   ```typescript
+   @Controller({
+     path: 'cats',
+     scope: Scope.REQUEST,
+   })
+   export class CatsController {}
+   ```
+
+## Use Cases
+
+1. **DEFAULT Scope**:
+   - Stateless services
+   - Configuration services
+   - Database connections
+
+2. **REQUEST Scope**:
+   - User-specific services
+   - Request logging
+   - Per-request caching
+
+3. **TRANSIENT Scope**:
+   - Stateful services that shouldn't be shared
+   - Services that need a clean state for each use
+
+## Performance Considerations
+
+- **DEFAULT**: Most performant; single instance
+- **REQUEST**: Moderate impact; new instance per request
+- **TRANSIENT**: Highest impact; new instance each injection
+
+```typescript
+@Injectable({ scope: Scope.REQUEST })
+export class RequestService {
+  constructor() {
+    console.log('RequestService instantiated');
+  }
+}
+```
+
+## Best Practices
+
+1. Use DEFAULT scope unless you have a specific reason not to
+2. Be cautious with REQUEST scope in high-traffic applications
+3. Use TRANSIENT sparingly due to performance implications
+4. Consider using factories for complex scoping scenarios
+
+```typescript
+{
+  provide: 'SCOPED_SERVICE',
+  useFactory: (req) => new RequestScopedService(req),
+  scope: Scope.REQUEST,
+  inject: [REQUEST],
+}
+```
+
+## Advanced Topics
+
+### Scope Hierarchy
+
+- Child modules inherit scopes from parent modules
+- More specific scopes override less specific ones
+
+### Scope Bubbling
+
+- When injecting a scoped provider (REQUEST/TRANSIENT) into a less scoped provider, the scope bubbles up
+
+```typescript
+@Injectable({ scope: Scope.REQUEST })
+class RequestService {}
+
+@Injectable() // Implicitly becomes REQUEST scoped
+class DefaultService {
+  constructor(private requestService: RequestService) {}
+}
+```
