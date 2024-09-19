@@ -1861,9 +1861,18 @@ export class LoggingService {
 ```typescript
 // In a module file
 providers: [
-  { provide: 'API_URL', useValue: 'https://api.example.com' },
+  { provide: 'API_URL', 
+    useValue: 'https://api.example.com' 
+  },
   { provide: 'MAX_RETRIES', useValue: 3 },
-  { provide: 'IS_PRODUCTION', useValue: true }
+  { provide: 'IS_PRODUCTION', useValue: true },
+  { provide: 'NAME_ARRAY', useValue: ["Abc", "DDD"] },
+  { provide: 'USER_OBJECT', 
+    useValue: {
+      type: "DEV",
+      version: 18
+    }
+  }
 ]
 
 // Usage in a component or service
