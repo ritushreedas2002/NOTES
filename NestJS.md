@@ -1432,3 +1432,563 @@ NestJS applications often include a set of predefined scripts in the `package.js
   - **Delete User**: Uses `@Delete(':id')` and `@Param('id')` to delete a user by ID.
 
   This example demonstrates how to perform basic CRUD operations on a `User` entity in a NestJS application.
+
+## Sub-Domain Routing in NestJS Controllers
+
+Sub-domain routing allows you to handle requests based on different sub-domains in your NestJS application. This can be useful for creating multi-tenant applications or separating different parts of your application by sub-domain.
+
+### Setting Up Sub-Domain Routing
+
+To set up sub-domain routing in NestJS, you need to use the `@Controller()` decorator with a sub-domain pattern. The sub-domain pattern is specified using the `@Controller()` decorator's `path` parameter.
+
+#### Example
+
+Here's an example of how to set up sub-domain routing in a NestJS controller:
+
+```typescript
+import { Controller, Get } from "@nestjs/common";
+
+@Controller({ path: "api", host: ":tenant.example.com" })
+export class TenantController {
+  @Get()
+  getTenantData(): string {
+    return "This action returns data for a specific tenant";
+  }
+}
+```
+
+In this example, the `TenantController` handles requests to the `api` path on any sub-domain of `example.com`. The `:tenant` part of the host pattern is a dynamic parameter that captures the sub-domain.
+
+### Accessing Sub-Domain Parameters
+
+You can access the sub-domain parameters in your controller methods using the `@HostParam()` decorator. This decorator allows you to extract the value of a specific sub-domain parameter.
+
+#### Example
+
+Here's an example of how to access sub-domain parameters in a NestJS controller:
+
+```typescript
+import { Controller, Get, HostParam } from "@nestjs/common";
+
+@Controller({ path: "api", host: ":tenant.example.com" })
+export class TenantController {
+  @Get()
+  getTenantData(@HostParam("tenant") tenant: string): string {
+    return `This action returns data for tenant: ${tenant}`;
+  }
+}
+```
+
+In this example, the `getTenantData` method handles GET requests to the `api` path on any sub-domain of `example.com`. The `@HostParam('tenant')` decorator extracts the `tenant` sub-domain parameter and makes it available as a method argument.
+
+### Summary
+
+- **Setting Up Sub-Domain Routing**: Use the `@Controller()` decorator with a sub-domain pattern in the `path` parameter.
+- **Accessing Sub-Domain Parameters**: Use the `@HostParam()` decorator to extract sub-domain parameters within controller methods.
+
+By using sub-domain routing in your NestJS application, you can handle requests based on different sub-domains and create more organized and modular applications.
+
+## How to get the Host & IP Details in NestJS controllers
+
+   Retrieves the host and IP details in a NestJS controller.   
+   This example demonstrates two methods to obtain the host and IP details:
+  1. Using the request object.
+  2. Using the `@nestjs/common` Ip module.
+ 
+  ### Using the Request Object
+  To get the host and IP details using the request object, you can inject the request object into your controller method and access the necessary properties.
+ 
+  ```typescript
+  import { Controller, Get, Req } from '@nestjs/common';
+  import { Request } from 'express';
+ 
+  @Controller('example')
+  export class ExampleController {
+    @Get('host-ip')
+    getHostAndIp(@Req() request: Request): { host: string; ip: string } {
+      const host = request.hostname;
+      const ip = request.ip;
+      return { host, ip };
+    }
+  }
+  ```
+ 
+  ### Using the Ip Module
+  To get the IP details using the `@nestjs/common` Ip module, you can use the `Ip` decorator to directly inject the IP address into your controller method.
+ 
+  ```typescript
+  import { Controller, Get, Ip } from '@nestjs/common';
+ 
+  @Controller('example')
+  export class ExampleController {
+    @Get('ip')
+    getIp(@Ip() ip: string): { ip: string } {
+      return { ip };
+    }
+  }
+  ```
+ 
+ * Note: The `@nestjs/common` Ip module does not provide the host information directly. You will need to use the request object to get the host details.
+
+## Dependency Injection in NestJS
+
+Dependency Injection (DI) is a design pattern used to implement IoC (Inversion of Control), allowing the creation of dependent objects outside of a class and providing those objects to a class in various ways. NestJS uses DI to manage the dependencies of your application components.
+
+### What is Dependency Injection?
+
+Dependency Injection is a technique where an object receives other objects it depends on. These objects are called dependencies. Instead of the object creating its dependencies, they are injected by an external entity, typically a framework or a container.
+
+### Benefits of Dependency Injection
+
+- **Decoupling**: Reduces the coupling between classes and their dependencies.
+- **Testability**: Makes it easier to test classes by allowing dependencies to be mocked or stubbed.
+- **Maintainability**: Simplifies the management of dependencies and their lifecycle.
+
+### Implementing Dependency Injection in NestJS
+
+In NestJS, DI is implemented using providers. Providers are classes annotated with the `@Injectable()` decorator. These providers can then be injected into other classes using the constructor.
+
+#### Example
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CatsService {
+  findAll(): string {
+    return 'This action returns all cats';
+  }
+}
+
+import { Controller, Get } from '@nestjs/common';
+import { CatsService } from './cats.service';
+
+@Controller('cats')
+export class CatsController {
+  constructor(private readonly catsService: CatsService) {}
+
+  @Get()
+  findAll(): string {
+    return this.catsService.findAll();
+  }
+}
+```
+
+In this example, `CatsService` is a provider that is injected into `CatsController` using the constructor.
+
+## Inversion of Control (IoC) Approach
+
+Inversion of Control (IoC) is a principle in software engineering where the control of objects or portions of a program is transferred to a container or framework. IoC is used to increase modularity and make the code more testable.
+
+### IoC Principle
+
+The IoC principle states that the control of creating and managing objects should be inverted from the object itself to an external entity. This external entity is typically a container or framework that manages the lifecycle and dependencies of objects.
+
+### IoC Container
+
+An IoC container is a framework that manages the creation, configuration, and lifecycle of objects. It uses DI to inject dependencies into objects. In NestJS, the IoC container is responsible for managing providers and their dependencies.
+
+#### Example
+
+```typescript
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {}
+```
+
+In this example, the `CatsModule` registers `CatsController` and `CatsService` with the IoC container. The container manages the lifecycle and dependencies of these providers.
+
+## Provider Instances
+
+Providers in NestJS are singletons by default. This means that a single instance of the provider is created and shared across the entire application. However, you can change the scope of a provider to request or transient if needed.
+
+### Singleton Providers
+
+Singleton providers are created once and shared across the entire application.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class SingletonService {
+  // Singleton service logic
+}
+```
+
+### Request-Scoped Providers
+
+Request-scoped providers are created once per request.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+
+@Injectable({ scope: Scope.REQUEST })
+export class RequestService {
+  // Request-scoped service logic
+}
+```
+
+### Transient Providers
+
+Transient providers are created every time they are injected.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+
+@Injectable({ scope: Scope.TRANSIENT })
+export class TransientService {
+  // Transient service logic
+}
+```
+
+## Injection Token
+
+Injection tokens are used to uniquely identify providers in the IoC container. They can be strings, symbols, or classes. Injection tokens are useful when you need to inject a value or a non-class-based provider.
+
+### Using Injection Tokens
+
+You can use injection tokens to provide and inject values or non-class-based providers.
+
+#### Example
+
+```typescript
+import { Module, Inject, Injectable } from '@nestjs/common';
+
+const CONFIG_TOKEN = 'CONFIG_TOKEN';
+
+const config = {
+  apiKey: '12345',
+};
+
+@Module({
+  providers: [
+    {
+      provide: CONFIG_TOKEN,
+      useValue: config,
+    },
+  ],
+})
+export class ConfigModule {}
+
+@Injectable()
+export class ConfigService {
+  constructor(@Inject(CONFIG_TOKEN) private config: any) {}
+
+  getApiKey(): string {
+    return this.config.apiKey;
+  }
+}
+```
+
+In this example, `CONFIG_TOKEN` is an injection token used to provide and inject a configuration object.
+
+### Summary
+
+- **Dependency Injection**: A technique where an object receives its dependencies from an external entity.
+- **IoC Principle**: The control of creating and managing objects is transferred to a container or framework.
+- **IoC Container**: Manages the creation, configuration, and lifecycle of objects.
+- **Provider Instances**: Providers can be singletons, request-scoped, or transient.
+- **Injection Token**: Used to uniquely identify providers in the IoC container.
+
+By understanding and utilizing these concepts, you can effectively manage dependencies and improve the modularity and testability of your NestJS applications.
+
+
+# Using Injection Tokens in NestJS
+
+In NestJS, dependency injection is a key feature that allows you to manage dependencies between components. Injection tokens are used to identify dependencies that need to be injected. While you can use string-based tokens, class-based tokens are often preferred for their type safety and ease of use.
+
+## Class-based Injection Tokens
+
+Class-based injection tokens are the most common and straightforward way to use dependency injection in NestJS. In this approach, you simply use the class itself as the injection token.
+
+### Example
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+class Account {
+  getBalance() {
+    return 1000;
+  }
+}
+
+@Injectable()
+class User {
+  constructor(private account: Account) {}
+
+  checkBalance() {
+    return this.account.getBalance();
+  }
+}
+```
+
+In this example:
+- `Account` is a service class that NestJS can inject.
+- `User` is another service class that depends on `Account`.
+- NestJS automatically injects an instance of `Account` into `User` when creating a `User` instance.
+
+## Using the Injection Token
+
+To use these classes in your application, you need to provide them in a module:
+
+```typescript
+import { Module } from '@nestjs/common';
+
+@Module({
+  providers: [Account, User],
+  exports: [User],
+})
+export class UserModule {}
+```
+
+Now you can use `User` in other parts of your application, and NestJS will automatically handle the injection of `Account`:
+
+```typescript
+@Controller('users')
+export class UserController {
+  constructor(private user: User) {}
+
+  @Get('balance')
+  getBalance() {
+    return this.user.checkBalance();
+  }
+}
+```
+
+## Custom Providers
+
+Sometimes you might need more control over how dependencies are provided. NestJS allows you to use custom providers for these cases:
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: Account,
+      useClass: PremiumAccount,
+    },
+    User,
+  ],
+})
+export class UserModule {}
+```
+
+In this case, whenever `Account` is injected, an instance of `PremiumAccount` will be provided instead.
+
+## String-based Tokens (Less Common)
+
+While class-based tokens are preferred, you can still use string-based tokens if needed:
+
+```typescript
+import { Inject, Injectable } from '@nestjs/common';
+
+const ACCOUNT_TOKEN = 'ACCOUNT_TOKEN';
+
+@Injectable()
+class User {
+  constructor(@Inject(ACCOUNT_TOKEN) private account: Account) {}
+}
+
+@Module({
+  providers: [
+    {
+      provide: ACCOUNT_TOKEN,
+      useClass: Account,
+    },
+    User,
+  ],
+})
+export class UserModule {}
+```
+
+This approach is less common and typically used for special cases or when working with non-class dependencies.
+
+By using injection tokens, particularly class-based ones, NestJS can automatically manage the dependencies in your application, leading to more modular and testable code.
+
+## Providers Scope
+
+[![](https://mermaid.ink/img/pako:eNqdlG2r2jAUx79KiEg3iODDq9UxaKMwmd47pltfrGOkTWoz26Sk6Tbx-t2XtFqtymCLIOk5v_xzcs5JDjCWlEEX9vsHLrh2wcHRKcuZ4wInIiVzEGgMX4jiJMpYaTwH4BSK50TtscyksmwvSYZmWJzRLVuSiGU-iXdbJStBHdcCdtR6TGl-szgZJkPneDz2-6HYKlKkYDMLBTCjrKLGEMKPSv7klKkSrGNZsBA2xA21eMYAS6EJF0xdM3YsRl8NIX6wWEsFXnkYP39-2rwO4bcbbtzhsIffzwfrzfOn-QN20mEDb7mcbxDwvacPXZgJevm4zLyVWe_FscmUBitJq4x1lmHrxyRO2SOvb70-EbtHzstsMQKDwTuz15VpXJvwtWlSm_yTqQ34rhQB1ykX4Dbqi1Jgomoy0Y3WBmsS0zEG4G2968NNvZUN6aWt_QswRbMJa0rXCuE7Dq9t3i6Va1H_Dg38NtymcC3b_McZKcsZS0BeHxQkPMvcXvImQaVWcsfc3mQyOc0HvzjVqTsufqPYdrjbMxdjeqNTnPY-KUXRfyvxc-M1SpTSf1S60jPJRniFTH6ac047PowRXqPARwHy2wN0kMUILcbINNE5qM4Wpd6b1Jnr-b29nudEDu3vr3FPIYI5Uznh1DxXB6sYwvplCqFrppSone2_o-FIpeV6L2LoalUxBM0btE2hm5CsNF9VQYlmM05ML-cNcvwDlPN9xA?type=png)](https://mermaid.live/edit#pako:eNqdlG2r2jAUx79KiEg3iODDq9UxaKMwmd47pltfrGOkTWoz26Sk6Tbx-t2XtFqtymCLIOk5v_xzcs5JDjCWlEEX9vsHLrh2wcHRKcuZ4wInIiVzEGgMX4jiJMpYaTwH4BSK50TtscyksmwvSYZmWJzRLVuSiGU-iXdbJStBHdcCdtR6TGl-szgZJkPneDz2-6HYKlKkYDMLBTCjrKLGEMKPSv7klKkSrGNZsBA2xA21eMYAS6EJF0xdM3YsRl8NIX6wWEsFXnkYP39-2rwO4bcbbtzhsIffzwfrzfOn-QN20mEDb7mcbxDwvacPXZgJevm4zLyVWe_FscmUBitJq4x1lmHrxyRO2SOvb70-EbtHzstsMQKDwTuz15VpXJvwtWlSm_yTqQ34rhQB1ykX4Dbqi1Jgomoy0Y3WBmsS0zEG4G2968NNvZUN6aWt_QswRbMJa0rXCuE7Dq9t3i6Va1H_Dg38NtymcC3b_McZKcsZS0BeHxQkPMvcXvImQaVWcsfc3mQyOc0HvzjVqTsufqPYdrjbMxdjeqNTnPY-KUXRfyvxc-M1SpTSf1S60jPJRniFTH6ac047PowRXqPARwHy2wN0kMUILcbINNE5qM4Wpd6b1Jnr-b29nudEDu3vr3FPIYI5Uznh1DxXB6sYwvplCqFrppSone2_o-FIpeV6L2LoalUxBM0btE2hm5CsNF9VQYlmM05ML-cNcvwDlPN9xA)
+
+* Here both Wallet and Bank providers are within the Bank Module, hence they can import each other to use their features interchangibly.
+
+
+[![](https://mermaid.ink/img/pako:eNqtVX9v2jAQ_SpWEOKfIPGjmtR0qpS4VItW1mmwMWlMlRM74JHYyDFtEeW775yEkAQ2TV2NhJy75-fz8915Z4WSMsux2u0dF1w7aNfRS5awjoM6AUlZx0a54RtRnAQxS8GzQ5214glRWyxjqQy2FUU9GAbO6ILdkYDFHglXCyU3gnYcAzAj42NK88biqBf1Ovv9vt2ei4Ui6yWa3swFgpFugtwwtz4r-cgpUymahHLN5laOaKD8e4ywFJpwwVQVY4bf_wEI8YuFWqr3gbp2Mb7_-mk6t342gIMGELv4w6g7md5_GZ2Chw3wzL27G03NzHM_fazhmaDHj-PMHQOFG4Ygl0ZjSTcxqy3Dxo9JuGTnvJ7xekSszjmPM7-Put1r2KtiGmQmXDUNM5NXmMqA8393bLwv5V28IJDQxN4QEp_g8MQc4YyM3gl05gH0DyKepMVkSRSjyBepJiJkaPRMknVcS4-J_3A-ysIJW5UbNn2wBMLrFrCzmoQxSdMbFqEkUx9FPI6dVnQZ2alWcsWc1nA4LObdJ0710hmsn-3QFIDTgrq5avCsCykKpiB4NRMvsrJgopS-linNZC5VLs4YvbsMLv6JEor86kQ0SCcbj23IgFy6q5oPYxtP7JlX6lFz-33bH9iQrYcz1rz5zdn5rTWCr8WR6i1cGXSNh7JrHA7XM7-_Hq7G1G4jl1KuuRQkRpo9awgtkiohxpRjpqPvU9ODjr2MF0GlZeIZjGk_rkbQew9JFbNHFtulFJWFpkTgeCjlYhEzDVtVmUxvmjEkGNSIlogna6ly4nq7sQ0NmAWSIt6WzsMuiKeIPBIem1fAEJ1rN2a_C9MLdQYXiOW1iGRk2BuV2izp7CIygfILEFKwg_rZ_JicvdtbO4Lr6j4xvlhqJ5AxbbIM3oRl-CYsF__BUkmcrDH7_Uqa1Bp6Hq-x5NlfuZSDFYrBsq2EQVJyCg__zmDmVvbGzy0HppSolemde8CRjZaTrQgtR6sNsy14zRdLy4lInMLXZk2JZjecQCdOCuv-N7x8lIQ?type=png)](https://mermaid.live/edit#pako:eNqtVX9v2jAQ_SpWEOKfIPGjmtR0qpS4VItW1mmwMWlMlRM74JHYyDFtEeW775yEkAQ2TV2NhJy75-fz8915Z4WSMsux2u0dF1w7aNfRS5awjoM6AUlZx0a54RtRnAQxS8GzQ5214glRWyxjqQy2FUU9GAbO6ILdkYDFHglXCyU3gnYcAzAj42NK88biqBf1Ovv9vt2ei4Ui6yWa3swFgpFugtwwtz4r-cgpUymahHLN5laOaKD8e4ywFJpwwVQVY4bf_wEI8YuFWqr3gbp2Mb7_-mk6t342gIMGELv4w6g7md5_GZ2Chw3wzL27G03NzHM_fazhmaDHj-PMHQOFG4Ygl0ZjSTcxqy3Dxo9JuGTnvJ7xekSszjmPM7-Put1r2KtiGmQmXDUNM5NXmMqA8393bLwv5V28IJDQxN4QEp_g8MQc4YyM3gl05gH0DyKepMVkSRSjyBepJiJkaPRMknVcS4-J_3A-ysIJW5UbNn2wBMLrFrCzmoQxSdMbFqEkUx9FPI6dVnQZ2alWcsWc1nA4LObdJ0710hmsn-3QFIDTgrq5avCsCykKpiB4NRMvsrJgopS-linNZC5VLs4YvbsMLv6JEor86kQ0SCcbj23IgFy6q5oPYxtP7JlX6lFz-33bH9iQrYcz1rz5zdn5rTWCr8WR6i1cGXSNh7JrHA7XM7-_Hq7G1G4jl1KuuRQkRpo9awgtkiohxpRjpqPvU9ODjr2MF0GlZeIZjGk_rkbQew9JFbNHFtulFJWFpkTgeCjlYhEzDVtVmUxvmjEkGNSIlogna6ly4nq7sQ0NmAWSIt6WzsMuiKeIPBIem1fAEJ1rN2a_C9MLdQYXiOW1iGRk2BuV2izp7CIygfILEFKwg_rZ_JicvdtbO4Lr6j4xvlhqJ5AxbbIM3oRl-CYsF__BUkmcrDH7_Uqa1Bp6Hq-x5NlfuZSDFYrBsq2EQVJyCg__zmDmVvbGzy0HppSolemde8CRjZaTrQgtR6sNsy14zRdLy4lInMLXZk2JZjecQCdOCuv-N7x8lIQ)
+
+* Here both Wallet and Account providers are in different Modules, hence we first need to import one module into another and then only we can use their provider instances together.
+
+[![](https://mermaid.ink/img/pako:eNqtVW1v2jAQ_itWEOJLkHj5tHSqlBiqoZV2GmydNKbJiS_gkdiRY_oiyn_vOQkQ0grtzZEi5-65x5fnfPbWiRQHx3Pa7a2Qwnhk2zErSKHjkU7Icui4pDR8ZVqwMIEcPVvSybRImX6iKlHaYltx3MNh4cCXcM1CSAIWrZdabSTveBZgR8EH2ohGcNyLe53dbtduL-RSs2xF5qOFJDjyTVgaFs4nre4FB52TWaQyWDglooGa3FJClTRMSNB1jB2T_ndEyF8QGaXfh_rSp_T2y83cTqlPP4y7s_nt5_HC-dGIGzTizoKHDfCdf309LtYI_JuP58JB8uPHceZPkdGPIhTTkKnimwROwqj1Uxat4C1vYL0Bk-u3nMfZpE-63Utcq2YaFCZaNw0LU1CZDgmXb39qvc-HSj0TFNjmfl5m-iqMzuwfvQENXkHvAoT-nsTlO0pYno8gJmkhB4lFknit-F3s5karNXit4XBYzbsPgpuVN8ge3cjuV6-F2_yiwZNVyVRMYfjXTKLaNRUT5_wPmWp8WAyXTl0UrPzPixMfpS6duXfBIfkT96TvTgYu1nqf0Al9bp5QNmy0n4dG24vYs8_ZnE-Y2m3icy6MUJIlxMCjwRVjpVNmTSVmPv42t217bH8hc8NkBPmhsBZjW9Q3BI-rfWETuIfEPfxhLdBuEKaB5EIuEzC4VJ2p6F_MJCdMEnhkaYZkKiYj4CJiBjiZVESNnVUKUyRcCiKVhL0axbwq2NWVPS7dGOXrPoBYrowXqoQ3WQb_hWX4Dyy1EhR9P-nXBK-fF47rpIB1Exyvk601LZzi5lg4Hk4502t7GO8QxzZGzZ5k5HhGb8B18I5YrhwvZkmOX5uMo8QjwfBATyvr7gUs8w0O?type=png)](https://mermaid.live/edit#pako:eNqtVW1v2jAQ_itWEOJLkHj5tHSqlBiqoZV2GmydNKbJiS_gkdiRY_oiyn_vOQkQ0grtzZEi5-65x5fnfPbWiRQHx3Pa7a2Qwnhk2zErSKHjkU7Icui4pDR8ZVqwMIEcPVvSybRImX6iKlHaYltx3MNh4cCXcM1CSAIWrZdabSTveBZgR8EH2ohGcNyLe53dbtduL-RSs2xF5qOFJDjyTVgaFs4nre4FB52TWaQyWDglooGa3FJClTRMSNB1jB2T_ndEyF8QGaXfh_rSp_T2y83cTqlPP4y7s_nt5_HC-dGIGzTizoKHDfCdf309LtYI_JuP58JB8uPHceZPkdGPIhTTkKnimwROwqj1Uxat4C1vYL0Bk-u3nMfZpE-63Utcq2YaFCZaNw0LU1CZDgmXb39qvc-HSj0TFNjmfl5m-iqMzuwfvQENXkHvAoT-nsTlO0pYno8gJmkhB4lFknit-F3s5karNXit4XBYzbsPgpuVN8ge3cjuV6-F2_yiwZNVyVRMYfjXTKLaNRUT5_wPmWp8WAyXTl0UrPzPixMfpS6duXfBIfkT96TvTgYu1nqf0Al9bp5QNmy0n4dG24vYs8_ZnE-Y2m3icy6MUJIlxMCjwRVjpVNmTSVmPv42t217bH8hc8NkBPmhsBZjW9Q3BI-rfWETuIfEPfxhLdBuEKaB5EIuEzC4VJ2p6F_MJCdMEnhkaYZkKiYj4CJiBjiZVESNnVUKUyRcCiKVhL0axbwq2NWVPS7dGOXrPoBYrowXqoQ3WQb_hWX4Dyy1EhR9P-nXBK-fF47rpIB1Exyvk601LZzi5lg4Hk4502t7GO8QxzZGzZ5k5HhGb8B18I5YrhwvZkmOX5uMo8QjwfBATyvr7gUs8w0O)
+
+* Here, Cache-Store is an example of Dedicated Instance. A dedicated instance is an instance which is specifically designed for a particular module only. Thus here Cache-Store instance of Bank Module will have features specifically for Bank module only and not Cache module or Account module.
+
+
+# Provider Types
+
+Provider types in Angular can be categorized into three main groups: Class Based, Non-Class Based, and Factory. Each type has its specific use cases and implementations.
+
+## 1. Class Based
+
+### Standard
+
+- **Type:** Class
+- **Use Case:** Services
+- **Example:**
+
+```typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class LoggingService {
+  log(message: string) {
+    console.log(message);
+  }
+}
+```
+
+## 2. Non-Class Based
+
+### Value
+
+- **Types:** Number, Boolean, String, Object, Array, Function
+- **Use Case:** Configs, Database name, URL
+- **Example:**
+
+```typescript
+// In a module file
+providers: [
+  { provide: 'API_URL', useValue: 'https://api.example.com' },
+  { provide: 'MAX_RETRIES', useValue: 3 },
+  { provide: 'IS_PRODUCTION', useValue: true }
+]
+
+// Usage in a component or service
+constructor(@Inject('API_URL') private apiUrl: string) {}
+```
+
+## 3. Factory
+
+- **Types:** Factory Function, Async Factory Function
+- **Use Case:** Dynamic or Conditional values, class instance
+- **Example:**
+
+```typescript
+// Factory function
+export function databaseFactory(config: Config) {
+  if (config.useMongo) {
+    return new MongoDatabase();
+  } else {
+    return new SqlDatabase();
+  }
+}
+
+// In a module file
+providers: [
+  {
+    provide: Database,
+    useFactory: databaseFactory,
+    deps: [Config]
+  }
+]
+```
+
+These provider types offer flexibility in how dependencies are created and injected in Angular applications. Class-based providers are typically used for services, non-class based providers for configuration and simple values, and factory providers for more complex scenarios requiring runtime decisions or asynchronous initialization.
+
+Here's a markdown documentation for the different injection types based on the information provided in the image:
+
+# Injection Types
+
+The dependency we need can be requested with an Injection token either in the Constructor or in Property definition. There are two main types of injection:
+
+## 1. Constructor Injection
+
+Constructor injection involves passing dependencies through a class's constructor.
+
+### Class Provider
+
+```typescript
+constructor(account: Account) { ... }
+```
+
+Or using the `@Inject` decorator:
+
+```typescript
+constructor(@Inject(Account) account) { ... }
+```
+
+### Non-Class (Value Provider)
+
+```typescript
+constructor(@Inject(ENV) env: String) { ... }
+```
+
+### Use Cases
+- When a dependency is required for the class to function
+- For mandatory dependencies that should be available throughout the class's lifecycle
+
+### Example
+
+```typescript
+class UserService {
+  constructor(@Inject(Account) private account: Account) {}
+  
+  getUserDetails() {
+    // Use this.account to get user details
+  }
+}
+```
+
+## 2. Property Injection
+
+Property injection involves injecting dependencies directly into class properties.
+
+### Class Provider
+
+```typescript
+class User {
+  @Inject(Account)
+  account: Account;
+}
+```
+
+### Non-Class (Value Provider)
+
+```typescript
+class Config {
+  @Inject(ENV)
+  env: String;
+}
+```
+
+### Use Cases
+- For optional dependencies
+- When circular dependencies need to be resolved
+- To make the code more readable by separating dependency declaration from constructor logic
+
+### Example
+
+```typescript
+class UserPreferences {
+  @Inject(Account)
+  private account: Account;
+
+  @Inject(ENV)
+  private environment: String;
+
+  getPreferences() {
+    // Use this.account and this.environment
+  }
+}
+```
+
+## Choosing Between Constructor and Property Injection
+
+- Use Constructor Injection for required dependencies and when you want to ensure the dependency is available as soon as the class is instantiated.
+- Use Property Injection for optional dependencies or when dealing with circular dependency issues.
+
+Both methods allow for easier testing and better adherence to the Dependency Inversion Principle, a key aspect of SOLID programming principles.
+
