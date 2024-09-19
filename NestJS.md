@@ -1992,3 +1992,221 @@ class UserPreferences {
 
 Both methods allow for easier testing and better adherence to the Dependency Inversion Principle, a key aspect of SOLID programming principles.
 
+# Dependency Injection in NestJS
+
+## Overview
+
+Dependency Injection (DI) is a design pattern and a core concept in NestJS. It allows for loose coupling between classes and their dependencies, making the code more modular, testable, and maintainable.
+
+## IOC Container
+
+The Inversion of Control (IOC) Container is a central part of NestJS's DI system. It manages the creation and lifetime of objects (dependencies) in your application.
+
+## Injection Types
+
+### Constructor Injection
+
+This is the most common type of injection in NestJS.
+
+```typescript
+@Controller('/users')
+export class UsersController {
+  constructor(private store: UsersStore) {
+    console.log(this.store);
+  }
+}
+```
+
+### Property Injection
+
+Less common, but useful in certain scenarios:
+
+```typescript
+@Controller('/users')
+export class UsersController {
+  @Inject(UsersStore)
+  private store: UsersStore;
+}
+```
+
+## Injection Tokens
+
+Injection tokens are used to identify dependencies. In most cases, the class itself serves as the token:
+
+```typescript
+constructor(private store: UsersStore) {}
+```
+
+For custom providers, you may use string tokens:
+
+```typescript
+constructor(@Inject('STORE') private store: UsersStore) {}
+```
+
+## Standard Providers
+
+NestJS offers several ways to define providers:
+
+### Class Provider
+
+The most straightforward way to define a provider:
+
+```typescript
+@Module({
+  providers: [UsersStore],
+})
+export class AppModule {}
+```
+
+### Value Provider
+
+Used to provide a constant value:
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'API_KEY',
+      useValue: 'my-api-key',
+    },
+  ],
+})
+export class AppModule {}
+```
+
+### Factory Provider
+
+Useful when the provider needs to be created dynamically:
+
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'CONFIG',
+      useFactory: () => {
+        return process.env.NODE_ENV === 'development'
+          ? devConfig
+          : prodConfig;
+      },
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Class as Dependency
+
+In NestJS, classes can be used as dependencies directly. This is the most common scenario:
+
+```typescript
+@Injectable()
+export class UsersStore {
+  // implementation
+}
+
+@Controller('/users')
+export class UsersController {
+  constructor(private store: UsersStore) {}
+}
+
+@Module({
+  controllers: [UsersController],
+  providers: [UsersStore],
+})
+export class AppModule {}
+```
+
+In this setup:
+1. `UsersStore` is defined as an injectable service.
+2. `UsersController` declares `UsersStore` as a dependency in its constructor.
+3. The `AppModule` includes both `UsersController` and `UsersStore`, allowing NestJS to resolve the dependency.
+
+## Optional Dependencies
+
+You can make a dependency optional using the `@Optional()` decorator:
+
+```typescript
+@Controller('/users')
+export class UsersController {
+  constructor(@Optional() private store?: UsersStore) {}
+}
+```
+
+This allows the application to run even if `UsersStore` is not provided.
+
+## Custom Providers
+
+For more complex scenarios, you can use custom providers:
+
+```typescript
+@Module({
+  controllers: [UsersController],
+  providers: [{
+    provide: 'STORE',
+    useClass: UsersStore
+  }],
+})
+export class AppModule {}
+```
+
+This allows you to use a string token ('STORE') instead of the class itself as the injection token.
+
+By leveraging these Dependency Injection features, NestJS allows you to build flexible, modular, and easily testable applications.
+
+## Dependency Injection Flow
+
+### 1. Provider Definition
+
+In `app.module.ts`, we define providers:
+
+```typescript
+@Module({
+  controllers: [UsersController],
+  providers: [UsersStore, { provide: Store, useClass: UsersStore }],
+})
+export class AppModule {}
+```
+
+This setup does two things:
+- Provides `UsersStore` as is
+- Provides `Store` and specifies that `UsersStore` should be used when `Store` is requested
+
+### 2. Controller Injection
+
+In `users.controller.ts`, we inject the dependency:
+
+```typescript
+@Controller('/users')
+export class UsersController {
+  constructor(private store: Store) {
+    console.log(this.store);
+  }
+}
+```
+
+The `UsersController` requests `Store` in its constructor. NestJS's DI container will provide an instance of `UsersStore` due to the provider configuration.
+
+## IOC Container
+
+The Inversion of Control (IOC) Container manages these dependencies:
+
+1. Initially, `UsersStore` is registered as `UsersStore`
+2. Then, `Store` is registered and mapped to `UsersStore`
+
+## For using the instance of the same class - useExisting
+
+### 1. Provider Definition
+
+In `app.module.ts`, we define providers:
+
+```typescript
+@Module({
+  controllers: [UsersController],
+  providers: [UsersStore, { provide: Store, useExisting: UsersStore }],
+})
+export class AppModule {}
+```
+
+This setup does two things:
+- Provides `UsersStore` as is
+- Provides `Store` and specifies that same `UsersStore` should be used, which is previously declared.
