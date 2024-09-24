@@ -2631,3 +2631,506 @@ class DefaultService {
   constructor(private requestService: RequestService) {}
 }
 ```
+
+# NestJS Modules
+
+NestJS modules are a fundamental part of the framework, providing a way to organize and encapsulate related components, services, and controllers. There are several types of modules in NestJS, each serving a specific purpose. This documentation covers Feature Modules, Shared Modules, Global Modules, and Dynamic Modules.
+
+## Table of Contents
+
+1. [Feature Module](#feature-module)
+2. [Shared Module](#shared-module)
+3. [Global Module](#global-module)
+4. [Dynamic Module](#dynamic-module)
+
+## Feature Module
+
+### Purpose
+
+Feature modules are used to organize the application into cohesive blocks of functionality. Each feature module encapsulates related components, services, and controllers, making the application more modular and maintainable.
+
+### Structure
+
+A typical feature module includes:
+
+- Controllers
+- Services
+- Entities (if using TypeORM or another ORM)
+- Other related providers
+
+### Example
+
+```typescript
+// users.module.ts
+import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class UsersModule {}
+```
+
+### Usage
+
+Feature modules are imported into the root module or other feature modules to compose the application.
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { UsersModule } from './users/users.module';
+
+@Module({
+  imports: [UsersModule],
+})
+export class AppModule {}
+```
+
+## Shared Module
+
+### Purpose
+
+Shared modules are used to share common functionality across multiple feature modules. They typically contain common services, pipes, guards, and other providers that need to be reused.
+
+### Structure
+
+A shared module includes:
+
+- Common services
+- Pipes
+- Guards
+- Other reusable providers
+
+### Example
+
+```typescript
+// common.module.ts
+import { Module } from '@nestjs/common';
+import { CommonService } from './common.service';
+
+@Module({
+  providers: [CommonService],
+  exports: [CommonService],
+})
+export class CommonModule {}
+```
+
+### Usage
+
+Shared modules are imported into feature modules that need the shared functionality.
+
+```typescript
+// users.module.ts
+import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { CommonModule } from '../common/common.module';
+
+@Module({
+  imports: [CommonModule],
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class UsersModule {}
+```
+
+## Global Module
+
+### Purpose
+
+Global modules are used to make providers available globally across the entire application without needing to import the module in each feature module. This is useful for services that are used throughout the application, such as logging or configuration services.
+
+### Structure
+
+A global module includes:
+
+- Services or providers that need to be available globally
+
+### Example
+
+```typescript
+// logging.module.ts
+import { Module, Global } from '@nestjs/common';
+import { LoggingService } from './logging.service';
+
+@Global()
+@Module({
+  providers: [LoggingService],
+  exports: [LoggingService],
+})
+export class LoggingModule {}
+```
+
+### Usage
+
+Global modules are imported once in the root module.
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { LoggingModule } from './logging/logging.module';
+
+@Module({
+  imports: [LoggingModule],
+})
+export class AppModule {}
+```
+
+## Dynamic Module
+
+### Purpose
+
+Dynamic modules are used to create configurable modules that can be customized with different options at runtime. This is useful for modules that need to be initialized with specific configuration settings.
+
+### Structure
+
+A dynamic module includes:
+
+- A static `forRoot` or `forRootAsync` method to accept configuration options
+- Providers that use the configuration options
+
+### Example
+
+```typescript
+// database.module.ts
+import { Module, DynamicModule } from '@nestjs/common';
+import { DatabaseService } from './database.service';
+
+@Module({})
+export class DatabaseModule {
+  static forRoot(options: DatabaseModuleOptions): DynamicModule {
+    return {
+      module: DatabaseModule,
+      providers: [
+        {
+          provide: 'DATABASE_OPTIONS',
+          useValue: options,
+        },
+        DatabaseService,
+      ],
+      exports: [DatabaseService],
+    };
+  }
+}
+```
+
+### Usage
+
+Dynamic modules are configured and imported into the root module or feature modules.
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { DatabaseModule } from './database/database.module';
+
+@Module({
+  imports: [
+    DatabaseModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'test',
+      password: 'test',
+      database: 'test',
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+## Conclusion
+
+Understanding the different types of modules in NestJS and their purposes helps in organizing and structuring your application effectively. Feature modules encapsulate functionality, shared modules provide reusable components, global modules make services available application-wide, and dynamic modules offer configurable and flexible setups.
+
+## Nested Module Import and Export
+
+In NestJS, you can create nested modules that import and export other modules, allowing you to organize your application into smaller, reusable pieces. This approach helps in managing dependencies and ensures that modules are not required to be registered in the root module directly.
+
+### Creating Nested Modules
+
+1. **Feature Module**: A module that encapsulates a specific feature or functionality.
+2. **Shared Module**: A module that provides common services, pipes, guards, etc., to be used across multiple feature modules.
+
+### Example Structure
+
+Let's create a `UsersModule` that depends on a `CommonModule`.
+
+#### Common Module
+
+```typescript
+// common.module.ts
+import { Module } from '@nestjs/common';
+import { CommonService } from './common.service';
+
+@Module({
+  providers: [CommonService],
+  exports: [CommonService],
+})
+export class CommonModule {}
+```
+
+#### Users Module
+
+```typescript
+// users.module.ts
+import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { CommonModule } from '../common/common.module';
+
+@Module({
+  imports: [CommonModule],
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class UsersModule {}
+```
+
+### Importing Nested Modules
+
+To use the `UsersModule` in another module without registering it in the root module, you can create a `FeatureModule` that imports the `UsersModule`.
+
+#### Feature Module
+
+```typescript
+// feature.module.ts
+import { Module } from '@nestjs/common';
+import { UsersModule } from '../users/users.module';
+
+@Module({
+  imports: [UsersModule],
+})
+export class FeatureModule {}
+```
+
+### Using the Feature Module
+
+Now, you can import the `FeatureModule` in the root module or any other module without directly importing the `UsersModule`.
+
+#### Root Module
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { FeatureModule } from './feature/feature.module';
+
+@Module({
+  imports: [FeatureModule],
+})
+export class AppModule {}
+```
+
+### Benefits
+
+- **Encapsulation**: Each module encapsulates its own functionality and dependencies.
+- **Reusability**: Modules can be reused across different parts of the application.
+- **Maintainability**: Easier to manage and maintain smaller, focused modules.
+
+By organizing your application into nested modules and properly managing imports and exports, you can create a scalable and maintainable NestJS application without cluttering the root module.
+
+
+## Dynamic Modules in NestJS: CACHE_STORE Example
+
+Dynamic modules in NestJS allow you to create configurable modules that can be customized with different options at runtime. This is particularly useful for modules that need to be initialized with specific configuration settings.
+
+### Creating the CACHE_STORE Dynamic Module
+
+First, let's create a dynamic module called `CACHE_STORE` that accepts properties like `storeType` and `storeName`.
+
+```typescript
+// cache-store.module.ts
+import { Module, DynamicModule } from '@nestjs/common';
+import { CacheStoreService } from './cache-store.service';
+
+interface CacheStoreOptions {
+  storeType: string;
+  storeName: string;
+}
+
+@Module({})
+export class CacheStoreModule {
+  static forRoot(options: CacheStoreOptions): DynamicModule {
+    return {
+      module: CacheStoreModule,
+      providers: [
+        {
+          provide: 'CACHE_STORE_OPTIONS',
+          useValue: options,
+        },
+        CacheStoreService,
+      ],
+      exports: [CacheStoreService],
+    };
+  }
+}
+```
+
+### CacheStoreService
+
+The `CacheStoreService` will use the provided options.
+
+```typescript
+// cache-store.service.ts
+import { Inject, Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CacheStoreService {
+  constructor(
+    @Inject('CACHE_STORE_OPTIONS') private options: { storeType: string; storeName: string }
+  ) {}
+
+  getStoreDetails() {
+    return `Store Type: ${this.options.storeType}, Store Name: ${this.options.storeName}`;
+  }
+}
+```
+
+### Importing the CACHE_STORE Module
+
+Now, let's import the `CACHE_STORE` module into two different modules: one with default options and another with configured options specific to that module.
+
+#### Default Options
+
+```typescript
+// default.module.ts
+import { Module } from '@nestjs/common';
+import { CacheStoreModule } from './cache-store/cache-store.module';
+
+@Module({
+  imports: [
+    CacheStoreModule.forRoot({
+      storeType: 'memory',
+      storeName: 'defaultStore',
+    }),
+  ],
+})
+export class DefaultModule {}
+```
+
+#### Configured Options
+
+```typescript
+// custom.module.ts
+import { Module } from '@nestjs/common';
+import { CacheStoreModule } from './cache-store/cache-store.module';
+
+@Module({
+  imports: [
+    CacheStoreModule.forRoot({
+      storeType: 'redis',
+      storeName: 'customStore',
+    }),
+  ],
+})
+export class CustomModule {}
+```
+
+### Using the CacheStoreService
+
+You can now inject and use the `CacheStoreService` in controllers or other services within these modules.
+
+```typescript
+// some.controller.ts
+import { Controller, Get } from '@nestjs/common';
+import { CacheStoreService } from './cache-store/cache-store.service';
+
+@Controller('store')
+export class SomeController {
+  constructor(private readonly cacheStoreService: CacheStoreService) {}
+
+  @Get()
+  getStoreDetails() {
+    return this.cacheStoreService.getStoreDetails();
+  }
+}
+```
+
+### Summary
+
+By using dynamic modules, you can create highly configurable and reusable modules in NestJS. The `CACHE_STORE` module example demonstrates how to define a dynamic module and import it with different configurations in separate modules.
+### Setting Default Options in the Root App Module
+
+To set default options for the `CACHE_STORE` module from the root `AppModule`, you can configure it in the root module and then import it into other modules as needed.
+
+#### Root App Module
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { CacheStoreModule } from './cache-store/cache-store.module';
+import { DefaultModule } from './default/default.module';
+import { CustomModule } from './custom/custom.module';
+
+@Module({
+  imports: [
+    CacheStoreModule.forRoot({
+      storeType: 'memory',
+      storeName: 'defaultStore',
+    }),
+    DefaultModule,
+    CustomModule,
+  ],
+})
+export class AppModule {}
+```
+
+#### Default Module
+
+The `DefaultModule` can now simply import the `CacheStoreModule` without additional configuration.
+
+```typescript
+// default.module.ts
+import { Module } from '@nestjs/common';
+import { CacheStoreModule } from './cache-store/cache-store.module';
+
+@Module({
+  imports: [CacheStoreModule],
+})
+export class DefaultModule {}
+```
+
+#### Custom Module
+
+The `CustomModule` can still override the default options by providing its own configuration.
+
+```typescript
+// custom.module.ts
+import { Module } from '@nestjs/common';
+import { CacheStoreModule } from './cache-store/cache-store.module';
+
+@Module({
+  imports: [
+    CacheStoreModule.forRoot({
+      storeType: 'redis',
+      storeName: 'customStore',
+    }),
+  ],
+})
+export class CustomModule {}
+```
+
+### Using the CacheStoreService
+
+You can now inject and use the `CacheStoreService` in controllers or other services within these modules.
+
+```typescript
+// some.controller.ts
+import { Controller, Get } from '@nestjs/common';
+import { CacheStoreService } from './cache-store/cache-store.service';
+
+@Controller('store')
+export class SomeController {
+  constructor(private readonly cacheStoreService: CacheStoreService) {}
+
+  @Get()
+  getStoreDetails() {
+    return this.cacheStoreService.getStoreDetails();
+  }
+}
+```
+
+### Summary
+
+By setting default options in the root `AppModule`, you ensure that the `CACHE_STORE` module has a consistent default configuration across the application. Individual modules can still override these defaults as needed.
