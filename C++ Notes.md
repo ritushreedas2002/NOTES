@@ -93,7 +93,7 @@ Abstraction is the concept of hiding the complex implementation details and show
 #include <iostream>
 using namespace std;
 
-class Animal {
+class Animal { //abstract class
   public:
     virtual void sound() = 0;  // Pure virtual function
 };
@@ -318,6 +318,57 @@ int main() {
   return 0;     // Destructor called
 }
 ```
+## Constructor calling and Destructor Calling Mechanism
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+// Parent class
+class Parent {
+  public:
+    // Constructor of Parent class
+    Parent() {
+        cout << "Parent class constructor called" << endl;
+    }
+    
+    // Destructor of Parent class
+    ~Parent() {
+        cout << "Parent class destructor called" << endl;
+    }
+};
+
+// Child class
+class Child : public Parent {
+  public:
+    // Constructor of Child class
+    Child() {
+        cout << "Child class constructor called" << endl;
+    }
+    
+    // Destructor of Child class
+    ~Child() {
+        cout << "Child class destructor called" << endl;
+    }
+};
+
+int main() {
+    // Creating an object of Child class
+    Child c;
+    
+    return 0;
+}
+
+```
+## Output
+**Syntax:**
+```cpp
+Parent class constructor called
+Child class constructor called
+Child class destructor called
+Parent class destructor called
+```
+
 
 ## Shallow Copy vs Deep Copy
 
@@ -326,6 +377,115 @@ A shallow copy is a bitwise copy of an object. The copied object will share the 
 
 **Syntax:**
 ```cpp
+#include <iostream>
+using namespace std;
+
+class Student {
+  public:
+    string name;
+    double* cgpaPtr;
+
+    // Constructor
+    Student(string name, double cgpa) {
+        this->name = name;
+        cgpaPtr = new double;  // Dynamically allocate memory
+        *cgpaPtr = cgpa;       // Assign the value to the pointer
+    }
+
+    // Shallow Copy Constructor
+    Student(const Student& obj) {
+        this->name = obj.name;
+        this->cgpaPtr = obj.cgpaPtr;  // Shallow copy of pointer (both share the same memory)
+    }
+
+    // Destructor
+    ~Student() {
+        delete cgpaPtr;  // Free dynamically allocated memory
+        cout << "Destructor called for " << name << endl;
+    }
+
+    // Display information
+    void getInfo() {
+        cout << "Name: " << name << endl;
+        cout << "CGPA: " << *cgpaPtr << endl;
+    }
+};
+
+int main() {
+    Student student1("Alice", 3.9);
+    student1.getInfo();
+
+    // Shallow copy of student1 to student2
+    Student student2 = student1;  
+    student2.getInfo();
+
+    // Modifying the CGPA of student2 (which will also affect student1 due to shallow copy)
+    *student2.cgpaPtr = 4.0;
+    cout << "After modifying student2's CGPA:" << endl;
+    student1.getInfo();  // This will also show the modified CGPA
+    student2.getInfo();  // Shows the same modified CGPA
+
+    return 0;
+}
+
+```
+
+## Deep Copy
+A deep copy involves creating a completely new copy of an object, including separate memory for any dynamically allocated resources. This ensures that the original and the copied object do not share the same memory for pointer-type data members.
+
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Student {
+  public:
+    string name;
+    double* cgpaPtr;
+
+    // Constructor
+    Student(string name, double cgpa) {
+        this->name = name;
+        cgpaPtr = new double;  // Dynamically allocate memory
+        *cgpaPtr = cgpa;       // Assign the value to the pointer
+    }
+
+    // Deep Copy Constructor
+    Student(const Student& obj) {
+        this->name = obj.name;
+        this->cgpaPtr = new double;   // Allocate new memory for the pointer
+        *this->cgpaPtr = *obj.cgpaPtr; // Copy the value from the original object
+    }
+
+    // Destructor
+    ~Student() {
+        delete cgpaPtr;  // Free dynamically allocated memory
+        cout << "Destructor called for " << name << endl;
+    }
+
+    // Display information
+    void getInfo() {
+        cout << "Name: " << name << endl;
+        cout << "CGPA: " << *cgpaPtr << endl;
+    }
+};
+
+int main() {
+    Student student1("Alice", 3.9);
+    student1.getInfo();
+
+    // Deep copy of student1 to student2
+    Student student2 = student1;  
+    student2.getInfo();
+
+    // Modifying the CGPA of student2 (which will not affect student1 due to deep copy)
+    *student2.cgpaPtr = 4.0;
+    cout << "After modifying student2's CGPA:" << endl;
+    student1.getInfo();  // This will show the original CGPA
+    student2.getInfo();  // Shows the modified CGPA
+
+    return 0;
+}
 
 ```
 
@@ -395,4 +555,312 @@ int main() {
   return 0;
 }
 ```
+## Static Keyword
+Static Variables
+* A static variable inside a function retains its value between function calls. It is initialized only once and exists for the entire program.
+* A static data member in a class is shared by all objects of the class. All objects access the same memory for this variable.
+  
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
 
+void countCalls() {
+    static int count = 0;  // Static variable is initialized only once
+    count++;
+    cout << "Function called " << count << " times" << endl;
+}
+
+int main() {
+    countCalls();  // Function called 1 times
+    countCalls();  // Function called 2 times
+    countCalls();  // Function called 3 times
+    return 0;
+}
+
+```
+## Output
+
+**Syntax:**
+```cpp
+Function called 1 times
+Function called 2 times
+Function called 3 times
+
+```
+## Static Data Members in Classes
+* A static data member of a class is shared among all objects of the class. There is only one copy of the static member, and it is not tied to any specific object. It can be accessed using the class name, and its value is shared across all instances.
+* A static member function can only access static data members of the class and does not depend on any particular instance of the class.
+  
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Student {
+  public:
+    string name;
+    static int totalStudents;  // Static data member
+
+    // Constructor
+    Student(string n) {
+        name = n;
+        totalStudents++;  // Increment static member
+    }
+
+    // Static member function
+    static int getTotalStudents() {
+        return totalStudents;
+    }
+};
+
+// Initialize static data member
+int Student::totalStudents = 0;
+
+int main() {
+    Student s1("Alice");
+    Student s2("Bob");
+    Student s3("Charlie");
+
+    // Access static member using the class name
+    cout << "Total students: " << Student::getTotalStudents() << endl;  // Output: 3
+
+    return 0;
+}
+```
+
+## Static Objects
+Static objects, much like static variables, have a lifetime that extends until the end of the program. They are created only once and persist throughout the program's execution.
+A static object is initialized only once and retains its state across function calls.
+
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Example {
+  public:
+    Example() {
+        cout << "Constructor called!" << endl;
+    }
+    ~Example() {
+        cout << "Destructor called!" << endl;
+    }
+
+    void display() {
+        cout << "Display function called!" << endl;
+    }
+};
+
+void createStaticObject() {
+    static Example obj;  // Static object
+    obj.display();
+}
+
+int main() {
+    createStaticObject();  // Constructor called, Display function called
+    createStaticObject();  // Only Display function called, constructor is not called again
+    return 0;
+}
+```
+
+## Modes of Inheritance
+
+Modes provides restriction to how the child class treats its parent class variables and functions
+
+| Access in Base Class | Public Inheritance | Protected Inheritance | Private Inheritance |
+|----------------------|--------------------|-----------------------|---------------------|
+| `public`             | `public`           | `protected`           | `private`           |
+| `protected`          | `protected`        | `protected`           | `private`           |
+| `private`            | Not accessible     | Not accessible        | Not accessible      |
+
+
+## 1.Public 
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+  public:
+    int publicVar = 1;
+  protected:
+    int protectedVar = 2;
+  private:
+    int privateVar = 3;
+};
+
+class Derived : public Base {
+  public:
+    void display() {
+        cout << "Public Var: " << publicVar << endl;        // Accessible
+        cout << "Protected Var: " << protectedVar << endl;  // Accessible
+        // cout << privateVar << endl;  // Error: Not accessible
+    }
+};
+
+int main() {
+    Derived obj;
+    obj.display();
+    cout << "Public Var accessed from main: " << obj.publicVar << endl;  // Accessible
+    // cout << obj.protectedVar;  // Error: Not accessible
+    return 0;
+}
+```
+
+## 2.Protected Inheritance
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+  public:
+    int publicVar = 1;
+  protected:
+    int protectedVar = 2;
+  private:
+    int privateVar = 3;
+};
+
+class Derived : protected Base {
+  public:
+    void display() {
+        cout << "Public Var: " << publicVar << endl;        // Accessible
+        cout << "Protected Var: " << protectedVar << endl;  // Accessible
+        // cout << privateVar << endl;  // Error: Not accessible
+    }
+};
+
+int main() {
+    Derived obj;
+    obj.display();
+    // cout << obj.publicVar;  // Error: Not accessible outside the class
+    // cout << obj.protectedVar;  // Error: Not accessible
+    return 0;
+}
+```
+
+## Private Inheritance
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+  public:
+    int publicVar = 1;
+  protected:
+    int protectedVar = 2;
+  private:
+    int privateVar = 3;
+};
+
+class Derived : private Base {
+  public:
+    void display() {
+        cout << "Public Var: " << publicVar << endl;        // Accessible within the class
+        cout << "Protected Var: " << protectedVar << endl;  // Accessible within the class
+        // cout << privateVar << endl;  // Error: Not accessible
+    }
+};
+
+int main() {
+    Derived obj;
+    obj.display();
+    // cout << obj.publicVar;  // Error: Not accessible outside the class
+    // cout << obj.protectedVar;  // Error: Not accessible
+    return 0;
+}
+```
+
+## Friend Function
+A friend function in C++ is a function that is not a member of a class but has access to the class's private and protected members. By declaring a function as a friend of a class, that function can access the private and protected data of the class, which is normally hidden from non-member functions.
+
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+  private:
+    int width, height;
+
+  public:
+    // Constructor
+    Rectangle(int w, int h) : width(w), height(h) {}
+
+    // Declare the friend function
+    friend int area(Rectangle& rect);  // Friend function declaration
+};
+
+// Definition of the friend function
+int area(Rectangle& rect) {
+    // The friend function has access to the private members of the class
+    return rect.width * rect.height;
+}
+
+int main() {
+    // Create an object of the Rectangle class
+    Rectangle rect(10, 5);
+
+    // Call the friend function to calculate the area
+    cout << "Area of rectangle: " << area(rect) << endl;  // Output: 50
+
+    return 0;
+}
+
+```
+
+## Friend Class
+A friend class in C++ is a class that is given access to the private and protected members of another class. By declaring a class as a friend, all member functions of the friend class can access the private and protected data of the class that declares the friendship.
+
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+  private:
+    int width;
+    int height;
+
+  public:
+    // Constructor
+    Rectangle(int w, int h) : width(w), height(h) {}
+
+    // Declare the class 'Calculator' as a friend of 'Rectangle'
+    friend class Calculator;
+};
+
+// Friend class
+class Calculator {
+  public:
+    // Member function of Calculator that calculates the area of Rectangle
+    int area(Rectangle& rect) {
+        // Access private members of Rectangle
+        return rect.width * rect.height;
+    }
+
+    // Member function of Calculator that calculates the perimeter of Rectangle
+    int perimeter(Rectangle& rect) {
+        // Access private members of Rectangle
+        return 2 * (rect.width + rect.height);
+    }
+};
+
+int main() {
+    // Create a Rectangle object
+    Rectangle rect(10, 5);
+
+    // Create a Calculator object
+    Calculator calc;
+
+    // Use the Calculator object to calculate area and perimeter
+    cout << "Area of Rectangle: " << calc.area(rect) << endl;        // Output: 50
+    cout << "Perimeter of Rectangle: " << calc.perimeter(rect) << endl;  // Output: 30
+
+    return 0;
+}
+
+```
