@@ -1,1 +1,50 @@
+1. call Method
+The call method allows you to invoke a function and specify the this value and any arguments you want to pass to the function.
 
+Syntax:
+functionName.call(thisArg, arg1, arg2, ...);
+thisArg refers to the object you want this to refer to in the function.
+arg1, arg2, ... are the arguments you pass to the function.
+Example:
+
+
+let person = { firstname: "Akshay", lastname: "Saini" };
+
+function greet(hometown, state) {
+    console.log(this.firstname + " " + this.lastname + " from " + hometown + ", " + state);
+}
+
+greet.call(person, "Dehradun", "Uttarakhand");
+// Output: Akshay Saini from Dehradun, Uttarakhand
+Here, call allows greet to use person as its this context. This enables us to borrow the greet function for different objects.
+
+2. apply Method
+The apply method is similar to call, but it takes the arguments as an array instead of individual values.
+
+Syntax:
+
+functionName.apply(thisArg, [arg1, arg2, ...]);
+thisArg is the object to use as this.
+[arg1, arg2, ...] is an array of arguments passed to the function.
+Example:
+
+
+let person2 = { firstname: "Sachin", lastname: "Tendulkar" };
+
+greet.apply(person2, ["Mumbai", "Maharashtra"]);
+// Output: Sachin Tendulkar from Mumbai, Maharashtra
+In this example, apply allows us to pass arguments as an array, which can be convenient when the arguments are already in an array format.
+
+3. bind Method
+The bind method doesn’t immediately invoke the function. Instead, it creates a new function with the specified this value and arguments. You can then call this new function at a later time.
+
+Syntax:
+
+let newFunction = functionName.bind(thisArg, arg1, arg2, ...);
+thisArg is the value of this inside the new function.
+arg1, arg2, ... are optional arguments that will be preset in the new function.
+Example:
+
+let boundGreet = greet.bind(person2, "Mumbai", "Maharashtra");
+boundGreet(); 
+// Output: Sachin Tendulkar from Mumbai, Maharashtra
