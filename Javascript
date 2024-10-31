@@ -85,6 +85,7 @@ let name = null;
 console.log(name ?? "Default Name"); // Output: "Default Name"
 Explanation: ?? returns the right side only if the left side is null or undefined.
 
+---------shallow copy & deep copy-----------------------
 6.// Example 1
 let ritikRuns = { name: "Ritik", total: 0 };
 let otherRuns = ritikRuns;
@@ -102,7 +103,7 @@ explanation:In the first example, otherRuns is assigned the reference of ritikRu
 
 7. // Example 2
 let ritikRuns = { name: "Ritik", total: 0 };
-let otherRuns = { ...ritikRuns };
+let otherRuns = { ...ritikRuns };  //or Object.assign({},ritikRuns);
 otherRuns.total = 90;
 
 console.log(ritikRuns);
@@ -113,5 +114,20 @@ In the second example, otherRuns is created using the spread operator { ...ritik
 Output:
 { name: "Ritik", total: 0 }
 { name: "Ritik", total: 90 }
+
+8. let ritikRuns = { name: "Ritik", total: 0 ,balls:{type:"leather"};
+let otherRuns = { ...ritikRuns };  //or Object.assign({},ritikRuns);
+otherRuns.total = 90;
+otherRuns.balls.type="tennis";
+console.log(ritikRuns);
+console.log(otherRuns);
+
+Output:
+{ name: "Ritik", total: 0, balls:{type:"tennis"} }
+{ name: "Ritik", total: 90,balls:{type:"tennis"} }
+
+//Reason due to nested json ...spread operator does not create deep copy
+
+so we do JSON.parse(JSON.stringify(developer));
 
 =============================================================
