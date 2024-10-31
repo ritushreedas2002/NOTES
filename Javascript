@@ -1,3 +1,66 @@
+What is DOM?
+The Document Object Model (DOM) is a programming interface for web documents. It represents the structure of
+an HTML or XML document as a tree of objects, where each node is an object representing a part of the document (like elements, attributes, text).
+eg:
+HTML <body><p>hello<p></body>
+DOM:{p:"hello"}
+
+
+
+Difference between HTML And XML?
+HTML (HyperText Markup Language) and XML (eXtensible Markup Language) are both markup languages, but they serve different purposes and have distinct characteristics. 
+Here’s a breakdown of their key differences:
+1. Purpose
+HTML: Designed to display data and define the structure of web pages. It focuses on how data is presented (e.g., with elements like headings, paragraphs, links).
+XML: Designed to store and transport data. It focuses on the structure and meaning of data rather than how it is displayed. XML is often used for data exchange between systems.
+==========================
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <title>GeeksforGeeks</title>
+</head>
+ 
+<body>
+    <h1 style="color: green;">
+        GeeksforGeeks
+    </h1>
+    <p>
+        A Computer Science portal for geeks
+    </p>
+</body>
+ 
+</html>
+
+XML
+====
+<?xml version = "1.0"?> 
+<contactinfo> 
+	<address category = "college"> 
+		<name>G4G</name> 
+		<College>Geeksforgeeks</College> 
+		<mobile>2345456767</mobile> 
+	</address> 
+</contactinfo> 
+
+
+
+what is an API?
+An API (Application Programming Interface) is a set of rules and protocols that allows one piece of software to interact with another. In programming terms, it serves as an intermediary that enables different software applications to communicate with each other.
+APIs define the methods and data formats that applications can use to request and exchange information.
+
+Components of an API Request
+A typical API request usually consists of:
+
+    Endpoint: The URL where the API is accessed (e.g., https://api.example.com/users).
+    Method: Defines the action to be performed, typically one of the following:
+        GET: Retrieve data.
+        POST: Submit or create new data.
+        PUT/PATCH: Update existing data.
+        DELETE: Remove data.
+    Headers: Provide additional information, such as authentication tokens or content type.
+    Body: Contains data (in JSON or XML format) sent in POST or PUT requests.
+
 1. call Method
 The call method allows you to invoke a function and specify the this value and any arguments you want to pass to the function.
 
