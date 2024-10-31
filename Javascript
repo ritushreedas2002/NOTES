@@ -51,7 +51,7 @@ boundGreet();
 
 ==========================================================================================================
 
-SHORT QS
+SHORT OUTPUT BASED QS
 
 1.console.log(!"hello");
 In JavaScript, the ! (logical NOT) operator converts its operand to a boolean and then inverts it.
@@ -85,5 +85,33 @@ let name = null;
 console.log(name ?? "Default Name"); // Output: "Default Name"
 Explanation: ?? returns the right side only if the left side is null or undefined.
 
+6.// Example 1
+let ritikRuns = { name: "Ritik", total: 0 };
+let otherRuns = ritikRuns;
+otherRuns.total = 90;
+
+console.log(ritikRuns);
+console.log(otherRuns);
+
+{ name: "Ritik", total: 90 }
+{ name: "Ritik", total: 90 }
+
+explanation:In the first example, otherRuns is assigned the reference of ritikRuns. This means both ritikRuns and otherRuns point to the same object in memory. When otherRuns.total is updated to 90, it also updates ritikRuns.total because they reference the same object.
+
+
+
+7. // Example 2
+let ritikRuns = { name: "Ritik", total: 0 };
+let otherRuns = { ...ritikRuns };
+otherRuns.total = 90;
+
+console.log(ritikRuns);
+console.log(otherRuns);
+
+In the second example, otherRuns is created using the spread operator { ...ritikRuns }. This creates a shallow copy of ritikRuns, so otherRuns is a separate object. When otherRuns.total is updated to 90, it does not affect ritikRuns as they are now independent objects.
+
+Output:
+{ name: "Ritik", total: 0 }
+{ name: "Ritik", total: 90 }
 
 =============================================================
