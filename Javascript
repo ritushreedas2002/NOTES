@@ -48,3 +48,42 @@ Example:
 let boundGreet = greet.bind(person2, "Mumbai", "Maharashtra");
 boundGreet(); 
 // Output: Sachin Tendulkar from Mumbai, Maharashtra
+
+==========================================================================================================
+
+SHORT QS
+
+1.console.log(!"hello");
+In JavaScript, the ! (logical NOT) operator converts its operand to a boolean and then inverts it.
+
+When you use ! with a string (like "hello"), JavaScript first converts the string to a boolean.
+Any non-empty string (like "hello") is considered truthy, which means it evaluates to true when converted to a boolean.
+Applying ! to true inverts it to false.
+So:
+console.log(!"hello"); // Output: false
+
+
+2. console.log(+false);
+In JavaScript, the + operator can be used to convert a boolean to a number.
+
+false is converted to 0 when you apply the unary + operator, because false is considered falsy.
+So, +false evaluates to 0.
+
+Therefore:
+console.log(+false); // Output: 0
+
+3. arr=[1,2,3,4];
+   arr.splice(0,1); //startindex, no_of_elements to be deleted
+   arr.unshift(8); //[8,2,3,4];
+
+4.Bitwise NOT Operator
+console.log(~5); // Output: -6
+Explanation: The ~ operator inverts the bits of the number. ~5 is equivalent to -(5 + 1), so the output is -6.
+
+5.Nullish Coalescing Operator
+let name = null;
+console.log(name ?? "Default Name"); // Output: "Default Name"
+Explanation: ?? returns the right side only if the left side is null or undefined.
+
+
+=============================================================
