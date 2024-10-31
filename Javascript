@@ -130,4 +130,26 @@ Output:
 
 so we do JSON.parse(JSON.stringify(developer));
 
+
+IIFE (Immediately Invoked Function Expression)
+=======================================================
+
+var hello=function(){ //function expression
+    console.log("hello world");
+}
+
+(function(){
+    var prefix="HELLO";
+    console.log("hello world");
+})();
+
+var prefix="HELLO BETU";
+console.log(prefix);
+
+//here there is no shadowing
+
+to separate the variable from the global excution context.To stop polluting the global execution context.
+
+
+
 =============================================================
