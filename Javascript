@@ -216,3 +216,87 @@ to separate the variable from the global excution context.To stop polluting the 
 
 
 =============================================================
+EVENTS
+---------
+1.EVENT BUBBLING
+
+Event bubbling is the default behavior in which an event starts from the target element that triggered it and then bubbles up to its parent elements in the DOM hierarchy.
+
+Example of Event Bubbling:
+Consider the following HTML:
+
+CODE
+====
+<div id="parent">
+  <button id="child">Click me</button>
+</div>
+
+<script>
+  document.getElementById("parent").addEventListener("click", () => {
+    console.log("Parent div clicked");
+  });
+
+  document.getElementById("child").addEventListener("click", () => {
+    console.log("Button clicked");
+  });
+</script>
+Explanation:
+
+When you click on the button (#child), two logs will appear:
+OUTPUT
+-------
+Button clicked
+Parent div clicked
+
+
+
+2. EVENT CAPTURING
+------------------
+Event capturing is the opposite of event bubbling. In capturing, the event starts from the topmost element in the hierarchy and goes down to the target element. To enable capturing, we pass an additional argument { capture: true } to addEventListener.
+
+Example of Event Capturing:
+
+<div id="parent">
+  <button id="child">Click me</button>
+</div>
+
+<script>
+  document.getElementById("parent").addEventListener("click", () => {
+    console.log("Parent div clicked");
+  }, { capture: true });
+
+  document.getElementById("child").addEventListener("click", () => {
+    console.log("Button clicked");
+  });
+</script>
+
+Explanation:
+
+With { capture: true }, the event is captured starting from the #parent div before reaching #child.
+When you click the button, the output will be:
+
+Parent div clicked
+Button clicked
+
+3.stopPropagation()
+---------------------
+stopPropagation() is a method that prevents further propagation of an event in the capturing and bubbling phases. 
+
+4. e.preventDefault()
+-------------------
+preventDefault() is a method that prevents the default action associated with an event. For example, clicking a link usually navigates to a new URL. 
+preventDefault() stops this navigation.
+
+<a href="https://www.example.com" id="myLink">Go to Example</a>
+
+<script>
+  document.getElementById("myLink").addEventListener("click", (event) => {
+    event.preventDefault();
+    console.log("Link click prevented");
+  });
+</script>
+
+Normally, clicking the link would navigate to https://www.example.com.
+However, with event.preventDefault(), navigation is prevented, and instead, we see:
+
+Link click prevented
