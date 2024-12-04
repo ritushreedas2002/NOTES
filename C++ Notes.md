@@ -1099,6 +1099,8 @@ int main() {
 ## Friend Function
 A friend function in C++ is a function that is not a member of a class but has access to the class's private and protected members. By declaring a function as a friend of a class, that function can access the private and protected data of the class, which is normally hidden from non-member functions.
 
+Remember, friendship in C++ is not inherited, i.e., if class A has a friend function abc(), any child class derived from class A will not have any access to abc() function.
+
 **Syntax:**
 ```cpp
 #include <iostream>
@@ -1137,6 +1139,7 @@ int main() {
 
 ## Friend Class
 A friend class in C++ is a class that is given access to the private and protected members of another class. By declaring a class as a friend, all member functions of the friend class can access the private and protected data of the class that declares the friendship.
+
 Remember, friendship in C++ is not mutual, i.e., if class A is friend class of class B, this does not mean class B is friend class of class A.
 
 **Syntax:**
