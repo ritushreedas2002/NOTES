@@ -280,7 +280,7 @@ class Dog : public Mammal, public Pet {
 ## 6. Polymorphism
 Polymorphism allows methods to do different things based on the object it is acting upon. There are two types:
 * Compile-time (Method Overloading)
-* Run-time (Method Overriding)
+* Run-time (1. Method Overriding  2. Virtual Function)
 
  ## Method Overloading Example:
 **Syntax:**
@@ -392,9 +392,34 @@ int main() {
 }
 
 ```
-
-
 ## Method Overriding Example:
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+  public:
+     void show() {
+      cout << "Base class" << endl;
+    }
+};
+
+class Derived : public Base {
+  public:
+    void show() {
+      cout << "Derived class" << endl;
+    }
+};
+int main() {
+    // Write C++ code here
+    std::cout << "Try programiz.pro";
+    Derived d;
+    d.show();
+}
+```
+
+## Method Overriding using virtual Function Example:
 **Syntax:**
 ```cpp
 #include <iostream>
@@ -855,6 +880,70 @@ int main() {
 Static objects, much like static variables, have a lifetime that extends until the end of the program. They are created only once and persist throughout the program's execution.
 A static object is initialized only once and retains its state across function calls.
 
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class ABC {
+public:
+    ABC() {
+        cout << "constructor\n";
+    }
+
+    ~ABC() {
+        cout << "destructor\n";
+    }
+};
+
+int main() {
+    if (true) {
+        ABC obj;
+    }
+
+    cout << "end of main fnx\n";
+    return 0;
+}
+```
+**Output:**
+```cpp
+constructor
+destructor
+end of main fnx
+
+```
+## with static 
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class ABC {
+public:
+    ABC() {
+        cout << "constructor\n";
+    }
+
+    ~ABC() {
+        cout << "destructor\n";
+    }
+};
+
+int main() {
+    if (true) {
+        static ABC obj;
+    }
+
+    cout << "end of main fnx\n";
+    return 0;
+}
+```
+**Output:**
+```cpp
+constructor
+end of main fnx
+destructor
+```
 **Syntax:**
 ```cpp
 #include <iostream>
