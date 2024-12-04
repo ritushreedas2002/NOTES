@@ -1113,7 +1113,7 @@ class Rectangle {
     Rectangle(int w, int h) : width(w), height(h) {}
 
     // Declare the friend function
-    friend int area(Rectangle& rect);  // Friend function declaration
+    friend int area(Rectangle& rect);  // Friend function declaration //friend int area(Rectangle); -> this is also correct
 };
 
 // Definition of the friend function
@@ -1136,6 +1136,7 @@ int main() {
 
 ## Friend Class
 A friend class in C++ is a class that is given access to the private and protected members of another class. By declaring a class as a friend, all member functions of the friend class can access the private and protected data of the class that declares the friendship.
+Remember, friendship in C++ is not mutual, i.e., if class A is friend class of class B, this does not mean class B is friend class of class A.
 
 **Syntax:**
 ```cpp
