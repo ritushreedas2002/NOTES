@@ -1113,7 +1113,8 @@ class Rectangle {
     Rectangle(int w, int h) : width(w), height(h) {}
 
     // Declare the friend function
-    friend int area(Rectangle& rect);  // Friend function declaration //friend int area(Rectangle); -> this is also correct
+    friend int area(Rectangle& rect);  // Friend function declaration
+  //friend int area(Rectangle); -> this is also correct
 };
 
 // Definition of the friend function
