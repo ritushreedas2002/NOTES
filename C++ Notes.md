@@ -448,6 +448,17 @@ int main() {
 }
 ```
 
+## Diff between virtual func and pure virtual func
+In C++, the main difference between a virtual function and a pure virtual function is that a pure virtual function must be overridden in a derived class, while a virtual function does not need to be:
+
+Virtual Function:-
+A virtual function is a member function that can be overridden by derived classes. When a virtual function is called through a base class pointer or reference, the actual function called is determined at runtime, based on the type of the object being pointed to.
+
+Pure virtual function:-
+A special type of virtual function that is declared in a base class but does not have a definition in the base class. It is intended to be overridden and implemented by derived classes. 
+To declare a function as pure virtual, you use the syntax =0. For example, virtual void f3() = 0; is a pure virtual function. 
+Classes that contain pure virtual functions are called "abstract" and cannot be instantiated directly. Instead, they can be used as a blueprint for creating concrete derived classes.
+
 ## 7. Constructors and Destructors
 ## Constructor:
 A constructor is a special member function that initializes objects of a class. It is automatically called when an object is created.
