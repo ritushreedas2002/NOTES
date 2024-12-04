@@ -141,13 +141,148 @@ int main() {
   return 0;
 }
 ```
+## Levels of Inheritance
+* ## Single Inheritance
+Single inheritance is when a class inherits from one base class.
+**Syntax:**
+```cpp
+class Animal {
+  public:
+    void eat() {
+      cout << "Eating..." << endl;
+    }
+};
+
+class Dog : public Animal {
+  public:
+    void bark() {
+      cout << "Barking..." << endl;
+    }
+};
+
+int main() {
+  Dog d;
+  d.eat();  // Inherited from Animal class
+  d.bark(); // Specific to Dog class
+  return 0;
+}
+```
+* ## Multilevel Inheritance
+Multilevel inheritance is when a class inherits from another class, which itself inherits from another class.
+**Syntax:**
+```cpp
+class Animal {
+  public:
+    void eat() {
+      cout << "Eating..." << endl;
+    }
+};
+
+class Mammal : public Animal {
+  public:
+    void walk() {
+      cout << "Walking..." << endl;
+    }
+};
+
+class Dog : public Mammal {
+  public:
+    void bark() {
+      cout << "Barking..." << endl;
+    }
+};
+
+```
+* ## Hierarchical Inheritance
+Hierarchical inheritance is when multiple classes inherit from the same base class.
+**Syntax:**
+```cpp
+class Animal {
+  public:
+    void eat() {
+      cout << "Eating..." << endl;
+    }
+};
+
+class Dog : public Animal {
+  public:
+    void bark() {
+      cout << "Barking..." << endl;
+    }
+};
+
+class Cat : public Animal {
+  public:
+    void meow() {
+      cout << "Meowing..." << endl;
+    }
+};
+```
+* ## Multiple Inheritance
+Multiple inheritance is when a class inherits from more than one base class.
+**Syntax:**
+```cpp
+class Animal {
+  public:
+    void eat() {
+      cout << "Eating..." << endl;
+    }
+};
+
+class Pet {
+  public:
+    void play() {
+      cout << "Playing..." << endl;
+    }
+};
+
+class Dog : public Animal, public Pet {
+  public:
+    void bark() {
+      cout << "Barking..." << endl;
+    }
+};
+
+```
+* ## Hybrid Inheritance
+Hybrid inheritance is a combination of two or more types of inheritance.
+**Syntax:**
+```cpp
+class Animal {
+  public:
+    void eat() {
+      cout << "Eating..." << endl;
+    }
+};
+
+class Mammal : public Animal {
+  public:
+    void walk() {
+      cout << "Walking..." << endl;
+    }
+};
+
+class Pet {
+  public:
+    void play() {
+      cout << "Playing..." << endl;
+    }
+};
+
+class Dog : public Mammal, public Pet {
+  public:
+    void bark() {
+      cout << "Barking..." << endl;
+    }
+};
+```
 
 ## 6. Polymorphism
 Polymorphism allows methods to do different things based on the object it is acting upon. There are two types:
 * Compile-time (Method Overloading)
 * Run-time (Method Overriding)
 
-## Method Overloading Example:
+ ## Method Overloading Example:
 **Syntax:**
 ```cpp
 #include <iostream>
@@ -171,6 +306,93 @@ int main() {
   return 0;
 }
 ```
+## Constructor Overloading
+Constructor overloading allows a class to have multiple constructors with different parameter lists. The appropriate constructor is called based on the number or type of arguments passed.
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Box {
+  private:
+    int length, width, height;
+
+  public:
+    // Constructor with no arguments
+    Box() {
+      length = width = height = 0;
+    }
+
+    // Constructor with one argument
+    Box(int side) {
+      length = width = height = side;
+    }
+
+    // Constructor with three arguments
+    Box(int l, int w, int h) {
+      length = l;
+      width = w;
+      height = h;
+    }
+
+    int volume() {
+      return length * width * height;
+    }
+};
+
+int main() {
+  Box box1;             // Calls the no-argument constructor
+  Box box2(5);          // Calls the one-argument constructor
+  Box box3(2, 3, 4);    // Calls the three-argument constructor
+
+  cout << "Volume of box1: " << box1.volume() << endl;  // Output: 0
+  cout << "Volume of box2: " << box2.volume() << endl;  // Output: 125
+  cout << "Volume of box3: " << box3.volume() << endl;  // Output: 24
+
+  return 0;
+}
+
+```
+## Operator Overloading
+Operator overloading allows you to redefine the way operators work for user-defined types. For example, you can redefine the + operator to add two objects of a custom class.
+**Syntax:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Complex {
+  private:
+    int real, imag;
+
+  public:
+    // Constructor
+    Complex(int r, int i) : real(r), imag(i) {}
+
+    // Overload the + operator
+    Complex operator+(const Complex& obj) {
+        Complex temp(0, 0);
+        temp.real = real + obj.real;
+        temp.imag = imag + obj.imag;
+        return temp;
+    }
+
+    void display() {
+      cout << real << " + " << imag << "i" << endl;
+    }
+};
+
+int main() {
+  Complex c1(3, 4), c2(1, 2);
+
+  Complex c3 = c1 + c2;  // Uses the overloaded + operator
+
+  c3.display();          // Output: 4 + 6i
+
+  return 0;
+}
+
+```
+
 
 ## Method Overriding Example:
 **Syntax:**
