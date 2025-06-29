@@ -155,6 +155,23 @@ docker run nginx
   ```
   docker run -it ubuntu
   ```
+### What is Interactive Mode in Docker?
+
+If you want to run a container in interactive mode (with a terminal session), use the `-it` option with `docker run`:
+
+```
+docker run -it <image_name>
+```
+
+- `-i` (interactive): Keeps STDIN open so you can interact with the container.
+- `-t` (tty): Allocates a pseudo-TTY (terminal).
+
+**Example:**
+```
+docker run -it ubuntu
+```
+This command starts an Ubuntu container and gives you a shell prompt inside the container.
+
 
 - To run and open a Bash shell in the container:
   ```
