@@ -14,3 +14,30 @@ plugins-> configuration
 dependencies->downloading 3rd party libraries
 
 maven remote repo ------------------->maven local repo (through internet connection)
+
+Maven build Life Cyccle
+===============================
+
+VAlidate
+Compile
+Test
+Package
+Integration Test
+Verify
+Install -install in local repo
+Deploy - Intsall in remote rep's to use by other projects
+
+
+how to execute
+right click on the project -> run as -> maven build or maven clean 
+
+in maven build in goal -> compile or clean to achieve the goal
+
+Maven-resources-plugin
+
+MAven install-> it will create a whole jar file of your project where it will 
+do the following steps of validate, compile,test,package,verify, then finally installed
+
+
+to execute only test -> maven test or in maven build enter clean as goal
+
