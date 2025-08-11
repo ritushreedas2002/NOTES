@@ -1,0 +1,16 @@
+1.
+maven project 
+
+1. packaging
+2. dependency
+3. project structure
+4. plugins
+
+
+pom.xml
+==========
+
+plugins-> configuration
+dependencies->downloading 3rd party libraries
+
+maven remote repo ------------------->maven local repo (through internet connection)
