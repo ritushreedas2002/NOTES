@@ -137,3 +137,50 @@ install
 Plus: uploads (deploys) your packaged artifact (JAR/WAR) to a remote repository (e.g., Nexus, Artifactory, or a Maven Central mirror).
 
 Used when you want to share your build with other developers or systems that don’t have your local repo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELENIUM GRID
+========================================================================================================================================================================
+
+             +-------------------+
+             |   Selenium Hub     |
+             |-------------------|
+             | Listens for tests  |
+             | Distributes tests  |
+             +---------+---------+
+                       |
+       ---------------------------------
+       |                               |
++------+-------+               +-------+------+
+|   Node 1     |               |   Node 2     |
+|--------------|               |--------------|
+| OS: Windows  |               | OS: Linux    |
+| Browser:     |               | Browser:     |
+| Chrome, Edge |               | Firefox      |
++--------------+               +--------------+
+
+Explanation:
+
+Hub: Central point where you send your test scripts.
+
+Nodes: Machines (physical/virtual) where the browsers are installed and tests run.
+
+You can have multiple nodes with different OS and browsers.
+
+NOTE ::: ONCE ATTACHED ALL THE NODES TO THE HUB , hUB CAN RECOGNISE ALL THE NODES WITH THE BROWSER SETUP
