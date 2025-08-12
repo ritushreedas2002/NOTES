@@ -184,3 +184,6 @@ Nodes: Machines (physical/virtual) where the browsers are installed and tests ru
 You can have multiple nodes with different OS and browsers.
 
 NOTE ::: ONCE ATTACHED ALL THE NODES TO THE HUB , hUB CAN RECOGNISE ALL THE NODES WITH THE BROWSER SETUP
+
+Example:
+My test case has browser chrome and the os : mac , so as my hub have all the nodes , so the test case runs in that node having os: mac and the browser : chrome
