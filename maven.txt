@@ -61,4 +61,64 @@ maven surefire plugin
 </build>
 
 
+================================================================================================
+
+
+MVN CLI
+==========
+
+
+first in command propmt move to teh project folder
+
+
+mvn validate
+mvn clean
+mvn compile
+mvn test
+mvn package
+mvn install
+
+
+1️⃣ mvn validate
+Checks your project’s structure and configuration.
+
+Makes sure pom.xml is valid, all required info (dependencies, plugins, groupId, artifactId, etc.) is there.
+
+No compilation yet — just a sanity check.
+
+Think of it as "Is everything in place before I start building?".
+
+2️⃣ mvn clean
+Deletes the target/ directory where Maven puts compiled code, packaged JARs, reports, etc.
+
+Ensures the next build starts fresh with no leftovers from previous builds.
+
+Useful to avoid “it works on my machine” old-file problems.
+
+3️⃣ mvn compile
+Compiles your project’s main source code (from src/main/java).
+
+Doesn’t run tests — only compiles the code so it’s ready.
+
+4️⃣ mvn test
+Compiles and runs unit tests (from src/test/java).
+
+Uses Maven Surefire Plugin to execute tests.
+
+Doesn’t package anything — just checks if your code passes all tests.
+
+5️⃣ mvn package
+Compiles code, runs tests, and packages your project into its distributable format (like .jar or .war).
+
+For example:
+
+Java library → JAR file in target/
+
+Web app → WAR file in target/
+
+6️⃣ mvn install
+Everything in package plus installs the package into your local Maven repository (~/.m2/repository).
+
+This makes the project available as a dependency for other Maven projects on your machine.
+
 
