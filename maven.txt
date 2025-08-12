@@ -122,3 +122,18 @@ Everything in package plus installs the package into your local Maven repository
 This makes the project available as a dependency for other Maven projects on your machine.
 
 
+
+mvn deploy
+➡ validate → compile → test → package → install → deploy to remote repo
+
+
+Runs everything up to install:
+validate
+compile
+test
+package
+install
+
+Plus: uploads (deploys) your packaged artifact (JAR/WAR) to a remote repository (e.g., Nexus, Artifactory, or a Maven Central mirror).
+
+Used when you want to share your build with other developers or systems that don’t have your local repo.
