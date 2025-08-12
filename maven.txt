@@ -41,3 +41,24 @@ do the following steps of validate, compile,test,package,verify, then finally in
 
 to execute only test -> maven test or in maven build enter clean as goal
 
+
+TO run all the test cases
+maven surefire plugin
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version> <!-- Use latest stable -->
+            <configuration>
+                <suiteXmlFiles>
+                    <suiteXmlFile>testng.xml</suiteXmlFile>
+                </suiteXmlFiles>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+
+
