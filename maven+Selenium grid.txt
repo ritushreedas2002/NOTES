@@ -187,3 +187,22 @@ NOTE ::: ONCE ATTACHED ALL THE NODES TO THE HUB , hUB CAN RECOGNISE ALL THE NODE
 
 Example:
 My test case has browser chrome and the os : mac , so as my hub have all the nodes , so the test case runs in that node having os: mac and the browser : chrome
+
+
+StandAlone Grid Setup
+========================
+
+Single system as a hub as welll as the node
+
+Distributed Grid Setup
+============================
+Where multiple system as nodes and another system as a hub
+
+
+
+Steps to follow standalone setup
+===================================
+1. download the selenium-server jar
+2. in that go the cmd
+java -jar selenium-server-4.15.0.jar standalone
+3. open https://localhost:4444
