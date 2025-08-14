@@ -346,3 +346,24 @@ Sends build status to the team (email, Slack, etc.).
                 |  - TestNG Reports  |
                 +--------------------+
 
+
+
+steps:
+1. download the jenkin.war file
+2. in cmd -> java -jar jenkins.war
+3.u need to capture the password (in cmd it will appear)
+4. in install the git and maven and github plugins in manage plugin
+5. in tools add the local jdk , maven and git paths
+6. create an item given project name and select maven project
+7.choose git and provid eth eurl of the repo
+8. write mvn test to run teh pom.xml -> write test there
+9. save 
+
+10. inside the project made in jenkins opencart
+click on build now
+so it will pull the project from the github repo and build the project
+and it will execute the test cases
+and generate the report
+
+
+**** ALL this is one-time setup
