@@ -348,6 +348,20 @@ Sends build status to the team (email, Slack, etc.).
 
 
 
+
+This is called the continous Integration process
+
+QA team----->repo testes----------------------------->Devops<----------------Repo ----------------Deveoper
+                     takes the code build  , do some testing(this is the deployment phase)
+next morning send the build to the QA team for the more detailed testing
+
+continous Devilery process is the advancement of the Continous Integration
+in devops team , the build then testing  then deployment then the release this whole is continous delivery
+
+Jenkins is the tool that does this whole jobs, job is an activity , like if want to build we need to run certain no of jobs
+
+
+                                                       
 steps:
 1. download the jenkin.war file
 2. in cmd -> java -jar jenkins.war
@@ -379,3 +393,18 @@ save and build now
 
 
 as jenkins is in our local system so we can run local project , but in real world jenkins in remote system, so we need to make our project public to run all the files and the paths
+
+
+JEnkins Pipeline
+=========================
+
+What is Pipeline?
+A pipeline is a event of jobs that are interrelated to each other in a sequence
+
+What is Jenkins File?
+============================
+The definition of jenkins Pipeline is writtern into a text file 
+
+Two ways
+1. declarative (easy to understand , richer syntactical features)
+2. scripted
