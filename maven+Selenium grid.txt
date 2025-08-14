@@ -240,3 +240,109 @@ public class SeleniumGrid {
         driver.quit();
     }
 }
+
+
+
+
+JENKINS
+=================================================================================================================================================================
+
+Jenkins is an automation tool which will automaticallu pull all the files from the github repo and automate the testing
+
+Jenkins is an open-source automation server mainly used for continuous integration (CI) and continuous delivery (CD) in software development.
+
+In plain words:
+
+Developers push their code to a shared repository (like GitHub or GitLab).
+
+Jenkins automatically builds, tests, and deploys that code according to predefined pipelines.
+
+It helps teams detect errors early, integrate changes frequently, and deliver updates faster.
+
+
+
+Typical Workflow
+--------------------------
+Developer pushes code to GitHub.
+
+Jenkins detects the commit (via webhook or polling).
+
+Jenkins pulls the latest code.
+
+Builds the project (e.g., using Maven or Gradle).
+
+Runs unit tests & automation tests (e.g., Selenium Grid).
+
+Deploys to staging/production environment if tests pass.
+
+Sends build status to the team (email, Slack, etc.).
+
+
++-----------------+         +-----------------+         +-------------------+
+|  Developer      |         |  Jenkins Server |         | Deployment Server |
+|  commits code   +--------->  (Master/Agent) +---------> (Staging/Prod)     |
++-----------------+         +-----------------+         +-------------------+
+         |                           |
+         v                           v
+  Version Control            Pipeline Executes
+ (GitHub/GitLab)             - Build
+                             - Test
+                             - Deploy
+
+
+
+
+
+
+                +--------------------+
+                |  Developer Pushes  |
+                |  Code to GitHub    |
+                +---------+----------+
+                          |
+                          v
+                +--------------------+
+                |  Tester Pushes     |
+                |  Test Cases to     |
+                |  GitHub            |
+                +---------+----------+
+                          |
+                          v
+                +--------------------+
+                |  GitHub Repository |
+                |  (Code + Tests)    |
+                +---------+----------+
+                          |
+        (Webhook or Polling Trigger)
+                          |
+                          v
+                +--------------------+
+                |  Jenkins Server    |
+                |  (CI/CD Pipeline)  |
+                +---------+----------+
+                          |
+          +---------------+---------------+
+          |                               |
+          v                               v
++--------------------+         +--------------------+
+|  Build Stage       |         |  Test Stage        |
+|  - Compile Code    |         |  - Run Unit Tests  |
+|  - Resolve Deps    |         |  - Run Selenium    |
+|  - Package (Jar)   |         |    Automation      |
++---------+----------+         +---------+----------+
+          |                               |
+          +---------------+---------------+
+                          |
+                          v
+                +--------------------+
+                |  Deploy Stage      |
+                |  - Deploy to       |
+                |    Staging/Prod    |
+                +---------+----------+
+                          |
+                          v
+                +--------------------+
+                |  Feedback/Reports  |
+                |  - Email/Slack     |
+                |  - TestNG Reports  |
+                +--------------------+
+
