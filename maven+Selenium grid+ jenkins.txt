@@ -1,3 +1,38 @@
+GIT AND GITHUB
+==================================================
+Git
+
+Git is a distributed version control system that runs locally on your machine.
+
+It is used to track changes in source code, manage versions, and collaborate with others through branching and merging.
+
+All your commits, branches, and history are stored in a local repository.
+
+Working diresctory -->add -> stagging area--->local .git------->push--->remote github
+remote github--------------->pull --------------->local working directory
+
+GitHub
+
+GitHub is a cloud-based hosting service for Git repositories.
+
+It allows you to store your Git repositories remotely so you can share them with others and collaborate online.
+
+Provides features like pull requests, issue tracking, project boards, and CI/CD integrations.
+
+Key Difference
+
+Git → The tool (installed on your local system) to track and manage code history.
+
+GitHub → An online platform that hosts Git repositories and enables collaboration.
+
+
+
+Ecllipse :
+we have repository plugin to use all these git actions 
+
+
+MAVEN
+=================================================================================================================================
 1.
 maven project 
 
