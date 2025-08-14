@@ -31,6 +31,23 @@ Ecllipse :
 we have repository plugin to use all these git actions 
 
 
+in ecllipse the project i want needs to be git init
+to do that team->shareproject->create reporsitory
+
+to do commit the changes
+team->add to index ->with the commit mesage commit
+
+create a same name repository in the github
+
+then right on the project in ecllipse click on the terminal open git bash
+
+git remote add origin https://github.com/<your-username>/<repo-name>.git
+git branch -M main
+git push -u origin main
+
+
+
+
 MAVEN
 =================================================================================================================================
 1.
