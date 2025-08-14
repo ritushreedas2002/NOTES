@@ -367,3 +367,11 @@ and generate the report
 
 
 **** ALL this is one-time setup
+
+
+TO run the local project in jenkins
+
+-> provide the full path of the pom localtion [D://ksnks/kshxj/ pom.xml]
+-> write the test
+save and build now
+-> you will find your project is running
