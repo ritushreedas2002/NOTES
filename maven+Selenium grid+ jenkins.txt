@@ -375,3 +375,7 @@ TO run the local project in jenkins
 -> write the test
 save and build now
 -> you will find your project is running
+
+
+
+as jenkins is in our local system so we can run local project , but in real world jenkins in remote system, so we need to make our project public to run all the files and the paths
