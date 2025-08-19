@@ -1,4 +1,12 @@
 # Docker Notes
+## What is Docker?
+Docker is an operating system for containers. Similar to how a virtual machine virtualizes (removes the need to directly manage) server hardware, containers virtualize the operating system of a server. Docker is installed on each server and provides simple commands you can use to build, start, or stop containers.
+
+## What is image?
+A Docker image is a read-only template that contains a complete, self-contained snapshot of an application and its entire environment, including the operating system, libraries, dependencies, and application code. It serves as a blueprint for creating Docker containers.
+
+## What is container?
+A Docker container is a runnable instance of a Docker image. It is a lightweight, standalone, and executable software package that encapsulates an application and all its necessary components, including code, dependencies, libraries, and configuration files
 
 ## Why We Use Docker?
 
