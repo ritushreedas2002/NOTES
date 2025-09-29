@@ -335,3 +335,25 @@ When you run `docker ps -a`, you will see a "NETWORKS" column showing values lik
 | none         | No network
 
 
+## Dockerisizing Our App
+
+We need to create a Dockerfile to containerize our Node.js application.
+**Diagram:**
+```
+
+FROM UBUNTU [base image]
+
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+
+COPY index.js home.path/index.js
+COPY packag.json home.path.package.json
+COPY package-lock.josn home/path/pac
+
+WORKING DIRECTORY hone/path
+RUN npm install
+
+```
