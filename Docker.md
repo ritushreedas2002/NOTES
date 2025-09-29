@@ -357,3 +357,9 @@ WORKING DIRECTORY hone/path
 RUN npm install
 
 ```
+
+
+**In the terminal** 
+```
+docker build -t my-app .   # [build with the image name my-app (.)-> curr directory]
+```
