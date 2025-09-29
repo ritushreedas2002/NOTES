@@ -385,3 +385,40 @@ CMD["npm","start"]
 ```
 
 **Note-> that due to changes in the index.js, if index.js is at top then from the changes files again all the layers will be build again  so we write at the bottom** 
+
+## Expose Port
+
+**Port Binding**
+```
+docker run -it -p 8080:80 <image_id>   # this is the bonding of the host port to that of the container port 
+```
+Disadvantage : When binding host ports, conflicts may occur if the port is already in use.
+
+For example, if another service is running on port 8080, the container cannot start with the same binding.
+
+**Exposing Port**
+1. Using EXPOSE in Dockerfile makes a container port visible to the host.
+2. Docker automatically binds an available host port to the exposed container port when using -P.
+3. This avoids conflicts because Docker selects a free host port dynamically.
+
+```
+FROM node:24.9-alpine3.21
+
+WORKING DIRECTORY hone/path
+
+COPY packag.json package.json
+COPY package-lock.josn package-lock.json
+
+COPY index.js index.js
+
+RUN npm install
+
+EXPOSE 8080
+
+CMD["npm","start"]
+```
+
+**In Terminal** 
+```
+docker run -it -d -P my-app  # -P [publishes all exposed ports to random free ports on the host]
+```
