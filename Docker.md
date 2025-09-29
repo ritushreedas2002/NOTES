@@ -351,10 +351,12 @@ RUN apt-get update && \
 
 COPY index.js home.path/index.js
 COPY packag.json home.path.package.json
-COPY package-lock.josn home/path/pac
+COPY package-lock.josn home/path/package-lock.json
 
 WORKING DIRECTORY hone/path
 RUN npm install
+
+CMD["npm","start"]
 
 ```
 
@@ -363,3 +365,23 @@ RUN npm install
 ```
 docker build -t my-app .   # [build with the image name my-app (.)-> curr directory]
 ```
+ **Layers in Docker Image**
+ The lines or commands in Dockerfile are the layers. Docker caches the layers , do while building it starts from the that layer which it left because the previous layers that have been build is already cached
+
+ **The above Dockerfile is -> 365 MB, to optimise, it we just use**
+ ```
+FROM node:24.9-alpine3.21
+
+WORKING DIRECTORY hone/path
+
+COPY packag.json package.json
+COPY package-lock.josn package-lock.json
+
+COPY index.js index.js
+
+RUN npm install
+
+CMD["npm","start"]
+```
+
+**Note-> that due to changes in the index.js, if index.js is at top then from the changes files again all the layers will be build again  so we write at the bottom** 
