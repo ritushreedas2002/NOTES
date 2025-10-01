@@ -455,3 +455,69 @@ docker push <dockerhub_username>/<repo_name>:<tag>
 ```
 docker pull <dockerhub_username>/<repo_name>:<tag>
 ```
+
+
+## Multi-Stage Build
+
+1. A Docker feature that allows using multiple FROM statements in a single Dockerfile.
+2. Each FROM starts a new build stage.
+3. Helps in creating small, optimized images by copying only the required artifacts from one stage to another.
+
+
+**Advantages:**
+
+1. Reduces final image size.
+2. Keeps build tools and unnecessary files out of the production image.
+3. Makes Dockerfiles cleaner and easier to manage.
+
+```
+# Stage 1: Build the application
+FROM node:24.9-alpine3.21 AS builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build         # creates a dist folder
+
+# Stage 2: Run the application
+FROM node:24.9-alpine3.21
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY package.json package-lock.json ./
+RUN npm install --omit=dev         # to omit all the dev dependencies in the package.json
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+
+Explanation:
+
+- **Stage 1 (Builder):**
+
+1. Uses a Node.js image with build tools.
+2. Installs dependencies and builds the application.
+3. Produces a dist/ folder containing compiled code.
+
+- **Stage 2 (Final Image):**
+
+1. Starts with a fresh Node.js base image.
+2. Copies only the compiled output (dist/) from the builder stage.
+3. Installs only production dependencies.
+4. Much smaller than including all build tools.
+
+
+```
+[Builder Image]
+   - Node.js + Build Tools
+   - Dependencies
+   - Compiled App (dist/)
+
+        |
+        v
+
+[Final Image]
+   - Node.js Runtime
+   - dist/ (app code)
+   - Production Dependencies
+
+```
