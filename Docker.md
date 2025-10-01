@@ -422,3 +422,36 @@ CMD["npm","start"]
 ```
 docker run -it -d -P my-app  # -P [publishes all exposed ports to random free ports on the host]
 ```
+
+## Publishing Docker Images
+
+| Step       | Command Example                          | Purpose                          |
+| ---------- | ---------------------------------------- | -------------------------------- |
+| Login      | `docker login`                           | Authenticate with Docker Hub     |
+| Tag Image  | `docker tag my-app ritushree/my-app:1.0` | Assign Docker Hub repo + version |
+| Push Image | `docker push ritushree/my-app:1.0`       | Publish image to Docker Hub      |
+| Pull Image | `docker pull ritushree/my-app:1.0`       | Download image from Docker Hub   |
+
+
+
+**Step 1: Log in to Docker Hub**
+```
+docker login
+
+```
+
+**Step 2: Tag the Image**
+```
+docker tag <local_image_id> <dockerhub_username>/<repo_name>:<tag>
+
+```
+**Step 3: Push the Image**
+
+```
+docker push <dockerhub_username>/<repo_name>:<tag>
+```
+
+**Step 4: Pull the Image (Verification)**
+```
+docker pull <dockerhub_username>/<repo_name>:<tag>
+```
