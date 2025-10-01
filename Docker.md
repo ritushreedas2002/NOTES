@@ -521,3 +521,44 @@ Explanation:
    - Production Dependencies
 
 ```
+
+## Add User security
+
+**Why Add a User?**
+
+-By default, Docker containers run processes as the root user.
+-Running applications as root inside the container is risky (privilege escalation).
+-Best practice: create a non-root user and run the app under that user.
+
+```
+# Stage 2: Run the application
+FROM node:24.9-alpine3.21
+
+WORKDIR /app
+
+# Copy files from builder stage
+COPY --from=builder /app/dist ./dist
+COPY package.json package-lock.json ./
+
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Create a non-root user and group
+RUN addgroup --system sid 1001 nodejs
+
+
+# Change ownership of the app directory
+RUN adduser --system uid 1001 nodejs 
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+ENV PORT=3000   # from the env
+
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "start"]
+
+```
