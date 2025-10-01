@@ -618,3 +618,53 @@ docker network connect mynet container1
 | bridge       | Default, isolated network for containers     | Most applications               |
 | host         | Shares host network stack                    | High performance, special cases |
 | none         | No network
+
+
+
+
+## Docker Volumes
+
+- Volumes are the preferred mechanism for persisting data generated and used by Docker containers.
+- Unlike container layers, volumes exist outside the container’s filesystem and persist even if the container is deleted.
+
+**🔹 Types of Volumes**
+
+**1. Anonymous Volume**
+
+Created automatically when a container writes to a non-existing volume path.
+Not easy to manage because no name is assigned.
+
+```
+docker run -v /app/data ubuntu
+```
+
+**2. Named Volume**
+
+Created with a custom name for easier management.
+Survives container restarts and deletions.
+
+```
+docker volume create mydata
+docker run -v mydata:/app/data ubuntu         #Tells Docker: Mount the volume mydata into the container’s filesystem at /app/data.
+```
+
+Note : the volume stays in the docker whether the container deletes or stays , so every container can use the volume
+
+**3. Bind Mounts**
+
+Maps a directory/file from the host machine into the container.
+Useful for development because changes on host reflect instantly inside the container.
+
+```
+docker run -v /host/path:/container/path ubuntu         # host path: container path 
+```
+
+**🔹 Important Point**
+
+- Data is not stored inside the container filesystem.
+- Instead, the container is just mounting your host’s folder.
+- So yes ✅ the container path is saved in your local system at /host/path.
+- If the container is deleted, the data still remains on your local machine.
+
+
+
