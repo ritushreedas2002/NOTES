@@ -586,7 +586,8 @@ ping container2
 **3.Connecting a Running Container to a Network**
 ```
 docker network connect mynet container1
-
+#container1 in another default bridge network, which i am connecting to the mynet
+# so my containers at mynet can talk to the container1
 ```
 #### 2. **host**
 - The container shares the host’s network stack.
