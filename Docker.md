@@ -286,54 +286,6 @@ docker run --name container2 nginx
 - `--name` lets you specify a unique name for each container.
 - Both containers will run independently but use the same `nginx`
 
-### Docker Networks: bridge, host, and none
-
-When you run `docker ps -a`, you will see a "NETWORKS" column showing values like `bridge`, `host`, or `none`. These represent the network mode used by each container.
-
-#### 1. **bridge** (default)
-- Containers are connected to a private internal network on the Docker host.
-- They can communicate with each other via this bridge network.
-- Containers can access the outside world, but external systems must map ports to reach containers.
-
-**Diagram:**
-```
-[Host OS]
-   |
-[Docker Bridge Network]
-   |         |         |
-[Cont1]  [Cont2]   [Cont3]
-```
-
-#### 2. **host**
-- The container shares the host’s network stack.
-- No network isolation between the container and the host.
-- Useful for performance or when you need direct access to host network interfaces.
-
-**Diagram:**
-```
-[Host OS Network Stack]
-   |
-[Container]
-```
-
-#### 3. **none**
-- The container has no network access.
-- No interfaces except the loopback interface (`localhost`).
-
-**Diagram:**
-```
-[Container]
-  (no network)
-```
-
-**Summary Table:**
-
-| Network Mode | Description                                  | Use Case                        |
-|--------------|----------------------------------------------|---------------------------------|
-| bridge       | Default, isolated network for containers     | Most applications               |
-| host         | Shares host network stack                    | High performance, special cases |
-| none         | No network
-
 
 ## Dockerisizing Our App
 
@@ -562,3 +514,106 @@ EXPOSE 3000
 CMD ["npm", "start"]
 
 ```
+
+
+### Docker Networks: bridge, host, and none
+
+When you run `docker ps -a`, you will see a "NETWORKS" column showing values like `bridge`, `host`, or `none`. These represent the network mode used by each container.
+
+#### 1. **bridge** (default)
+- Containers are connected to a private internal network on the Docker host.
+- They can communicate with each other via this bridge network.
+- Containers can access the outside world, but external systems must map ports to reach containers.
+
+  **2 types of bridge network**
+  1. default bridge [throught IP only containers can talk]
+  2. user-defined bridge [it provides the DNS method, where through naming we can talk]
+
+```
+[Container 1: 172.17.0.2]     [Container 2: 172.17.0.3]
+          |                           |
+          +------------+--------------+
+                       |
+                  +----+----+
+                  | Bridge  |  (docker0: 172.17.0.1)
+                  +----+----+
+                       |
+                       |
+     +-----------------+-----------------+
+     |                                   |
+[ Host IP: 192.168.1.10 ]           [ Router / Internet ]
+     |                                   |
+     +-----------------------------------+
+
+
+```
+**Explanation**
+
+- Both Host IP and Bridge (docker0) have paths leading to the Router/Internet.
+- Containers talk to the outside world through the bridge → router.
+- Host machine itself also directly connects to the router.
+
+**1. Accessing Another Container via IP**
+
+If two containers are on the same bridge network, each gets an IP (like 172.17.0.2, 172.17.0.3).
+You can call one container from another using that IP:
+
+```
+# From inside Container 1, ping Container 2 by IP
+docker exec -it container1 ping 172.17.0.3
+```
+**Why?**
+
+-By default, Docker assigns internal IPs on the docker0 bridge.
+-Containers in the same bridge can reach each other using these IPs.
+-Disadvantage: IPs may change when containers restart, so not reliable.
+
+**🔹 2. Using Container Names (Preferred)**
+If you create a user-defined bridge network, containers can communicate via their names (DNS resolution) instead of IPs:
+
+```
+# Create a custom network
+docker network create mynet
+
+# Run two containers in the same network
+docker run -it --name container1 --network mynet ubuntu bash
+docker run -it --name container2 --network mynet ubuntu bash
+
+# Inside container1, you can ping container2 by name
+ping container2
+```
+
+**3.Connecting a Running Container to a Network**
+```
+docker network connect mynet container1
+
+```
+#### 2. **host**
+- The container shares the host’s network stack.
+- No network isolation between the container and the host.
+- Useful for performance or when you need direct access to host network interfaces.
+
+**Diagram:**
+```
+[Host OS Network Stack]
+   |
+[Container]
+```
+
+#### 3. **none**
+- The container has no network access.
+- No interfaces except the loopback interface (`localhost`).
+
+**Diagram:**
+```
+[Container]
+  (no network)
+```
+
+**Summary Table:**
+
+| Network Mode | Description                                  | Use Case                        |
+|--------------|----------------------------------------------|---------------------------------|
+| bridge       | Default, isolated network for containers     | Most applications               |
+| host         | Shares host network stack                    | High performance, special cases |
+| none         | No network
