@@ -690,6 +690,8 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5431:5432"
+    networks:
+      - backend
 
   redis:
     image: redis:7
@@ -697,10 +699,17 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    networks:
+      - backend
 
 volumes:
   db_data:
   redis_data:
+
+networks:
+  backend:
+    driver: bridge
+
 
 ```
 
@@ -731,3 +740,98 @@ docker-compose down
 docker-compose up -d
 ```
 (data is reattached from db_data).
+
+**Custom Docker Builds**
+```
+name: e-commerce
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:3000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+
+volumes:
+  db_data:
+  redis_data:
+
+networks:
+  backend:
+    driver: bridge
+
+```
+
+
+**I’ll assume you’re using Node.js with pg (Postgres client) and redis (official client).**
+```
+const { Client } = require("pg");
+const redis = require("redis");
+
+// PostgreSQL connection
+const pgClient = new Client({
+  host: "db",           // Service name from docker-compose
+  port: 5432,           // Internal Postgres port
+  user: "user",         // From environment variables
+  password: "password", // From environment variables
+  database: "mydb"      // From environment variables
+});
+
+// Redis connection
+const redisClient = redis.createClient({
+  url: "redis://redis:6379" // Service name "redis" from docker-compose
+});
+
+// Connect to PostgreSQL
+pgClient.connect()
+  .then(() => console.log("✅ Connected to PostgreSQL"))
+  .catch(err => console.error("❌ Postgres connection error:", err));
+
+// Connect to Redis
+redisClient.connect()
+  .then(() => console.log("✅ Connected to Redis"))
+  .catch(err => console.error("❌ Redis connection error:", err));
+
+// Simple test query
+async function test() {
+  try {
+    const res = await pgClient.query("SELECT NOW()");
+    console.log("Postgres time:", res.rows[0]);
+
+    await redisClient.set("message", "Hello from Redis!");
+    const msg = await redisClient.get("message");
+    console.log("Redis says:", msg);
+  } catch (err) {
+    console.error("Error:", err);
+  } finally {
+    await pgClient.end();
+    await redisClient.quit();
+  }
+}
+
+test();
+
+```
