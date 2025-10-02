@@ -668,3 +668,66 @@ docker run -v /host/path:/container/path ubuntu         # host path: container p
 
 
 
+## Docker Compose
+
+- Docker Compose is a tool for defining and running multi-container Docker applications.
+- Uses a YAML file (docker-compose.yml) to configure services, networks, and volumes.
+- With a single command, you can create and start all services defined in the file.
+
+
+```
+name: e-commerce
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  db_data:
+  redis_data:
+
+```
+
+🔹 Meaning
+ - db_data → A named volume managed by Docker.
+- /var/lib/postgresql/data → The path inside the container where PostgreSQL stores its database files.
+- 
+So this line tells Docker:
+👉 “Mount the named volume db_data into the container at /var/lib/postgresql/data so that the database files are stored outside the container in a persistent volume.”
+
+
+- Start Container
+```
+  docker-compose up -d
+```
+
+- Stop & remove container:
+  
+```
+docker-compose down
+```
+(data is still in the volume).
+
+
+- Restart with a new container:
+
+```
+docker-compose up -d
+```
+(data is reattached from db_data).
